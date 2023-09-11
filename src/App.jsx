@@ -1,8 +1,9 @@
-
 export default function App() {
-
   return (
-    "wyd chat"
+    <>
+      <p>welcome to the new project</p>
+      <hr />
+      <p>wyd chat</p>
+    </>
   )
-
 }
