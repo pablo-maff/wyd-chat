@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 export function Avatar({ typing }) {
-  const isTyping = typing ? "border-2 border-green-400" : ""
+  const isTyping = typing ? "border-2 border-blue-400" : ""
 
   return (
     <div className="w-16 h-16">
