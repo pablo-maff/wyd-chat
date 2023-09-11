@@ -33,19 +33,22 @@ const App = () => {
 
   return (
     <div>
-      <Header course={course}/>
-      <Content 
-              part1={part1}
-              exercises1={exercises1}
-              part2={part2}
-              exercises2={exercises2}
-              part3={part3}
-              exercises3={exercises3}
+      <div className="bg-blue-500 text-white text-center p-4">
+        <h1 className="text-2xl">Hello, World!</h1>
+      </div>
+      <Header course={course} />
+      <Content
+        part1={part1}
+        exercises1={exercises1}
+        part2={part2}
+        exercises2={exercises2}
+        part3={part3}
+        exercises3={exercises3}
       />
-      <Total 
-              exercises1={exercises1}
-              exercises2={exercises2}
-              exercises3={exercises3}
+      <Total
+        exercises1={exercises1}
+        exercises2={exercises2}
+        exercises3={exercises3}
       />
     </div>
   )
