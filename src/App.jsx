@@ -1,9 +1,13 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Chat } from "./pages/Chat";
 
-
-export default function App () {
+export default function App() {
   return (
-    <div>
-      
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/chat" element={<Chat />} />
+        {/* <Route path="/login" element={<Login />} />  */}
+      </Routes>
+    </Router>
+  );
 }
