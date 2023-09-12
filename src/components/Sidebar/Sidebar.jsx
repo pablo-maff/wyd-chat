@@ -1,9 +1,10 @@
 import React from 'react';
+import { Contact } from '../Contact';
 
 export function Sidebar({ chats, activeChat, setActiveChat }) {
     return (
         <>
-            <div className="sidebar">
+            <div className="sidebar w-1/3 border-2 border-color-green">
                 <div className="sidebar-header">
                     <h2>Your Chats</h2>
                 </div>
@@ -14,16 +15,10 @@ export function Sidebar({ chats, activeChat, setActiveChat }) {
                         className={`chat-item ${chat.id === activeChat.id ? 'active' : ''}`}
                         onClick={() => setActiveChat(chat)}
                     >
-                        <div className="chat-avatar">
-                        <img src={chat.avatar} alt={`${chat.name}'s avatar`} />
-                        </div>
-                        <div className="chat-info">
-                        <h3>{chat.name}</h3>
-                        <p>{chat.lastMessage}</p>
-                        </div>
+                        <Contact name={chat.name} typing={true} />
                     </div>
                     ))}
-                </div>
+                </div>  
             </div>
         </>
     )
