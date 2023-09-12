@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Chat } from "./pages/Chat";
+import { Sidebar } from './components/Sidebar/Sidebar';
 
 export default function App() {
   return (
