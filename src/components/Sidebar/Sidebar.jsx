@@ -20,7 +20,7 @@ export function Sidebar({
         <div className='sidebar-header font-bold text-2xl self-start'>
           <h2>Your Chats</h2>
         </div>
-        <div className='chat-list'>
+        <div className='chat-list flex flex-col gap-y-1'>
           {chats.map((chat) => (
             <div
               key={chat.id}
@@ -30,12 +30,12 @@ export function Sidebar({
               )}
               onClick={() => setActiveChat(chat)}
             >
-              <div className='chat-avatar rounded-full h-12 w-12 overflow-hidden'>
+              <div className='chat-avatar flex rounded-full h-12 w-12 overflow-hidden'>
                 <img src={chat.avatar} alt={`${chat.name}'s avatar`} />
               </div>
-              <div className='chat-info'>
+              <div className='chat-info flex-1 flex-col'>
                 <h3 className='font-bold text-lg'>{chat.name}</h3>
-                <p>{chat.lastMessage}</p>
+                <p className='line-clamp-1'>{chat.lastMessage}</p>
               </div>
             </div>
           ))}
