@@ -1,5 +1,5 @@
 import { Avatar } from "./Avatar";
-import { ChatInfo } from "./ChatInfo";
+import { ContactInfo } from "./ContactInfo";
 import { UserName } from "./UserName";
 import clsx from 'clsx';
 
@@ -11,7 +11,7 @@ export function Contact({ chat, activeChat, typing, showLastMessageTime = false 
       </div>
       <div>
         <UserName name={chat?.name} />
-        <ChatInfo
+        <ContactInfo
           typing={typing}
           lastMessage={chat?.lastMessage}
           showLastMessageTime={showLastMessageTime}
