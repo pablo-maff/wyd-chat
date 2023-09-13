@@ -1,12 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Chat } from "./pages/Chat";
-import { Sidebar } from './components/Sidebar/Sidebar';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Main from './pages/Main';
 
 export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/chat" element={<Chat />} />
+        <Route path='/' element={<Main />} />
+        {/* <Route path='/chat' element={<Chat />} /> */}
         {/* <Route path="/login" element={<Login />} />  */}
       </Routes>
     </Router>
