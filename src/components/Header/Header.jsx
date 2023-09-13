@@ -6,7 +6,7 @@ import { Button } from '../Button';
 import { Contact } from '../Contact';
 import { Icon } from '../Icon';
 
-export function Header() {
+export function Header({ chat }) {
   return (
     <header className='bg-white p-4 shadow-md'>
       <div className='flex flex-row'>
@@ -15,7 +15,11 @@ export function Header() {
           <Button text={<Icon IconComponent={CiSettings} />} />
         </div>
         <div className='w-2/3 flex justify-between items-center'>
-          <Contact name={faker.person.fullName()} typing={true} />
+          <Contact
+            chat={chat}
+            typing={false}
+            showLastMessageTime={true}
+          />
           <div className='w-32 mr-8 flex justify-between'>
             <Button text={<Icon IconComponent={BsCameraVideo} />} />
             <Button text={<Icon IconComponent={BsTelephone} />} />
