@@ -1,16 +1,22 @@
 import { Avatar } from "./Avatar";
-import { Typing } from "./Typing";
+import { ChatInfo } from "./ChatInfo";
 import { UserName } from "./UserName";
+import clsx from 'clsx';
 
-export function Contact({ name, typing }) {
+export function Contact({ chat, activeChat, typing, showLastMessageTime = false }) {
   return (
-    <div className="flex items-center">
+    <div className={clsx("flex items-center", activeChat && "bg-blueChat-400 text-white")}>
       <div className="p-2 mr-2">
-        <Avatar typing={typing} />
+        <Avatar avatar={chat?.avatar} typing={typing} />
       </div>
       <div>
-        <UserName name={name} />
-        <Typing typing={typing} />
+        <UserName name={chat?.name} />
+        <ChatInfo
+          typing={typing}
+          lastMessage={chat?.lastMessage}
+          showLastMessageTime={showLastMessageTime}
+          activeChat={activeChat}
+        />
       </div>
     </div>
   )
