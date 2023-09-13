@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker';
-import Chat from '../components/Chat/Chat';
+import Chat from '../components/Chat';
 import { Header } from '../components/Header/Header';
 import { Sidebar } from '../components/Sidebar/Sidebar';
 import { useState } from 'react';
 
+// TODO: Put name and avatar inside user object, add user id and other user fields
 const chats = [
   {
     id: faker.database.mongodbObjectId(),
@@ -57,7 +58,7 @@ function Main() {
         {activeChat &&
           <Header chat={activeChat} />
         }
-        <Chat chat={activeChat} />
+        <Chat chatId={activeChat?.id} />
       </div>
     </div>
   );

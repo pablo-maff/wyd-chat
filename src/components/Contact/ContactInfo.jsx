@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
 import clsx from 'clsx';
 
-export function ChatInfo({ typing, lastMessage, showLastMessageTime, activeChat }) {
+export function ContactInfo({ typing, lastMessage, showLastMessageTime, activeChat }) {
   const formattedTimePassed = showLastMessageTime && formatDistanceToNow(lastMessage?.timestamp);
 
   return (
