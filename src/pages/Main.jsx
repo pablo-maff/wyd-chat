@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker';
-import Chat from '../components/Chat';
 import { Sidebar } from '../components/Sidebar/Sidebar';
 import { useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router';
@@ -41,11 +40,13 @@ function Main() {
   return (
     <div className='w-full h-full flex flex-nowrap'>
       <Sidebar chats={chats} activeChatId={selectedChat?.id} />
-      {selectedChat &&
+      {selectedChat ?
         <div className='flex flex-1 flex-col'>
           <Header chat={selectedChat} />
           <Outlet />
         </div>
+        :
+        <div className='w-2/3 bg-blueChat-50' />
       }
     </div>
   );

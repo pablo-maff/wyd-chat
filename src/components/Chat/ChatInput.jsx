@@ -6,6 +6,7 @@ export function ChatInput({ chatMessages }) {
   const textareaRef = useRef(null)
 
   useEffect(() => {
+    // ! When connected to websockets this will focus the input every time a message is received
     if (!!textareaRef.current) {
       textareaRef.current.focus()
       setNewMessage("")
@@ -31,7 +32,8 @@ export function ChatInput({ chatMessages }) {
         maxRows={15}
         ref={textareaRef}
         onKeyDown={handleKeyDown} // Listen for Enter key press
-        className='p-2 rounded-lg resize-none w-full'
+        className='p-2 rounded-lg resize-none w-full focus:outline-none shadow-lg hover:shadow-xl'
+        placeholder="Message"
       />
       <button type='submit' className='hidden' />
     </form>
