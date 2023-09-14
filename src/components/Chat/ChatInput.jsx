@@ -6,12 +6,11 @@ export function ChatInput({ chatMessages }) {
   const textareaRef = useRef(null)
 
   useEffect(() => {
-    // ! When connected to websockets this will focus the input every time a message is received
     if (!!textareaRef.current) {
       textareaRef.current.focus()
       setNewMessage("")
     }
-  }, [chatMessages])
+  }, [chatMessages?.id])
 
   function handleSubmitNewMessage(event) {
     event.preventDefault()
