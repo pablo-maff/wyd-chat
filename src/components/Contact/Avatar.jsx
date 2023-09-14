@@ -1,7 +1,7 @@
 import defaultAvatar from '../../assets/default-avatar/default_avatar.png'
 
 export function Avatar({ avatar, typing }) {
-  const isTyping = typing ? "border-2 border-blue-400" : ""
+  const isTyping = typing ? "border-2 border-blueChat-300" : ""
 
   return (
     <div className="w-16 h-16">

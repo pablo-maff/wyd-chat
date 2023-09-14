@@ -1,24 +1,39 @@
-import autosize from "autosize";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import TextareaAutosize from 'react-textarea-autosize';
 
-export function ChatInput() {
-  const textareaRef = useRef(null);
+export function ChatInput({ chatMessages }) {
+  const [newMessage, setNewMessage] = useState("")
+  const textareaRef = useRef(null)
 
   useEffect(() => {
-    // Initialize autosize on the textarea element using the ref
-    autosize(textareaRef.current);
+    if (!!textareaRef.current) {
+      textareaRef.current.focus()
+      setNewMessage("")
+    }
+  }, [chatMessages])
 
-    return () => {
-      // Cleanup autosize when the component unmounts
-      autosize.destroy(textareaRef.current);
-    };
-  }, []);
+  function handleSubmitNewMessage(event) {
+    event.preventDefault()
+    setNewMessage("")
+  }
+
+  function handleKeyDown(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      handleSubmitNewMessage(event)
+    }
+  };
 
   return (
-    <form className="flex pt-1 pb-4 px-6">
-      <textarea
+    <form onSubmit={handleSubmitNewMessage} className="flex pt-1 pb-4 px-6">
+      <TextareaAutosize
+        value={newMessage}
+        onChange={(event) => setNewMessage(event.target.value)}
+        maxRows={15}
         ref={textareaRef}
-        className="p-2 rounded-lg resize-none max-h-80 overflow-y-auto h-10 w-full" />
+        onKeyDown={handleKeyDown} // Listen for Enter key press
+        className='p-2 rounded-lg resize-none w-full'
+      />
+      <button type='submit' className='hidden' />
     </form>
   )
 }
