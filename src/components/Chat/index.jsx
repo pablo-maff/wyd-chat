@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
 import { MessagesList } from './MessagesList';
+import { ChatInput } from './ChatInput';
 
 
 function Chat({ chatId }) {
@@ -90,8 +91,9 @@ function Chat({ chatId }) {
   }, [chatId])
 
   return (
-    <div className={clsx(chatId ? 'relative h-full  bg-blue-200' : 'hidden')}>
+    <div className={clsx(chatId ? 'relative h-full  bg-blue-200' : 'hidden', 'flex items-end')}>
       <MessagesList messages={chatMessages} />
+      <ChatInput />
     </div>
   );
 }
