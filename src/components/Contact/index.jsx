@@ -3,9 +3,9 @@ import { ContactInfo } from "./ContactInfo";
 import { UserName } from "./UserName";
 import clsx from 'clsx';
 
-export function Contact({ chat, activeChat, typing, showLastMessageTime = false }) {
+export function Contact({ chat, selectedChat, typing, showLastMessageTime = false }) {
   return (
-    <div className={clsx("flex items-center", activeChat && "bg-blueChat-400 text-white")}>
+    <div className={clsx("flex items-center", selectedChat && "bg-blueChat-400 text-white")}>
       <div className="p-2 mr-2">
         <Avatar avatar={chat?.avatar} typing={typing} />
       </div>
@@ -15,7 +15,7 @@ export function Contact({ chat, activeChat, typing, showLastMessageTime = false 
           typing={typing}
           lastMessage={chat?.lastMessage}
           showLastMessageTime={showLastMessageTime}
-          activeChat={activeChat}
+          selectedChat={selectedChat}
         />
       </div>
     </div>

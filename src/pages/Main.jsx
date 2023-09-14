@@ -1,13 +1,14 @@
 import { faker } from '@faker-js/faker';
 import Chat from '../components/Chat';
-import { Header } from '../components/Header/Header';
 import { Sidebar } from '../components/Sidebar/Sidebar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Outlet, useParams } from 'react-router';
+import { Header } from '../components/Header/Header';
 
 // TODO: Put name and avatar inside user object, add user id and other user fields
 const chats = [
   {
-    id: faker.database.mongodbObjectId(),
+    id: "1",
     name: faker.person.fullName(),
     lastMessage: {
       id: faker.database.mongodbObjectId(),
@@ -17,27 +18,7 @@ const chats = [
     avatar: faker.internet.avatar(),
   },
   {
-    id: faker.database.mongodbObjectId(),
-    name: faker.person.fullName(),
-    lastMessage: {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime()
-    },
-    avatar: faker.internet.avatar(),
-  },
-  {
-    id: faker.database.mongodbObjectId(),
-    name: faker.person.fullName(),
-    lastMessage: {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime()
-    },
-    avatar: faker.internet.avatar(),
-  },
-  {
-    id: faker.database.mongodbObjectId(),
+    id: "2",
     name: faker.person.fullName(),
     lastMessage: {
       id: faker.database.mongodbObjectId(),
@@ -49,17 +30,23 @@ const chats = [
 ];
 
 function Main() {
-  const [activeChat, setActiveChat] = useState(undefined)
+  const { id } = useParams()
+  const [selectedChat, setSelectedChat] = useState(undefined)
+
+  useEffect(() => {
+    console.log("Setting selected chat")
+    setSelectedChat(chats.find(chat => chat.id === id))
+  }, [id])
 
   return (
     <div className='w-full h-full flex flex-nowrap'>
-      <Sidebar chats={chats} activeChat={activeChat} setActiveChat={setActiveChat} />
-      <div className='flex flex-1 flex-col'>
-        {activeChat &&
-          <Header chat={activeChat} />
-        }
-        <Chat chatId={activeChat?.id} />
-      </div>
+      <Sidebar chats={chats} activeChatId={selectedChat?.id} />
+      {selectedChat &&
+        <div className='flex flex-1 flex-col'>
+          <Header chat={selectedChat} />
+          <Outlet />
+        </div>
+      }
     </div>
   );
 }
