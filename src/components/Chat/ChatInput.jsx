@@ -15,10 +15,10 @@ export function ChatInput() {
   }, []);
 
   return (
-    <div className="fixed p-4 pr-8" style={{ width: "-webkit-fill-available" }}>
+    <form className="flex pt-1 pb-4 px-6">
       <textarea
         ref={textareaRef}
-        className="w-full p-2 rounded-lg resize-none max-h-80 overflow-y-auto h-10" />
-    </div>
+        className="p-2 rounded-lg resize-none max-h-80 overflow-y-auto h-10 w-full" />
+    </form>
   )
 }

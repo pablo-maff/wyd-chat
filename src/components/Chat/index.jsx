@@ -91,8 +91,12 @@ function Chat({ chatId }) {
   }, [chatId])
 
   return (
-    <div className={clsx(chatId ? 'relative h-full  bg-blue-200' : 'hidden', 'flex items-end')}>
-      <MessagesList messages={chatMessages} />
+    <div className='flex flex-col h-full  bg-blue-200'>
+      <div className='flex-grow w-full'>
+        <div className={clsx(chatId ? 'relative h-full' : 'hidden', 'flex flex-col')}>
+          <MessagesList messages={chatMessages} />
+        </div>
+      </div>
       <ChatInput />
     </div>
   );
