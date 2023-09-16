@@ -1,16 +1,18 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
+const { faker } = require('@faker-js/faker');
 
-usersRouter.get('/', async (req, res) => {
-  const users = await User.find({}).populate('blogs', {
-    url: 1,
-    title: 1,
-    author: 1,
-  })
+// TODO: Get logged in user contacts here
+// usersRouter.get('/', async (req, res) => {
+//   const users = await User.find({}).populate('blogs', {
+//     url: 1,
+//     title: 1,
+//     author: 1,
+//   })
 
-  res.json(users)
-})
+//   res.json(users)
+// })
 
 usersRouter.get('/:id', async (req, res) => {
   const user = await User.findById(req.params.id)
@@ -19,7 +21,7 @@ usersRouter.get('/:id', async (req, res) => {
 })
 
 usersRouter.post('/', async (req, res) => {
-  const { username, name, password } = req.body
+  const { username, firstName, lastName, password } = req.body
 
   if (username && password && username.length >= 3 && password.length >= 3) {
     const existingUser = await User.findOne({ username })
@@ -35,10 +37,15 @@ usersRouter.post('/', async (req, res) => {
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
+  // ! Added here after request. Model now expects a string which is an url to the image. Probably need to change it to buffer to upload proper files
+  const tempAvatarPhoto = faker.image.avatar()
+
   const user = new User({
     username,
-    name,
+    firstName,
+    lastName,
     passwordHash,
+    avatarPhoto: tempAvatarPhoto
   })
 
   const savedUser = await user.save()

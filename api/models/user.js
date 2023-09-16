@@ -1,15 +1,19 @@
 const mongoose = require('mongoose')
 
+// TODO: Add contacts
 const userSchema = new mongoose.Schema({
   username: String,
-  name: String,
+  firstName: String,
+  lastName: String,
   passwordHash: String,
-  blogs: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Blog',
-    },
-  ],
+  avatarPhoto: String,
+  lastTimeOnline: Date
+  // blogs: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Blog',
+  //   },
+  // ],
 })
 
 userSchema.set('toJSON', {
