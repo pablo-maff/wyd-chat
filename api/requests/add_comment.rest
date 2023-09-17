@@ -1,4 +1,4 @@
-POST http://localhost:3003/api/chatRooms/6259ac3ed7277c44b0ee2525/comments
+POST http://localhost:3003/api/chatRooms/6259ac3ed7277c44b0ee2525/messages
 Content-Type: application/json
 
 {

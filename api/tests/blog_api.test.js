@@ -66,7 +66,7 @@ describe('Adding a new chatRoom post', () => {
     const chatRooms = await helper.chatRoomsInDb()
     delete chatRooms.at(-1).id
     delete chatRooms.at(-1).user
-    delete chatRooms.at(-1).comments
+    delete chatRooms.at(-1).messages
 
     expect(chatRooms.at(-1)).toEqual(
       expect.objectContaining({

@@ -327,7 +327,7 @@
     import-fresh "^3.2.1"
     js-yaml "^4.1.0"
     minimatch "^3.1.2"
-    strip-json-comments "^3.1.1"
+    strip-json-messages "^3.1.1"
 
 "@eslint/js@8.49.0":
   version "8.49.0"
@@ -2136,7 +2136,7 @@ jest-config@^29.7.0:
     parse-json "^5.2.0"
     pretty-format "^29.7.0"
     slash "^3.0.0"
-    strip-json-comments "^3.1.1"
+    strip-json-messages "^3.1.1"
 
 jest-diff@^29.7.0:
   version "29.7.0"
@@ -3405,9 +3405,9 @@ strip-final-newline@^2.0.0:
   resolved "https://registry.yarnpkg.com/strip-final-newline/-/strip-final-newline-2.0.0.tgz#89b852fb2fcbe936f6f4b3187afb0a12c1ab58ad"
   integrity sha512-BrpvfNAE3dcvq7ll3xVumzjKjZQ5tI1sEUIKr3Uoks0XUl45St3FlatVqef9prk4jRDzhW6WZg+3bk93y6pLjA==
 
-strip-json-comments@^3.1.1:
+strip-json-messages@^3.1.1:
   version "3.1.1"
-  resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
+  resolved "https://registry.yarnpkg.com/strip-json-messages/-/strip-json-messages-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
 superagent@^8.0.5:

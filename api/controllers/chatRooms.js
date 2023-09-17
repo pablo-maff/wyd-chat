@@ -4,14 +4,14 @@ const { userExtractor, chatRoomExtractor, isValidID } = require('../utils/middle
 
 chatRoomsRouter.get('/', async (req, res) => {
   const chatRooms = await ChatRoom.find({})
-    .populate('comments', { content: 1 })
+    .populate('messages', { content: 1 })
     .populate('user', { username: 1, name: 1 })
   chatRooms ? res.status(200).json(chatRooms) : res.status(404).end()
 })
 
 chatRoomsRouter.get('/:id', isValidID, async (req, res) => {
   const chatRoom = await ChatRoom.findById(req.params.id)
-    .populate('comments', { content: 1 })
+    .populate('messages', { content: 1 })
     .populate('user', { username: 1, name: 1 })
 
   chatRoom ? res.status(200).json(chatRoom.toJSON()) : res.status(404).end()
@@ -72,7 +72,7 @@ chatRoomsRouter.put('/:id', isValidID, async (req, res) => {
   }
 
   await updatedChatRoom.populate('user', { username: 1, name: 1 })
-  await updatedChatRoom.populate('comments', { content: 1 })
+  await updatedChatRoom.populate('messages', { content: 1 })
 
   return res.status(200).json(updatedChatRoom.toJSON())
 })
