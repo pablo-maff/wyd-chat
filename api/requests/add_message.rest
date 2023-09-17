@@ -1,10 +1,10 @@
-POST http://localhost:3003/api/chatRooms/6506e78601110a96a605b4eb/messages
+POST http://localhost:3003/api/chatRooms/650762ac8d21863314e5b124/messages
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhYmxvLm0iLCJpZCI6IjY1MDVkMTU1NTA0NjEyOTJlYTk2MzBiNSIsImlhdCI6MTY5NDk1MTI3NX0.JuiN2_MJ9UQA8pfMcrjE2jGpMFj41vj7KmsInQBeFZU
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1MDZjYjFmNzU3ZDQwYzQwOWU3ZTNmYiIsImlhdCI6MTY5NDk4NjYzOX0.mZKWT00edulrnkuwCTqFCThxi7f8AIQeaLvfaymaHyk
 
 {
-  "from": "6505d15550461292ea9630b5",
-  "to": "6506cb1f757d40c409e7e3fb",
+  "from": "6506cb1f757d40c409e7e3fb",
+  "to": "6505d15550461292ea9630b5",
   "text": "4Brave jumblies against the sea in a sieve",
-  "chatRoomId": "6506e78601110a96a605b4eb"
+  "chatRoomId": "650762ac8d21863314e5b124"
 }

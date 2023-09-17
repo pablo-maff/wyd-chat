@@ -32,10 +32,11 @@ app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :chatRoom')
 )
 
+app.use('/api/login', loginRouter)
+
 app.use(middleware.tokenExtractor)
 
 app.use('/api/users', usersRouter)
-app.use('/api/login', loginRouter)
 app.use('/api/chatRooms', chatRoomsRouter)
 app.use('/api/chatRooms/:id/messages', messagesRouter)
 
