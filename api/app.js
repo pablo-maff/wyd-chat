@@ -3,7 +3,7 @@ const express = require('express')
 require('express-async-errors')
 const app = express()
 const cors = require('cors')
-const blogsRouter = require('./controllers/chatRooms')
+const chatRoomsRouter = require('./controllers/chatRooms')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 const commentsRouter = require('./controllers/comments')
@@ -36,7 +36,7 @@ app.use(middleware.tokenExtractor)
 
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
-app.use('/api/chatRooms', blogsRouter)
+app.use('/api/chatRooms', chatRoomsRouter)
 app.use('/api/chatRooms/:id/comments', commentsRouter)
 
 if (process.env.NODE_ENV === 'test') {

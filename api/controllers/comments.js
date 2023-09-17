@@ -12,19 +12,19 @@ commentsRouter.get('/', (req, res) => {
 commentsRouter.post('/', async (req, res) => {
   const body = req.body
 
-  const id = body.blogID
-  const commentedBlog = await ChatRoom.findById(id)
+  const id = body.chatRoomID
+  const commentedChatRoom = await ChatRoom.findById(id)
 
-  if (!commentedBlog) return res.status(404).end()
+  if (!commentedChatRoom) return res.status(404).end()
 
   const comment = new Comment({
     content: body.content,
-    blogID: body.blogID,
+    chatRoomID: body.chatRoomID,
   })
 
   const savedComment = await comment.save()
-  commentedBlog.comments = commentedBlog.comments.concat(savedComment)
-  await commentedBlog.save()
+  commentedChatRoom.comments = commentedChatRoom.comments.concat(savedComment)
+  await commentedChatRoom.save()
   res.json(savedComment)
 })
 

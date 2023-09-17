@@ -48,7 +48,7 @@ const userExtractor = async (req, res, next) => {
   next()
 }
 
-const blogExtractor = async (req, res, next) => {
+const chatRoomExtractor = async (req, res, next) => {
   req.chatRoom = await ChatRoom.findById(req.params.id)
 
   next()
@@ -69,6 +69,6 @@ module.exports = {
   errorHandler,
   tokenExtractor,
   userExtractor,
-  blogExtractor,
+  chatRoomExtractor,
   isValidID
 }

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const blogSchema = new mongoose.Schema({
+const chatRoomSchema = new mongoose.Schema({
   url: String,
   title: {
     type: String,
@@ -20,7 +20,7 @@ const blogSchema = new mongoose.Schema({
   ],
 })
 
-blogSchema.set('toJSON', {
+chatRoomSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -28,6 +28,6 @@ blogSchema.set('toJSON', {
   },
 })
 
-const ChatRoom = mongoose.model('ChatRoom', blogSchema)
+const ChatRoom = mongoose.model('ChatRoom', chatRoomSchema)
 
 module.exports = ChatRoom

@@ -2,7 +2,7 @@ const ChatRoom = require('../models/chatRoom')
 const User = require('../models/user')
 const _ = require('lodash')
 
-const initialBlogs = [
+const initialChatRooms = [
   {
     title: 'First Dummy',
     author: 'Dummy author',
@@ -23,7 +23,7 @@ const initialBlogs = [
   },
 ]
 
-const postNewBlog = {
+const postNewChatRoom = {
   title: 'New chatRoom post',
   author: 'New author',
   url: 'https://new-post.com',
@@ -38,7 +38,7 @@ const nonExistingId = async () => {
   return chatRoom._id.toString()
 }
 
-const blogsInDb = async () => {
+const chatRoomsInDb = async () => {
   const chatRooms = await ChatRoom.find({})
   return chatRooms.map((chatRoom) => chatRoom.toJSON())
 }
@@ -67,7 +67,7 @@ const postNewUser = {
   password: 'Pobble',
 }
 
-const mostBlogs = (chatRooms) => {
+const mostChatRooms = (chatRooms) => {
   const topAuthor = _.chain(chatRooms)
     .groupBy('author')
     .map((group, author) => {
@@ -97,13 +97,13 @@ const mostLikes = (chatRooms) => {
 }
 
 module.exports = {
-  initialBlogs,
-  blogsInDb,
+  initialChatRooms,
+  chatRoomsInDb,
   nonExistingId,
-  postNewBlog,
+  postNewChatRoom,
   usersInDb,
   initialUsers,
   postNewUser,
-  mostBlogs,
+  mostChatRooms,
   mostLikes,
 }

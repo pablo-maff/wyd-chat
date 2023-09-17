@@ -1,15 +1,15 @@
-const blogsRouter = require('express').Router()
+const chatRoomsRouter = require('express').Router()
 const ChatRoom = require('../models/chatRoom')
-const { userExtractor, blogExtractor, isValidID } = require('../utils/middleware')
+const { userExtractor, chatRoomExtractor, isValidID } = require('../utils/middleware')
 
-blogsRouter.get('/', async (req, res) => {
+chatRoomsRouter.get('/', async (req, res) => {
   const chatRooms = await ChatRoom.find({})
     .populate('comments', { content: 1 })
     .populate('user', { username: 1, name: 1 })
   chatRooms ? res.status(200).json(chatRooms) : res.status(404).end()
 })
 
-blogsRouter.get('/:id', isValidID, async (req, res) => {
+chatRoomsRouter.get('/:id', isValidID, async (req, res) => {
   const chatRoom = await ChatRoom.findById(req.params.id)
     .populate('comments', { content: 1 })
     .populate('user', { username: 1, name: 1 })
@@ -17,7 +17,7 @@ blogsRouter.get('/:id', isValidID, async (req, res) => {
   chatRoom ? res.status(200).json(chatRoom.toJSON()) : res.status(404).end()
 })
 
-blogsRouter.post('/', userExtractor, async (req, res) => {
+chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   const { title, author, url, likes } = req.body
   const user = req.user
 
@@ -41,7 +41,7 @@ blogsRouter.post('/', userExtractor, async (req, res) => {
   res.status(201).json(savedPost)
 })
 
-blogsRouter.delete('/:id', [isValidID, blogExtractor], async (req, res) => {
+chatRoomsRouter.delete('/:id', [isValidID, chatRoomExtractor], async (req, res) => {
   const authorId = req.chatRoom.user.toString()
   const userId = req.token.id
 
@@ -54,10 +54,10 @@ blogsRouter.delete('/:id', [isValidID, blogExtractor], async (req, res) => {
       .send({ error: "You are not allowed to delete someone else's chatRooms" })
 })
 
-blogsRouter.put('/:id', isValidID, async (req, res) => {
+chatRoomsRouter.put('/:id', isValidID, async (req, res) => {
   const { likes } = req.body
 
-  const updatedBlog = await ChatRoom.findByIdAndUpdate(
+  const updatedChatRoom = await ChatRoom.findByIdAndUpdate(
     req.params.id,
     { likes },
     {
@@ -65,16 +65,16 @@ blogsRouter.put('/:id', isValidID, async (req, res) => {
     }
   )
 
-  if (!updatedBlog) {
+  if (!updatedChatRoom) {
     return res
       .status(404)
       .send({ error: "The chatRoom that you are trying to update no longer exists" })
   }
 
-  await updatedBlog.populate('user', { username: 1, name: 1 })
-  await updatedBlog.populate('comments', { content: 1 })
+  await updatedChatRoom.populate('user', { username: 1, name: 1 })
+  await updatedChatRoom.populate('comments', { content: 1 })
 
-  return res.status(200).json(updatedBlog.toJSON())
+  return res.status(200).json(updatedChatRoom.toJSON())
 })
 
-module.exports = blogsRouter
+module.exports = chatRoomsRouter
