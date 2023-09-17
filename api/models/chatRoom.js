@@ -1,21 +1,26 @@
 const mongoose = require('mongoose')
 
 const chatRoomSchema = new mongoose.Schema({
-  url: String,
-  title: {
-    type: String,
-    required: true,
-  },
-  author: String,
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
-  likes: { type: Number, default: 0 },
-  comments: [
+  users: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comment',
+      ref: 'User',
+      required: true
+    },
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+  ],
+  lastMessages: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Message',
+    },
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Message',
     },
   ],
 })
