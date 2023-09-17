@@ -1,9 +1,9 @@
 const router = require('express').Router()
-const Blog = require('../models/blog')
+const ChatRoom = require('../models/chatRoom')
 const User = require('../models/user')
 
 router.post('/reset', async (req, res) => {
-  await Blog.deleteMany({})
+  await ChatRoom.deleteMany({})
   await User.deleteMany({})
 
   res.status(204).end()

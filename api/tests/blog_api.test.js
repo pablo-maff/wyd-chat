@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const helper = require('./test_helper')
 const app = require('../app')
-const Blog = require('../models/blog')
+const ChatRoom = require('../models/chatRoom')
 const { describe } = require('eslint/lib/rule-tester/rule-tester')
 
 const api = supertest.agent(app)
@@ -17,11 +17,11 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
-  await Blog.deleteMany({})
+  await ChatRoom.deleteMany({})
 
   const blogObject = helper.initialBlogs
-  const promiseArray = blogObject.map((blog) =>
-    api.post('/api/blogs').send(blog)
+  const promiseArray = blogObject.map((chatRoom) =>
+    api.post('/api/blogs').send(chatRoom)
   )
   await Promise.all(promiseArray)
 })
@@ -47,7 +47,7 @@ describe('When there are blogs already saved', () => {
   })
 })
 
-describe('Adding a new blog post', () => {
+describe('Adding a new chatRoom post', () => {
   test('is succesfully created', async () => {
     await api.post('/api/blogs').send(helper.postNewBlog).expect(201)
 
@@ -97,7 +97,7 @@ describe('Adding a new blog post', () => {
   })
 })
 
-describe('Deleting a blog', () => {
+describe('Deleting a chatRoom', () => {
   test('succeeds with status code 204 if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
@@ -110,7 +110,7 @@ describe('Deleting a blog', () => {
     await api.delete(`/api/blogs/${invalidId}`).expect(400)
   })
 
-  test('blog is effectively deleted', async () => {
+  test('chatRoom is effectively deleted', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
@@ -123,7 +123,7 @@ describe('Deleting a blog', () => {
   })
 })
 
-describe('Viewing a specific blog', () => {
+describe('Viewing a specific chatRoom', () => {
   test('succeeds if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToView = {
@@ -141,7 +141,7 @@ describe('Viewing a specific blog', () => {
     expect(blogToView).toEqual(resBlog)
   })
 
-  test('fails with statuscode 404 if blog does not exist', async () => {
+  test('fails with statuscode 404 if chatRoom does not exist', async () => {
     const validNonExistingId = await helper.nonExistingId()
 
     await api.get(`/api/blogs/${validNonExistingId}`).expect(404)
@@ -154,8 +154,8 @@ describe('Viewing a specific blog', () => {
   })
 })
 
-describe('Updating a blog', () => {
-  test('succeed with statuscode 200 if blog is succesfully updated', async () => {
+describe('Updating a chatRoom', () => {
+  test('succeed with statuscode 200 if chatRoom is succesfully updated', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToUpdate = {
       ...blogsAtStart[0],
@@ -178,7 +178,7 @@ describe('Updating a blog', () => {
     expect(updatedBlog).toEqual(blogToUpdate)
   })
 
-  test('fails with statuscode 404 if blog does not exist', async () => {
+  test('fails with statuscode 404 if chatRoom does not exist', async () => {
     const validNonExistingId = await helper.nonExistingId()
     const blogsAtStart = await helper.blogsInDb()
     const blogToUpdate = blogsAtStart[0]

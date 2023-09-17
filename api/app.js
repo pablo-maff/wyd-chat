@@ -12,7 +12,7 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 
-morgan.token('blog', (req) => JSON.stringify(req.body))
+morgan.token('chatRoom', (req) => JSON.stringify(req.body))
 
 logger.info('connecting to', MONGODB_URI)
 
@@ -29,7 +29,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use(
-  morgan(':method :url :status :res[content-length] - :response-time ms :blog')
+  morgan(':method :url :status :res[content-length] - :response-time ms :chatRoom')
 )
 
 app.use(middleware.tokenExtractor)

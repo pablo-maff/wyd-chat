@@ -1,7 +1,7 @@
 const commentsRouter = require('express').Router()
 
 const Comment = require('../models/comment')
-const Blog = require('../models/blog')
+const ChatRoom = require('../models/chatRoom')
 
 commentsRouter.get('/', (req, res) => {
   Comment.find({}).then((comments) => {
@@ -13,7 +13,7 @@ commentsRouter.post('/', async (req, res) => {
   const body = req.body
 
   const id = body.blogID
-  const commentedBlog = await Blog.findById(id)
+  const commentedBlog = await ChatRoom.findById(id)
 
   if (!commentedBlog) return res.status(404).end()
 

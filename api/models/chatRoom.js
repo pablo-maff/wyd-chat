@@ -28,6 +28,6 @@ blogSchema.set('toJSON', {
   },
 })
 
-const Blog = mongoose.model('Blog', blogSchema)
+const ChatRoom = mongoose.model('ChatRoom', blogSchema)
 
-module.exports = Blog
+module.exports = ChatRoom

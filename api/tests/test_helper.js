@@ -1,4 +1,4 @@
-const Blog = require('../models/blog')
+const ChatRoom = require('../models/chatRoom')
 const User = require('../models/user')
 const _ = require('lodash')
 
@@ -24,23 +24,23 @@ const initialBlogs = [
 ]
 
 const postNewBlog = {
-  title: 'New blog post',
+  title: 'New chatRoom post',
   author: 'New author',
   url: 'https://new-post.com',
   likes: 2,
 }
 
 const nonExistingId = async () => {
-  const blog = new Blog({ content: 'willremovethissoon', title: 'noTitle' })
-  await blog.save()
-  await blog.remove()
+  const chatRoom = new ChatRoom({ content: 'willremovethissoon', title: 'noTitle' })
+  await chatRoom.save()
+  await chatRoom.remove()
 
-  return blog._id.toString()
+  return chatRoom._id.toString()
 }
 
 const blogsInDb = async () => {
-  const blogs = await Blog.find({})
-  return blogs.map((blog) => blog.toJSON())
+  const blogs = await ChatRoom.find({})
+  return blogs.map((chatRoom) => chatRoom.toJSON())
 }
 
 const usersInDb = async () => {

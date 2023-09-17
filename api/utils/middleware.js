@@ -1,7 +1,7 @@
 const logger = require('./logger')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
-const Blog = require('../models/blog')
+const ChatRoom = require('../models/chatRoom')
 const mongoose = require('mongoose')
 
 const unknownEndpoint = (req, res) => {
@@ -49,7 +49,7 @@ const userExtractor = async (req, res, next) => {
 }
 
 const blogExtractor = async (req, res, next) => {
-  req.blog = await Blog.findById(req.params.id)
+  req.chatRoom = await ChatRoom.findById(req.params.id)
 
   next()
 }
