@@ -1,5 +1,6 @@
 const chatRoomsRouter = require('express').Router()
 const ChatRoom = require('../models/chatRoom')
+const User = require('../models/user')
 const { userExtractor, chatRoomExtractor, isValidID } = require('../utils/middleware')
 
 // chatRoomsRouter.get('/', async (req, res) => {
@@ -41,12 +42,11 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   }
 
   const chatRoom = new ChatRoom({
-    users,
+    users
   })
 
   const savedChatRoom = await chatRoom.save()
-  user.chatRooms = user.chatRooms.concat(savedChatRoom.id)
-  await user.save()
+
   await savedChatRoom.populate('users', {
     username: 1,
     firstName: 1,
@@ -54,6 +54,16 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
     avatarPhoto: 1,
     lastTimeOnline: 1
   })
+
+  // Add the chat room to both users
+  const updatePromises = users.map(async (userId) => {
+    return await User.findByIdAndUpdate(
+      userId,
+      { $push: { chatRooms: savedChatRoom.id } }
+    );
+  });
+
+  await Promise.all(updatePromises);
 
   res.status(201).json(savedChatRoom)
 })

@@ -17,11 +17,7 @@ const chatRoomSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Message',
-    },
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Message',
-    },
+    }
   ],
 })
 

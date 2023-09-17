@@ -5,7 +5,7 @@ const ChatRoom = require('../models/chatRoom')
 const mongoose = require('mongoose')
 
 const unknownEndpoint = (req, res) => {
-  res.status(404).send({ error: 'Unknwonw endpoint' })
+  res.status(404).send({ error: 'Unknown endpoint' })
 }
 
 const errorHandler = (error, req, res, next) => {
@@ -30,19 +30,29 @@ const errorHandler = (error, req, res, next) => {
 
 const tokenExtractor = (req, res, next) => {
   const authorization = req.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+
+  if (!authorization) {
+    return res.status(401).json({
+      error: 'Missing authorization token'
+    })
+  }
+
+  if (authorization.toLowerCase().startsWith('bearer ')) {
     const token = authorization.substring(7)
 
     req.token = jwt.verify(token, process.env.SECRET) // Verify token validity and decode token (returns the Object which the token was based on)
-    if (!req.token.id) {
-      return res.status(401).json({ error: 'Token missing or invalid' })
-    }
 
     next()
-  } else next()
+  }
 }
 
 const userExtractor = async (req, res, next) => {
+  if (!req.token?.id) {
+    return res.status(401).json({
+      error: 'Invalid authorization token'
+    })
+  }
+
   req.user = await User.findById(req.token.id)
 
   next()
