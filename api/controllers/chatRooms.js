@@ -21,14 +21,12 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   const { users } = req.body
   const user = req.user
 
-  // Query the ChatRoom collection to find a room with both users
+  // * Query the ChatRoom collection to find a room with both users
   const existingChatRoom = await ChatRoom.exists({
     users: {
       $all: users,
     },
   });
-
-  console.log("existingChatRoom", existingChatRoom);
 
   if (existingChatRoom) {
     return res.status(403).json({

@@ -19,7 +19,7 @@ const messageSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  chatRoomID: {
+  chatRoomId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ChatRoom',
     required: true

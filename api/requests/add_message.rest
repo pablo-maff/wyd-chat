@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/chatRooms/6506e78601110a96a605b4eb/messages
+Content-Type: application/json
+
+{
+  "to": "6505d15550461292ea9630b5",
+  "from": "6506cb1f757d40c409e7e3fb",
+  "text": "4Brave jumblies against the sea in a sieve",
+  "chatRoomId": "6506e78601110a96a605b4eb"
+}
