@@ -5,7 +5,7 @@ const { faker } = require('@faker-js/faker');
 
 // TODO: Get logged in user contacts here
 // usersRouter.get('/', async (req, res) => {
-//   const users = await User.find({}).populate('blogs', {
+//   const users = await User.find({}).populate('chatRooms', {
 //     url: 1,
 //     title: 1,
 //     author: 1,

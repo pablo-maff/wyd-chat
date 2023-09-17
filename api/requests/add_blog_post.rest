@@ -1,4 +1,4 @@
-POST http://localhost:3003/api/blogs/
+POST http://localhost:3003/api/chatRooms/
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhYmxvLm0iLCJpZCI6IjYyNmI5NDcwMjc0MmQ2MGRmZWY0NjgwNCIsImlhdCI6MTY5Mzk5MTk2N30.JiYqNQlBKyWWWYvaOcGvRz8N-0-6vRyZ4j1xSIrHN5Y
 

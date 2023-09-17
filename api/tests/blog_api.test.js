@@ -21,27 +21,27 @@ beforeEach(async () => {
 
   const blogObject = helper.initialBlogs
   const promiseArray = blogObject.map((chatRoom) =>
-    api.post('/api/blogs').send(chatRoom)
+    api.post('/api/chatRooms').send(chatRoom)
   )
   await Promise.all(promiseArray)
 })
 
-describe('When there are blogs already saved', () => {
-  test('blogs are returned as json', async () => {
+describe('When there are chatRooms already saved', () => {
+  test('chatRooms are returned as json', async () => {
     await api
-      .get('/api/blogs')
+      .get('/api/chatRooms')
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
 
-  test('all blogs are returned', async () => {
-    const response = await api.get('/api/blogs').expect(200)
+  test('all chatRooms are returned', async () => {
+    const response = await api.get('/api/chatRooms').expect(200)
 
     expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
   test('identifier is named "id"', async () => {
-    const response = await api.get('/api/blogs').expect(200)
+    const response = await api.get('/api/chatRooms').expect(200)
 
     expect(response.body[0].id).toBeDefined()
   })
@@ -49,7 +49,7 @@ describe('When there are blogs already saved', () => {
 
 describe('Adding a new chatRoom post', () => {
   test('is succesfully created', async () => {
-    await api.post('/api/blogs').send(helper.postNewBlog).expect(201)
+    await api.post('/api/chatRooms').send(helper.postNewBlog).expect(201)
 
     expect(await helper.blogsInDb()).toHaveLength(
       helper.initialBlogs.length + 1
@@ -58,17 +58,17 @@ describe('Adding a new chatRoom post', () => {
 
   test('saves its content', async () => {
     await api
-      .post('/api/blogs')
+      .post('/api/chatRooms')
       .send(helper.postNewBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
-    const blogs = await helper.blogsInDb()
-    delete blogs.at(-1).id
-    delete blogs.at(-1).user
-    delete blogs.at(-1).comments
+    const chatRooms = await helper.blogsInDb()
+    delete chatRooms.at(-1).id
+    delete chatRooms.at(-1).user
+    delete chatRooms.at(-1).comments
 
-    expect(blogs.at(-1)).toEqual(
+    expect(chatRooms.at(-1)).toEqual(
       expect.objectContaining({
         author: helper.postNewBlog.author,
         title: helper.postNewBlog.title,
@@ -82,10 +82,10 @@ describe('Adding a new chatRoom post', () => {
     let toPost = helper.postNewBlog
     delete toPost.likes
 
-    await api.post('/api/blogs').send(toPost).expect(201)
+    await api.post('/api/chatRooms').send(toPost).expect(201)
 
-    const blogs = await helper.blogsInDb()
-    expect(blogs.at(-1)).toHaveProperty('likes', 0)
+    const chatRooms = await helper.blogsInDb()
+    expect(chatRooms.at(-1)).toHaveProperty('likes', 0)
   })
 
   test('if title and url properties are missing, return 400 Bad Request', async () => {
@@ -93,7 +93,7 @@ describe('Adding a new chatRoom post', () => {
     delete toPost.title
     delete toPost.url
 
-    await api.post('/api/blogs').send(toPost).expect(400)
+    await api.post('/api/chatRooms').send(toPost).expect(400)
   })
 })
 
@@ -101,20 +101,20 @@ describe('Deleting a chatRoom', () => {
   test('succeeds with status code 204 if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+    await api.delete(`/api/chatRooms/${blogToDelete.id}`).expect(204)
   })
 
   test('fails with statuscode 400 if id is invalid', async () => {
     const invalidId = '5a3d5da59070081a82a3445'
 
-    await api.delete(`/api/blogs/${invalidId}`).expect(400)
+    await api.delete(`/api/chatRooms/${invalidId}`).expect(400)
   })
 
   test('chatRoom is effectively deleted', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`)
+    await api.delete(`/api/chatRooms/${blogToDelete.id}`)
 
     const blogsAtEnd = await helper.blogsInDb()
 
@@ -132,7 +132,7 @@ describe('Viewing a specific chatRoom', () => {
     }
 
     const reqBlog = await api
-      .get(`/api/blogs/${blogToView.id}`)
+      .get(`/api/chatRooms/${blogToView.id}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -144,13 +144,13 @@ describe('Viewing a specific chatRoom', () => {
   test('fails with statuscode 404 if chatRoom does not exist', async () => {
     const validNonExistingId = await helper.nonExistingId()
 
-    await api.get(`/api/blogs/${validNonExistingId}`).expect(404)
+    await api.get(`/api/chatRooms/${validNonExistingId}`).expect(404)
   })
 
   test('fails with statuscode 400 if id is invalid', async () => {
     const invalidId = '5a3d5da59070081a82a3445'
 
-    await api.get(`/api/blogs/${invalidId}`).expect(400)
+    await api.get(`/api/chatRooms/${invalidId}`).expect(400)
   })
 })
 
@@ -164,7 +164,7 @@ describe('Updating a chatRoom', () => {
     }
 
     await api
-      .put(`/api/blogs/${blogToUpdate.id}`)
+      .put(`/api/chatRooms/${blogToUpdate.id}`)
       .send(blogToUpdate)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -184,7 +184,7 @@ describe('Updating a chatRoom', () => {
     const blogToUpdate = blogsAtStart[0]
 
     await api
-      .put(`/api/blogs/${validNonExistingId}`)
+      .put(`/api/chatRooms/${validNonExistingId}`)
       .send(blogToUpdate)
       .expect(404)
   })
@@ -194,24 +194,24 @@ describe('Updating a chatRoom', () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToUpdate = blogsAtStart[0]
 
-    await api.put(`/api/blogs/${invalidId}`).send(blogToUpdate).expect(400)
+    await api.put(`/api/chatRooms/${invalidId}`).send(blogToUpdate).expect(400)
   })
 })
 
 describe('Author', () => {
-  test('with most blogs', async () => {
-    const blogs = await helper.blogsInDb()
-    const mostBlogs = helper.mostBlogs(blogs)
+  test('with most chatRooms', async () => {
+    const chatRooms = await helper.blogsInDb()
+    const mostBlogs = helper.mostBlogs(chatRooms)
 
     expect(mostBlogs).toMatchObject({
       author: 'Dummy author',
-      blogs: 2,
+      chatRooms: 2,
     })
   })
 
   test('with most likes', async () => {
-    const blogs = await helper.blogsInDb()
-    const mostLikes = helper.mostLikes(blogs)
+    const chatRooms = await helper.blogsInDb()
+    const mostLikes = helper.mostLikes(chatRooms)
 
     expect(mostLikes).toMatchObject({
       author: 'Dummy author',

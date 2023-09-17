@@ -39,8 +39,8 @@ const nonExistingId = async () => {
 }
 
 const blogsInDb = async () => {
-  const blogs = await ChatRoom.find({})
-  return blogs.map((chatRoom) => chatRoom.toJSON())
+  const chatRooms = await ChatRoom.find({})
+  return chatRooms.map((chatRoom) => chatRoom.toJSON())
 }
 
 const usersInDb = async () => {
@@ -67,20 +67,20 @@ const postNewUser = {
   password: 'Pobble',
 }
 
-const mostBlogs = (blogs) => {
-  const topAuthor = _.chain(blogs)
+const mostBlogs = (chatRooms) => {
+  const topAuthor = _.chain(chatRooms)
     .groupBy('author')
     .map((group, author) => {
-      return { author: author, blogs: group.length }
+      return { author: author, chatRooms: group.length }
     })
-    .maxBy((object) => object.blogs)
+    .maxBy((object) => object.chatRooms)
     .value()
 
   return topAuthor
 }
 
-const mostLikes = (blogs) => {
-  const topAuthor = _.chain(blogs)
+const mostLikes = (chatRooms) => {
+  const topAuthor = _.chain(chatRooms)
     .groupBy('author')
     .map((group, author) => {
       return {

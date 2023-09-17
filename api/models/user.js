@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   passwordHash: String,
   avatarPhoto: String,
   lastTimeOnline: Date
-  // blogs: [
+  // chatRooms: [
   //   {
   //     type: mongoose.Schema.Types.ObjectId,
   //     ref: 'ChatRoom',

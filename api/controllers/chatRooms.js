@@ -3,10 +3,10 @@ const ChatRoom = require('../models/chatRoom')
 const { userExtractor, blogExtractor, isValidID } = require('../utils/middleware')
 
 blogsRouter.get('/', async (req, res) => {
-  const blogs = await ChatRoom.find({})
+  const chatRooms = await ChatRoom.find({})
     .populate('comments', { content: 1 })
     .populate('user', { username: 1, name: 1 })
-  blogs ? res.status(200).json(blogs) : res.status(404).end()
+  chatRooms ? res.status(200).json(chatRooms) : res.status(404).end()
 })
 
 blogsRouter.get('/:id', isValidID, async (req, res) => {
@@ -34,7 +34,7 @@ blogsRouter.post('/', userExtractor, async (req, res) => {
   })
 
   const savedPost = await chatRoom.save()
-  user.blogs = user.blogs.concat(savedPost.id)
+  user.chatRooms = user.chatRooms.concat(savedPost.id)
   await user.save()
   await savedPost.populate('user', { username: 1, name: 1 })
 
@@ -51,7 +51,7 @@ blogsRouter.delete('/:id', [isValidID, blogExtractor], async (req, res) => {
   } else
     res
       .status(401)
-      .send({ error: "You are not allowed to delete someone else's blogs" })
+      .send({ error: "You are not allowed to delete someone else's chatRooms" })
 })
 
 blogsRouter.put('/:id', isValidID, async (req, res) => {
