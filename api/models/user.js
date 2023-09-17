@@ -2,18 +2,27 @@ const mongoose = require('mongoose')
 
 // TODO: Add contacts
 const userSchema = new mongoose.Schema({
-  username: String,
-  firstName: String,
-  lastName: String,
+  username: {
+    type: String,
+    required: true
+  },
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
+    type: String,
+    required: true
+  },
   passwordHash: String,
   avatarPhoto: String,
-  lastTimeOnline: Date
-  // chatRooms: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: 'ChatRoom',
-  //   },
-  // ],
+  lastTimeOnline: Date,
+  chatRooms: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ChatRoom',
+    },
+  ],
 })
 
 userSchema.set('toJSON', {
