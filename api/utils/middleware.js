@@ -51,6 +51,14 @@ const userExtractor = async (req, res, next) => {
     })
   }
 
+  const findUser = await User.findById(req.token.id)
+
+  if (!findUser) {
+    return res.status(404).json({
+      error: 'User not found'
+    })
+  }
+
   req.user = await User.findById(req.token.id)
 
   next()
@@ -60,5 +68,5 @@ module.exports = {
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
-  userExtractor,
+  userExtractor
 }

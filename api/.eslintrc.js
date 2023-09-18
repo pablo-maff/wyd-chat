@@ -14,6 +14,7 @@ module.exports = {
   },
   'rules': {
     'no-console': 0,
-    'eqeqeq': 'error'
+    'eqeqeq': 'error',
+    'quotes': ['error', 'single', { 'allowTemplateLiterals': true }]
   }
 }

@@ -1,14 +1,13 @@
 const messagesRouter = require('express').Router()
-
 const Message = require('../models/message')
 const ChatRoom = require('../models/chatRoom')
 const { userExtractor } = require('../utils/middleware')
 
-// messagesRouter.get('/', (req, res) => {
-//   Message.find({}).then((messages) => {
-//     res.json(messages)
-//   })
-// })
+messagesRouter.get('/', userExtractor, (req, res) => {
+  Message.find({}).then((messages) => {
+    res.json(messages)
+  })
+})
 
 messagesRouter.post('/', userExtractor, async (req, res) => {
   const { from, to, text, chatRoomId } = req.body
@@ -28,7 +27,7 @@ messagesRouter.post('/', userExtractor, async (req, res) => {
 
   if (!selectedChatRoom) {
     return res.status(404).json({
-      error: "Selected chat room does not exist"
+      error: 'Selected chat room does not exist'
     })
   }
 
@@ -48,6 +47,7 @@ messagesRouter.post('/', userExtractor, async (req, res) => {
 
   const userLastMessageIndex = selectedChatRoom.lastMessages.findIndex(lastMessage => lastMessage.from.toString() === from)
 
+  // eslint-disable-next-line eqeqeq
   if (selectedChatRoom.lastMessages.length <= 2 && userLastMessageIndex == -1) {
     selectedChatRoom.lastMessages = selectedChatRoom.lastMessages.concat(savedMessage)
   }

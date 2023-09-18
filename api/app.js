@@ -33,10 +33,10 @@ app.use(
 )
 
 app.use('/api/login', loginRouter)
+app.use('/api/users', usersRouter)
 
 app.use(middleware.tokenExtractor)
 
-app.use('/api/users', usersRouter)
 app.use('/api/chatRooms', chatRoomsRouter)
 app.use('/api/chatRooms/:id/messages', messagesRouter)
 

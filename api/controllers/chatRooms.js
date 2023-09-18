@@ -20,7 +20,7 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   // * Query the ChatRoom collection to find a room with both users
   if (users.length !== 2) {
     return res.status(400).json({
-      error: "Error: A chat room must have two users"
+      error: 'Error: A chat room must have two users'
     })
   }
 
@@ -38,7 +38,7 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
 
   if (existingChatRoom) {
     return res.status(403).json({
-      error: "Error: A chat room containing this users already exists"
+      error: 'Error: A chat room containing this users already exists'
     })
   }
 
