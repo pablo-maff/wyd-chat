@@ -1,0 +1,2 @@
+GET http://localhost:3003/api/chatRooms/
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyIiwiaWQiOiI2NTA2ZDRkYmVlYzI4ODc4ZWFlMDgwMzciLCJpYXQiOjE2OTUwMjUzOTl9.Ab4q_F_W7hRK6ruGrNUsTQnlQWWO9sf1ZNiLDfJCAxE

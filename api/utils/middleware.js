@@ -1,8 +1,6 @@
 const logger = require('./logger')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
-const ChatRoom = require('../models/chatRoom')
-const mongoose = require('mongoose')
 
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: 'Unknown endpoint' })
@@ -58,27 +56,9 @@ const userExtractor = async (req, res, next) => {
   next()
 }
 
-const chatRoomExtractor = async (req, res, next) => {
-  req.chatRoom = await ChatRoom.findById(req.params.id)
-
-  next()
-}
-
-function isValidID(req, res, next) {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res
-      .status(400)
-      .send({ error: "Invalid ID" })
-  }
-
-  next()
-}
-
 module.exports = {
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
   userExtractor,
-  chatRoomExtractor,
-  isValidID
 }
