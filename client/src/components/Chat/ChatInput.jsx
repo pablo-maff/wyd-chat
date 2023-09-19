@@ -1,24 +1,24 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useParams } from 'react-router';
 
 export function ChatInput({ submitNewMessage }) {
   const { id } = useParams()
 
-  const [newMessage, setNewMessage] = useState("")
+  const [newMessage, setNewMessage] = useState('')
   const textareaRef = useRef(null)
 
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.focus()
-      setNewMessage("")
+      setNewMessage('')
     }
   }, [id])
 
   function handleSubmitNewMessage(event) {
     event.preventDefault()
     submitNewMessage(newMessage)
-    setNewMessage("")
+    setNewMessage('')
   }
 
   function handleKeyDown(event) {

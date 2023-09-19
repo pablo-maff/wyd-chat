@@ -3,7 +3,7 @@ import { MessagesList } from './MessagesList';
 import { ChatInput } from './ChatInput';
 import { useParams } from 'react-router';
 import ChatInstance from '../../services/ChatInstance';
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext } from 'react-router-dom';
 
 function Chat() {
   const { contactId } = useOutletContext()

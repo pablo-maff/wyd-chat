@@ -1,5 +1,6 @@
 const chatRoomsRouter = require('express').Router()
 const ChatRoom = require('../models/chatRoom')
+const Message = require('../models/message')
 const User = require('../models/user')
 const { userExtractor } = require('../utils/middleware')
 
@@ -109,6 +110,66 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   await Promise.all(updatePromises);
 
   res.status(201).json(savedChatRoom)
+})
+
+chatRoomsRouter.get('/:id/messages', (req, res) => {
+  const chatRoomId = req.params.id
+
+  Message.find({
+    chatRoomId: chatRoomId
+  }).then((messages) => {
+    res.json(messages)
+  })
+})
+
+chatRoomsRouter.post('/:id/messages', userExtractor, async (req, res) => {
+  const { from, to, text, chatRoomId } = req.body
+  const user = req.user
+
+  if (user.id.toString() !== from) {
+    return res.status(403).json({
+      error: 'User must be the one sending the message'
+    })
+  }
+
+  const selectedChatRoom = await ChatRoom.findById(chatRoomId)
+    .populate('lastMessages', {
+      from: 1
+    })
+
+
+  if (!selectedChatRoom) {
+    return res.status(404).json({
+      error: 'Selected chat room does not exist'
+    })
+  }
+
+  const message = new Message({
+    from,
+    to,
+    text,
+    timestamp: new Date().toISOString(),
+    chatRoomId
+  })
+
+  const savedMessage = await message.save()
+  res.status(200).json(savedMessage)
+
+  // * Priority #1 is to write the new message to the db as fast as possible
+  // * That's why the operation to update the last message is made after the user receives a response, if it fails, this is not something critical to our application
+
+  const userLastMessageIndex = selectedChatRoom.lastMessages.findIndex(lastMessage => lastMessage.from.toString() === from)
+
+  // eslint-disable-next-line eqeqeq
+  if (selectedChatRoom.lastMessages.length <= 2 && userLastMessageIndex == -1) {
+    selectedChatRoom.lastMessages = selectedChatRoom.lastMessages.concat(savedMessage)
+  }
+
+  if (userLastMessageIndex >= 0 && userLastMessageIndex <= 1) {
+    selectedChatRoom.lastMessages[userLastMessageIndex] = savedMessage
+  }
+
+  await selectedChatRoom.save()
 })
 
 module.exports = chatRoomsRouter

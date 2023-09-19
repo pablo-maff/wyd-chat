@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker"
+import { faker } from '@faker-js/faker'
 
 let database = { chats: [], messages: [], users: [] };
 const threshold = 20;
