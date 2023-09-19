@@ -5,7 +5,7 @@ import { Login } from './pages/Login';
 import Chat from './components/Chat';
 
 export default function App() {
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
 
   return (
     <Router>
