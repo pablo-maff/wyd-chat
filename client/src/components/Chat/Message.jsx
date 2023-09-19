@@ -1,9 +1,11 @@
 import clsx from 'clsx';
 import { format, parseISO } from 'date-fns';
+import { useAuth } from '../../context/AuthContext';
 
 export function Message({ message }) {
-  // TODO: Change hardcoded user id to work dynamically after implementing proper user details storage
-  const isUserMessage = message?.from === '6505d15550461292ea9630b5'
+  const { user } = useAuth()
+
+  const isUserMessage = message?.from === user.id
 
   const parsedMessageTime = format(parseISO(message?.timestamp), 'h:mm a')
 

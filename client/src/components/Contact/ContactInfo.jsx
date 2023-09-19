@@ -17,7 +17,6 @@ export function ContactInfo({ typing, lastMessage, showLastMessageTime, selected
               formattedTimePassed ?
                 <p className='text-sm line-clamp-1'>Last seen {formattedTimePassed} ago</p>
                 :
-                 
                 <p className='text-sm line-clamp-1'>New User</p>
           }
         </>
