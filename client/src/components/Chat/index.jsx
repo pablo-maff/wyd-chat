@@ -28,7 +28,6 @@ function Chat() {
 
     ChatInstance.post('/chatRooms/:id/messages', newMessage)
       .then(response => {
-        console.log(response.data)
         setChatMessages(prevState => [...prevState, response.data])
       })
   }

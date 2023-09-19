@@ -8,7 +8,6 @@ export function ChatInput({ submitNewMessage }) {
   const [newMessage, setNewMessage] = useState("")
   const textareaRef = useRef(null)
 
-
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.focus()
