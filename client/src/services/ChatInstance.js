@@ -6,7 +6,6 @@ let ChatInstance = axios.create({
   timeout: 10000, // Request timeout in milliseconds (10 seconds in this example)
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': import.meta.env.VITE_TEMP_TOKEN
   },
 });
 
@@ -14,6 +13,13 @@ let ChatInstance = axios.create({
 ChatInstance.interceptors.request.use(
   (config) => {
     // You can modify the request config before it is sent
+    const user = localStorage.getItem('user')
+
+    if (user) {
+      const token = JSON.parse(user).token
+      config.headers.Authorization = `Bearer ${token}`
+    }
+
     return config;
   },
   (error) => {

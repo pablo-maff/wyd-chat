@@ -1,16 +1,28 @@
-import { useState } from 'react'
-import ChatInstance from '../services/ChatInstance'
+import { useEffect, useState } from 'react'
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export function Login() {
+  const { user, loginUser } = useAuth();
+  const navigate = useNavigate()
+
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
+
+  useEffect(() => {
+    if (user) {
+      navigate('/chat')
+    }
+  }, [user, navigate])
 
   function handleLogin(event) {
     event.preventDefault()
 
-    ChatInstance.post('/login', { username, password })
-      .then(response => {
-        console.log('response', response.data)
+    loginUser({ username, password })
+      .then(_ => navigate('/chat'))
+      .catch(error => {
+        console.error(error)
+        //TODO: Notification here
       })
   }
 
