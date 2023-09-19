@@ -1,8 +1,8 @@
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, parseISO } from "date-fns";
 import clsx from 'clsx';
 
 export function ContactInfo({ typing, lastMessage, showLastMessageTime, selectedChat }) {
-  const formattedTimePassed = showLastMessageTime && formatDistanceToNow(lastMessage?.timestamp);
+  const formattedTimePassed = showLastMessageTime && lastMessage?.timestamp && formatDistanceToNow(parseISO(lastMessage?.timestamp));
 
   return (
     <>
@@ -11,10 +11,14 @@ export function ContactInfo({ typing, lastMessage, showLastMessageTime, selected
         :
         <>
           {
-            !showLastMessageTime ?
+            !showLastMessageTime && lastMessage ?
               <p className='text-sm line-clamp-1'>{lastMessage?.message}</p >
               :
-              <p className='text-sm line-clamp-1'>Last seen {formattedTimePassed} ago</p>
+              formattedTimePassed ?
+                <p className='text-sm line-clamp-1'>Last seen {formattedTimePassed} ago</p>
+                :
+                // eslint-disable-next-line react/no-unescaped-entities
+                <p className='text-sm line-clamp-1'>New User</p>
           }
         </>
       }
