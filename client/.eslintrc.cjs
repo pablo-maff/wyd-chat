@@ -19,5 +19,8 @@ module.exports = {
     'react/prop-type': 'off',
     'react/prop-types': 'off',
     'no-unused-vars': 'off',
+    'no-console': 0,
+    'eqeqeq': 'error',
+    'quotes': ['error', 'single', { 'allowTemplateLiterals': true }]
   },
 };

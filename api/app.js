@@ -6,7 +6,6 @@ const cors = require('cors')
 const chatRoomsRouter = require('./controllers/chatRooms')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
-const messagesRouter = require('./controllers/messages')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
@@ -38,7 +37,6 @@ app.use('/api/users', usersRouter)
 app.use(middleware.tokenExtractor)
 
 app.use('/api/chatRooms', chatRoomsRouter)
-app.use('/api/chatRooms/:id/messages', messagesRouter)
 
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')

@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { Message } from "./Message";
+import { useEffect, useRef } from 'react';
+import { Message } from './Message';
 
 export function MessagesList({ messages }) {
   const chatContainerRef = useRef(undefined);
