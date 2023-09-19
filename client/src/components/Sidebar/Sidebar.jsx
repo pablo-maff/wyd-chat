@@ -11,7 +11,7 @@ export function Sidebar({ chats, activeChatId }) {
 
   return (
     <>
-      <div className='sidebar flex flex-col w-1/3 h-screen items-center pt-10 gap-6 bg-blueChat-100 px-8'>
+      <div className='sidebar flex flex-col w-[22rem] h-screen items-center pt-10 gap-6 bg-blueChat-100 px-8'>
         <div className='sidebar-header font-bold text-2xl self-start'>
           <h2>Your Chats</h2>
         </div>
@@ -22,8 +22,7 @@ export function Sidebar({ chats, activeChatId }) {
                 key={chat.id}
                 chat={chat}
                 typing={true}
-                selectedChat={chat.id === activeChatId ? true : false}
-              />
+                selectedChat={chat.id === activeChatId ? true : false} />
             </li>
           ))}
         </ul>

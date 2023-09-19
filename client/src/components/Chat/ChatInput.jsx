@@ -1,19 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
+import { useParams } from 'react-router';
 
-export function ChatInput({ chatMessages }) {
+export function ChatInput({ submitNewMessage }) {
+  const { id } = useParams()
+
   const [newMessage, setNewMessage] = useState("")
   const textareaRef = useRef(null)
 
+
   useEffect(() => {
-    if (!!textareaRef.current) {
+    if (textareaRef.current) {
       textareaRef.current.focus()
       setNewMessage("")
     }
-  }, [chatMessages?.id])
+  }, [id])
 
   function handleSubmitNewMessage(event) {
     event.preventDefault()
+    submitNewMessage(newMessage)
     setNewMessage("")
   }
 
@@ -21,7 +26,7 @@ export function ChatInput({ chatMessages }) {
     if (event.key === 'Enter' && !event.shiftKey) {
       handleSubmitNewMessage(event)
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmitNewMessage} className="flex pt-1 pb-4 px-6">

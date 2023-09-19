@@ -1,41 +1,31 @@
-import { faker } from '@faker-js/faker';
 import { Sidebar } from '../components/Sidebar/Sidebar';
 import { useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router';
 import { Header } from '../components/Header/Header';
-
-// TODO: Put name and avatar inside user object, add user id and other user fields
-const chats = [
-  {
-    id: "1",
-    name: faker.person.fullName(),
-    lastMessage: {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime()
-    },
-    avatar: faker.internet.avatar(),
-  },
-  {
-    id: "2",
-    name: faker.person.fullName(),
-    lastMessage: {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime()
-    },
-    avatar: faker.internet.avatar(),
-  },
-];
+import ChatInstance from '../services/ChatInstance';
 
 function Main() {
   const { id } = useParams()
+  const [chats, setChats] = useState(undefined)
   const [selectedChat, setSelectedChat] = useState(undefined)
 
   useEffect(() => {
-    console.log("Setting selected chat")
-    setSelectedChat(chats.find(chat => chat.id === id))
-  }, [id])
+    if (!chats)
+      ChatInstance.get('/chatRooms')
+        .then(response => {
+          setChats(response.data)
+        })
+  }, [chats])
+
+  useEffect(() => {
+    if (chats?.length && id) {
+      setSelectedChat(chats.find(chat => chat.id === id))
+    }
+  }, [chats, id])
+
+  if (!chats) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className='w-full h-full flex flex-nowrap'>
@@ -43,7 +33,7 @@ function Main() {
       {selectedChat ?
         <div className='flex flex-1 flex-col'>
           <Header chat={selectedChat} />
-          <Outlet />
+          <Outlet context={{ contactId: selectedChat.contact.id }} />
         </div>
         :
         <div className='w-2/3 bg-blueChat-50' />

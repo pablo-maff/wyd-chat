@@ -1,154 +1,37 @@
 import { useEffect, useState } from 'react';
-import { faker } from '@faker-js/faker';
 import { MessagesList } from './MessagesList';
 import { ChatInput } from './ChatInput';
 import { useParams } from 'react-router';
-
+import ChatInstance from '../../services/ChatInstance';
+import { useOutletContext } from "react-router-dom";
 
 function Chat() {
+  const { contactId } = useOutletContext()
   const { id } = useParams()
+
   const [chatMessages, setChatMessages] = useState(undefined)
 
-  // TODO: Change "user" for actual user id when user is implemented
-  const messagesList = [{
-    id: "1",
-    messages: [{
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: "user"
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: "user"
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: "user"
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    }]
-  },
-  {
-    id: "2",
-    messages: [{
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: "user"
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: "user"
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    },
-    {
-      id: faker.database.mongodbObjectId(),
-      message: faker.lorem.text(),
-      timestamp: faker.date.anytime(),
-      user: {
-        id: faker.database.mongodbObjectId()
-      }
-    }]
-  }]
-
   useEffect(() => {
-    console.log("Setting Chat Messages")
-    setChatMessages(messagesList.find(messages => messages.id === id)?.messages)
+    ChatInstance.get(`/chatRooms/${id}/messages`)
+      .then(response => {
+        setChatMessages(response.data)
+      })
   }, [id])
+
+  function submitNewMessage(text) {
+    const newMessage = {
+      from: '6505d15550461292ea9630b5', // TODO: Change hardcoded user id to work dynamically after implementing proper user details storage
+      to: contactId,
+      text,
+      chatRoomId: id
+    }
+
+    ChatInstance.post('/chatRooms/:id/messages', newMessage)
+      .then(response => {
+        console.log(response.data)
+        setChatMessages(prevState => [...prevState, response.data])
+      })
+  }
 
   return (
     <div className='flex flex-col h-full bg-blueChat-50' >
@@ -159,7 +42,7 @@ function Chat() {
               <MessagesList messages={chatMessages} />
             </div>
           </div>
-          <ChatInput chatMessages={chatMessages} />
+          <ChatInput submitNewMessage={submitNewMessage} />
         </>
       }
     </div>
