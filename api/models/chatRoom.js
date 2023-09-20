@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 
 const chatRoomSchema = new mongoose.Schema({
-  users: [
+  members: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
     }
   ],
-  lastMessages: [
+  messages: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Message',
