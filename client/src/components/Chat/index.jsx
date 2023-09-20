@@ -1,46 +1,38 @@
-import { useEffect, useState } from 'react';
 import { MessagesList } from './MessagesList';
 import { ChatInput } from './ChatInput';
 import { useParams } from 'react-router';
 import ChatInstance from '../../services/ChatInstance';
-import { useOutletContext } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
+import { useDispatch, useSelector } from 'react-redux';
+import { createChatRoomMessage } from '../../redux/reducers/userChatsReducer';
 
 function Chat() {
   const { user } = useAuth()
-  const { contactId } = useOutletContext()
   const { id } = useParams()
 
-  const [chatMessages, setChatMessages] = useState(undefined)
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    ChatInstance.get(`/chatRooms/${id}/messages`)
-      .then(response => {
-        setChatMessages(response.data)
-      })
-  }, [id])
+  const activeChat = useSelector((state) => state.userChats).data.activeChat
 
   function submitNewMessage(text) {
     const newMessage = {
-      from: user.id, // TODO: Change hardcoded user id to work dynamically after implementing proper user details storage
-      to: contactId,
+      from: user.id,
+      to: activeChat.contact.id,
       text,
       chatRoomId: id
     }
 
-    ChatInstance.post('/chatRooms/:id/messages', newMessage)
-      .then(response => {
-        setChatMessages(prevState => [...prevState, response.data])
-      })
+    dispatch(createChatRoomMessage(newMessage))
+
   }
 
   return (
     <div className='flex flex-col h-full bg-blueChat-50' >
-      {chatMessages &&
+      {activeChat.messages &&
         <>
           <div className='flex-grow'>
             <div className='relative flex flex-col h-full'>
-              <MessagesList messages={chatMessages} />
+              <MessagesList messages={activeChat.messages} />
             </div>
           </div>
           <ChatInput submitNewMessage={submitNewMessage} />

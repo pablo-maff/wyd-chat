@@ -5,8 +5,9 @@ import logo from '~/assets/wyd-logos-blue/logo-tab.png';
 import { Button } from '../Button';
 import { Contact } from '../Contact';
 import { Icon } from '../Icon';
+import { useSelector } from 'react-redux';
 
-export function Header({ chat }) {
+export function Header({ activeChat }) {
   return (
     <header className='bg-white p-4 shadow-md'>
       <div className='flex flex-row'>
@@ -16,9 +17,10 @@ export function Header({ chat }) {
         </div>
         <div className='w-2/3 flex justify-between items-center'>
           <Contact
-            chat={chat}
+            name={activeChat?.title}
+            avatar={activeChat?.contact?.avatarPhoto}
             typing={false}
-            showLastMessageTime={true}
+            showLastSeen={activeChat.contact.lastTimeOnline}
           />
           <div className='w-32 mr-8 flex justify-between'>
             <Button text={<Icon IconComponent={BsCameraVideo} />} />
