@@ -16,9 +16,16 @@ usersRouter.get('/:id', isValidId, async (req, res) => {
   const users = await User.findById(id)
     .populate({
       path: 'chatRooms',
-      populate: {
-        path: 'messages',
-      },
+      populate: [
+        {
+          path: 'messages'
+        },
+        {
+          path: 'members',
+          match: { _id: { $ne: id } }, // * Only retrieve the members that are not the user making the request
+          select: 'firstName lastName avatarPhoto lastTimeOnline'
+        },
+      ],
     })
 
   res.json(users)
