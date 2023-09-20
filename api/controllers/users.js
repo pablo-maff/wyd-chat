@@ -2,6 +2,34 @@ const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const { faker } = require('@faker-js/faker');
+const { isValidId } = require('../utils/middleware');
+
+usersRouter.get('/', async (req, res) => {
+  const users = await User.find({})
+
+  res.json(users)
+})
+
+usersRouter.get('/:id', isValidId, async (req, res) => {
+  const { id } = req.params
+
+  const users = await User.findById(id)
+    .populate({
+      path: 'chatRooms',
+      populate: [
+        {
+          path: 'messages'
+        },
+        {
+          path: 'members',
+          match: { _id: { $ne: id } }, // * Only retrieve the members that are not the user making the request
+          select: 'firstName lastName avatarPhoto lastTimeOnline'
+        },
+      ],
+    })
+
+  res.json(users)
+})
 
 usersRouter.post('/', async (req, res) => {
   const { username, firstName, lastName, password } = req.body

@@ -1,18 +1,18 @@
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import clsx from 'clsx';
 
-export function ContactInfo({ typing, lastMessage, showLastMessageTime, selectedChat }) {
-  const formattedTimePassed = showLastMessageTime && lastMessage?.timestamp && formatDistanceToNow(parseISO(lastMessage?.timestamp));
+export function ContactInfo({ typing, lastMessage, showLastSeen, selectedChat }) {
+  const formattedTimePassed = showLastSeen && showLastSeen && formatDistanceToNow(parseISO(showLastSeen));
 
   return (
     <>
       {typing ?
-        <h6 className={clsx(selectedChat && !showLastMessageTime ? 'text-white' : 'text-blueChat-300')}>Typing ...</h6>
+        <h6 className={clsx(selectedChat && !showLastSeen ? 'text-white' : 'text-blueChat-300')}>Typing ...</h6>
         :
         <>
           {
-            !showLastMessageTime && lastMessage ?
-              <p className='text-sm line-clamp-1'>{lastMessage?.message}</p >
+            !showLastSeen && lastMessage ?
+              <p className='text-sm line-clamp-1'>{lastMessage?.text}</p >
               :
               formattedTimePassed ?
                 <p className='text-sm line-clamp-1'>Last seen {formattedTimePassed} ago</p>
