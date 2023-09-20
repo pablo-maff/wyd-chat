@@ -8,8 +8,6 @@ import { activateChat, createUserChatRoomAction } from '../../redux/reducers/use
 export function Sidebar({ chats, users, activeChatId }) {
   const [toggleNewChat, setToggleNewChat] = useState(false)
 
-  console.log('users', users);
-
   const { user } = useAuth()
   const navigate = useNavigate()
   const dispatch = useDispatch()
