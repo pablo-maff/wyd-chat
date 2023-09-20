@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/chatRooms/65096cb1924f09ece19f1ab0/messages
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhYmxvLm0iLCJpZCI6IjY1MDVkMTU1NTA0NjEyOTJlYTk2MzBiNSIsImlhdCI6MTY5NTAyNjY5MX0.3tmYrQ7bSFMlM4p4qW7YTAbn0qo5-HbKZJAO15blOuk
+
+{
+  "from": "6505d15550461292ea9630b5",
+  "to": "6506cb1f757d40c409e7e3fb",
+  "text": "new23",
+  "chatRoomId": "65096cb1924f09ece19f1ab0"
+}
