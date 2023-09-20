@@ -1,7 +1,6 @@
 import { MessagesList } from './MessagesList';
 import { ChatInput } from './ChatInput';
 import { useParams } from 'react-router';
-import ChatInstance from '../../services/ChatInstance';
 import { useAuth } from '../../context/AuthContext'
 import { useDispatch, useSelector } from 'react-redux';
 import { createChatRoomMessage } from '../../redux/reducers/userChatsReducer';
@@ -23,7 +22,6 @@ function Chat() {
     }
 
     dispatch(createChatRoomMessage(newMessage))
-
   }
 
   return (

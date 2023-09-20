@@ -39,12 +39,10 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
 
   const savedChatRoom = await chatRoom.save()
 
-  await savedChatRoom.populate('members', {
-    username: 1,
-    firstName: 1,
-    lastName: 1,
-    avatarPhoto: 1,
-    lastTimeOnline: 1
+  await savedChatRoom.populate({
+    path: 'members',
+    match: { _id: { $ne: userId } }, // * Only retrieve the members that are not the user making the request
+    select: 'firstName lastName avatarPhoto lastTimeOnline'
   })
 
   // Add the chat room to both users
