@@ -50,6 +50,9 @@ const userChatsSlice = createSlice({
     setActiveChat(state, action) {
       const findActiveChat = state.data.chatRooms?.find(chatRoom => chatRoom.id === action.payload)
 
+      if (!findActiveChat) {
+        return { ...state, error: { message: 'Error: Unable to select this conversation' } }
+      }
 
       return { ...state, data: { ...state.data, activeChat: findActiveChat } }
     },
@@ -96,7 +99,7 @@ export const initializeUserChats = (userId) => {
     }
     catch (error) {
       console.error(error)
-      dispatch(setUserChatsError(`${error.message}: ${error.response?.data?.error}`));
+      dispatch(setUserChatsError(`Unable to fetch your chats data: ${error.message}: ${error.response?.data?.error}`));
     }
   }
 }
@@ -108,7 +111,7 @@ export const activateChat = (chatId) => {
     }
     catch (error) {
       console.error(error)
-      dispatch(setUserChatsError(error.message));
+      dispatch(setUserChatsError(`Unable to select that chat: ${error.message}`));
     }
   }
 }
@@ -122,7 +125,7 @@ export const createChatRoomMessage = (newMessage) => {
     }
     catch (error) {
       console.error(error)
-      dispatch(setUserChatsError(`${error.message}: ${error.response?.data?.error}`));
+      dispatch(setUserChatsError(`Unable to send your message: ${error.message}: ${error.response?.data?.error}`));
     }
   }
 }

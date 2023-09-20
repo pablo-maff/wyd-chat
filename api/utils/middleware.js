@@ -22,6 +22,11 @@ const errorHandler = (error, req, res, next) => {
       error: 'token expired',
     })
   }
+  else if (error.name === 'SyntaxError') {
+    return res.status(400).json({
+      error: error.message,
+    })
+  }
 
   logger.error(error.message)
 
@@ -81,7 +86,7 @@ const chatRoomExtractor = async (req, res, next) => {
 }
 
 function isValidId(req, res, next) {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+  if (!mongoose.Types.ObjectId.isValid(req.params?.id)) {
     return res
       .status(400)
       .send({ error: 'Invalid Id' })

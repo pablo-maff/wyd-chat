@@ -19,14 +19,14 @@ function Main() {
 
   useEffect(() => {
     // * If there is an id in the url and no chat is active is very likely that a manual refresh on the page just happened
-    if (id && data && !data?.activeChat?.id) {
+    if (id && data?.chatRooms && !data?.activeChat?.id) {
       dispatch(activateChat(id))
     }
   }, [id, data, dispatch])
 
+  // TODO: Create contacts reducer and move it there
   useEffect(() => {
     if (!users) {
-      console.log("FETCH USERS");
       ChatInstance.get('/users')
         .then(response => {
           setUsers(response.data.filter(responseUser => responseUser.id !== user.id))
@@ -35,12 +35,12 @@ function Main() {
   }, [])
 
   if (loading) {
+    // TODO: Loading component
     return <div>Loading...</div>
   }
 
   if (error) {
-    // TODO: Show error notification if possible
-    console.log('In react!');
+    // TODO: Keep rendering the page and show error notification if possible
     return <div>{error.message}</div>
   }
 
