@@ -174,6 +174,8 @@ export const createUserChatRoomAction = (newChatRoom) => {
       const { data: chatRoom } = await ChatRoomService.createChatRoom(newChatRoom)
 
       dispatch(createUserChatRoom([chatRoom]))
+
+      console.log("chatRoom.id", chatRoom.id)
     }
     catch (error) {
       console.error(error)
