@@ -8,6 +8,14 @@ async function getUser(userId) {
   return user
 }
 
+
+async function register(userData) {
+  const register = await ChatInstance.post(`${baseURL}`, userData)
+
+  return register
+}
+
 export default {
-  getUser
+  getUser,
+  register
 }

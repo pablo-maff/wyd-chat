@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react';
-import ChatInstance from '../services/ChatInstance';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import LoginService from '../services/loginService';
+import UsersService from '../services/usersService';
 
 const AuthContext = createContext();
 
@@ -12,9 +13,9 @@ export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(() => getItem('user'))
 
-  const loginUser = (userData) => {
+  function loginUser(credentials) {
     return new Promise((resolve, reject) => {
-      ChatInstance.post('/login', userData)
+      LoginService.login(credentials)
         .then(response => {
           setUser(response.data);
           setItem('user', JSON.stringify(response.data));
@@ -24,15 +25,27 @@ export const AuthProvider = ({ children }) => {
           reject(error);
         });
     });
-  };
+  }
 
-  const logoutUser = () => {
+  function registerUser(userData) {
+    return new Promise((resolve, reject) => {
+      UsersService.register(userData)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  function logoutUser() {
     setUser(null);
     removeItem('user')
-  };
+  }
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ user, loginUser, logoutUser, registerUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -11,7 +11,7 @@ function Main() {
   const [users, setUsers] = useState(undefined)
 
   const { id } = useParams()
-  const { user } = useAuth()
+  const { user, logoutUser } = useAuth()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -60,8 +60,13 @@ function Main() {
     // TODO: Keep rendering the page and show error notification if possible
     setTimeout(() => {
       dispatch(resetStateAction())
+
+      if (error.message.toLowerCase().includes('missing authorization token')) {
+        return logoutUser()
+      }
+
       navigate('/')
-    }, 1000);
+    }, 1500);
 
 
     return (

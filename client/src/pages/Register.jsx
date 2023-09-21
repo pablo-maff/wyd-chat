@@ -1,15 +1,21 @@
 // src/components/RegisterForm.js
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { validateEmail } from '../utils/helperFunctions';
 
-const RegisterForm = () => {
+const RegisterForm = ({ handleShowRegisterForm }) => {
+  const { registerUser } = useAuth();
+  const navigate = useNavigate()
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
+    username: '',
     password: '',
   });
 
-  const handleChange = (e) => {
+  function handleChange(e) {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -17,13 +23,31 @@ const RegisterForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-    console.log(formData); // You can handle form submission logic here
+
+    // * For now username can only be an email address
+    const validUsername = validateEmail(formData.username)
+
+    if (!validUsername) {
+      // TODO: Show notification
+      console.error('Invalid email address!');
+      return
+    }
+
+    registerUser(formData)
+      .then(_ => {
+        //TODO: Notification here
+        // navigate('/login')
+        handleShowRegisterForm(e)
+      })
+      .catch(error => {
+        console.error(error)
+        //TODO: Notification here
+      })
   };
 
   return (
-
     <div className="max-w-md mx-auto mt-8 p-4 border border-gray-300 rounded shadow">
       <h2 className="text-2xl font-semibold text-center mb-4">Register</h2>
       <form onSubmit={handleSubmit}>
@@ -62,7 +86,7 @@ const RegisterForm = () => {
           <input
             type="email"
             id="email"
-            name="email"
+            name="username"
             value={formData.email}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500"
@@ -90,6 +114,12 @@ const RegisterForm = () => {
           Register
         </button>
       </form>
+      <button
+        onClick={handleShowRegisterForm}
+        className="w-full mt-2 bg-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
+      >
+        Back to Login
+      </button>
     </div>
 
   );

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import UserService from '../../services/users';
-import ChatRoomService from '../../services/chatRooms';
+import UserService from '../../services/usersService';
+import ChatRoomService from '../../services/chatRoomsService';
 import { isAfter, parseISO } from 'date-fns';
 
 function parseChatRooms(chatRooms) {
@@ -175,7 +175,6 @@ export const createUserChatRoomAction = (newChatRoom) => {
 
       dispatch(createUserChatRoom([chatRoom]))
 
-      console.log("chatRoom.id", chatRoom.id)
     }
     catch (error) {
       console.error(error)

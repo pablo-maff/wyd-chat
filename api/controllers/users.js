@@ -3,6 +3,7 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 const { faker } = require('@faker-js/faker');
 const { isValidId } = require('../utils/middleware');
+const { validateEmail } = require('../utils/helperFunctions');
 
 usersRouter.get('/', async (req, res) => {
   const users = await User.find({})
@@ -34,7 +35,16 @@ usersRouter.get('/:id', isValidId, async (req, res) => {
 usersRouter.post('/', async (req, res) => {
   const { username, firstName, lastName, password } = req.body
 
-  if (username && password && username.length >= 3 && password.length >= 3) {
+  // * For now username can only be an email address
+  const isValidUsername = validateEmail(username)
+
+  if (!isValidUsername) {
+    return res.status(400).json({
+      error: 'username must be a valid email address'
+    })
+  }
+
+  if (password && password.length >= 8) {
     const existingUser = await User.findOne({ username })
     if (existingUser) {
       return res.status(400).json({ error: 'Username must be unique ' })
@@ -42,7 +52,7 @@ usersRouter.post('/', async (req, res) => {
   } else
     return res.status(400).json({
       error:
-        'Username and Password must be provided and they must be at least 3 characters long',
+        'Password must be provided and must be at least 8 characters long',
     })
 
   const saltRounds = 10

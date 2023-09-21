@@ -7,7 +7,7 @@ import { activateChat, createUserChatRoomAction } from '../../redux/reducers/use
 export function Sidebar({ chats, users, activeChatId }) {
   const [toggleNewChat, setToggleNewChat] = useState(false)
 
-  const { user } = useAuth()
+  const { user, logoutUser } = useAuth()
   const dispatch = useDispatch()
 
   function handleSelectChat(chatId) {
@@ -36,8 +36,13 @@ export function Sidebar({ chats, users, activeChatId }) {
   return (
     <>
       <div className='relative sidebar flex flex-col w-[22rem] h-screen items-center pt-10 gap-6 bg-blueChat-100 px-8'>
-        <div className='sidebar-header font-bold text-2xl self-start'>
-          <h2>{!toggleNewChat ? 'Your Chats' : 'New Chat'}</h2>
+        <div className='sidebar-header w-full flex justify-around'>
+          <h2 className='font-bold text-2xl self-start'>{!toggleNewChat ? 'Your Chats' : 'New Chat'}</h2>
+          <button
+            onClick={() => logoutUser()}
+            className='bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200'>
+            Logout
+          </button>
         </div>
         <div>
           {chats && users &&
