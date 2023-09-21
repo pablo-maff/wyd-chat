@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Contact } from '../Contact'
-import { useNavigate } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 import { useDispatch } from 'react-redux';
 import { activateChat, createUserChatRoomAction } from '../../redux/reducers/userChatsReducer';
@@ -9,12 +8,10 @@ export function Sidebar({ chats, users, activeChatId }) {
   const [toggleNewChat, setToggleNewChat] = useState(false)
 
   const { user } = useAuth()
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   function handleSelectChat(chatId) {
     dispatch(activateChat(chatId))
-    navigate(`/chat/${chatId}`)
   }
 
   function handleNewChatView() {
@@ -34,10 +31,6 @@ export function Sidebar({ chats, users, activeChatId }) {
       dispatch(activateChat(existingChat.id))
       handleNewChatView()
     }
-
-    // ! Bug, if page manually refreshed it throws an error and goes back to /chat
-    // * It should be chat.id instead of an user id, but here at the moment of dispatching a new chat room creation of course there is still no chat id
-    navigate(`/chat/${contactId}`)
   }
 
   return (
