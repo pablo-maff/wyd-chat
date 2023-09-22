@@ -158,7 +158,6 @@ export const initializeUserChats = (userId) => {
 
       const { data: userChatData } = await UserService.getUser(userId)
 
-
       dispatch(setUserChats({ data: userChatData }))
     }
     catch (error) {

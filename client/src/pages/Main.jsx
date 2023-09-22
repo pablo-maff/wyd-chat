@@ -3,39 +3,39 @@ import { useEffect, useState } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router';
 import { Header } from '../components/Header/Header';
 import ChatInstance from '../services/ChatInstance';
-import { useAuth } from '../context/AuthContext';
 import { useDispatch, useSelector } from 'react-redux'
 import { activateChat, resetStateAction } from '../redux/reducers/userChatsReducer';
+import { logoutUser } from '../redux/reducers/userAuthenticationReducer';
 
 function Main() {
   const [users, setUsers] = useState(undefined)
 
   const { id } = useParams()
-  const { user, logoutUser } = useAuth()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const { data, loading, error } = useSelector((state) => state.userChats)
+  const { user, isAuthenticated } = useSelector(state => state.userAuthentication)
 
   const activeChatId = data?.activeChat?.id
 
   useEffect(() => {
     // * Navigate to the correct url when activating a chat
-    const navigationToChatRoomRequired = activeChatId && activeChatId !== id && !error
+    const navigationToChatRoomRequired = isAuthenticated && activeChatId && activeChatId !== id && !error
 
     if (navigationToChatRoomRequired) {
       navigate(`/chat/${activeChatId}`)
     }
-  }, [activeChatId, id, navigate, error])
+  }, [activeChatId, id, navigate, error, isAuthenticated])
 
   useEffect(() => {
     // * If there is an id in the url and no chat is active is very likely that a manual refresh on the page just happened
-    const activeChatDataMissing = id && data?.chatRooms && !activeChatId && !error
+    const activeChatDataMissing = isAuthenticated && id && data?.chatRooms && !activeChatId && !error
 
     if (activeChatDataMissing) {
       dispatch(activateChat(id))
     }
-  }, [id, data, dispatch, error, activeChatId])
+  }, [id, data, dispatch, error, activeChatId, isAuthenticated])
 
   // TODO: Create contacts reducer and move it there
   useEffect(() => {
@@ -62,7 +62,7 @@ function Main() {
       dispatch(resetStateAction())
 
       if (error.message.toLowerCase().includes('missing authorization token')) {
-        return logoutUser()
+        return dispatch(logoutUser())
       }
 
       navigate('/')

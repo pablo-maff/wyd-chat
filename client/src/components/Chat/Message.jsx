@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { format, parseISO } from 'date-fns';
-import { useAuth } from '../../context/AuthContext';
+import { useSelector } from 'react-redux';
 
 export function Message({ message }) {
-  const { user } = useAuth()
+  const { user } = useSelector(state => state.userAuthentication)
 
   const isUserMessage = message?.from === user.id
 

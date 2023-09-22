@@ -1,17 +1,16 @@
 import { MessagesList } from './MessagesList';
 import { ChatInput } from './ChatInput';
 import { useParams } from 'react-router';
-import { useAuth } from '../../context/AuthContext'
 import { useDispatch, useSelector } from 'react-redux';
 import { createChatRoomMessage } from '../../redux/reducers/userChatsReducer';
 
 function Chat() {
-  const { user } = useAuth()
   const { id } = useParams()
 
-  const dispatch = useDispatch()
-
+  const { user } = useSelector(state => state.userAuthentication)
   const activeChat = useSelector((state) => state.userChats).data.activeChat
+
+  const dispatch = useDispatch()
 
   function submitNewMessage(text) {
     const newMessage = {

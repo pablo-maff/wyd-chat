@@ -2,18 +2,43 @@ import { Navigate, Outlet, Route, BrowserRouter as Router, Routes } from 'react-
 import Main from './pages/Main';
 import { Login } from './pages/Login';
 import Chat from './components/Chat';
-import { useAuth } from './context/AuthContext';
 import RegisterForm from './pages/Register';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { initializeUserChats } from './redux/reducers/userChatsReducer';
+import SocketClient from './utils/SocketClient';
+import { useEffect } from 'react';
+import { keepUserSessionAlive } from './redux/reducers/userAuthenticationReducer';
 
 function PrivateRoute({ redirectPath = '/login' }) {
-  const { user } = useAuth()
+  const { user, isAuthenticated } = useSelector(state => state.userAuthentication)
+
   const dispatch = useDispatch()
+
+  // const socket = new SocketClient()
+
+  // useEffect(() => {
+  //   socket.connect()
+  //   console.log('Connected to socket!');
+
+  //   return () => {
+  //     socket.disconnect()
+  //     console.log('Disconnected from socket!');
+
+  //   }
+  // }, [])
+
+  useEffect(() => {
+    if (!user) {
+      console.log('keep session ALIVE!');
+      dispatch(keepUserSessionAlive())
+    }
+  }, [dispatch, user])
 
   if (!user) {
     return <Navigate to={redirectPath} replace />
   }
+
+  console.log('sneakyy', user);
 
   dispatch(initializeUserChats(user.id))
 
@@ -21,6 +46,12 @@ function PrivateRoute({ redirectPath = '/login' }) {
 }
 
 export default function App() {
+  const { user, isAuthenticated } = useSelector(state => state.userAuthentication)
+
+  const dispatch = useDispatch()
+
+
+
   return (
     <Router>
       <Routes>

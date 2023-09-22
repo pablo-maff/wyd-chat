@@ -1,13 +1,9 @@
 // src/components/RegisterForm.js
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import { validateEmail } from '../utils/helperFunctions';
+import UsersService from '../services/usersService';
 
 const RegisterForm = ({ handleShowRegisterForm }) => {
-  const { registerUser } = useAuth();
-  const navigate = useNavigate()
-
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -21,7 +17,7 @@ const RegisterForm = ({ handleShowRegisterForm }) => {
       ...formData,
       [name]: value,
     });
-  };
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -35,10 +31,9 @@ const RegisterForm = ({ handleShowRegisterForm }) => {
       return
     }
 
-    registerUser(formData)
+    UsersService.register(formData)
       .then(_ => {
         //TODO: Notification here
-        // navigate('/login')
         handleShowRegisterForm(e)
       })
       .catch(error => {

@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Contact } from '../Contact'
-import { useAuth } from '../../context/AuthContext';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { activateChat, createUserChatRoomAction } from '../../redux/reducers/userChatsReducer';
+import { logoutUser } from '../../redux/reducers/userAuthenticationReducer';
 
 export function Sidebar({ chats, users, activeChatId }) {
   const [toggleNewChat, setToggleNewChat] = useState(false)
 
-  const { user, logoutUser } = useAuth()
+  const { user } = useSelector(state => state.userAuthentication)
+
   const dispatch = useDispatch()
 
   function handleSelectChat(chatId) {
@@ -39,7 +40,7 @@ export function Sidebar({ chats, users, activeChatId }) {
         <div className='sidebar-header w-full flex justify-around'>
           <h2 className='font-bold text-2xl self-start'>{!toggleNewChat ? 'Your Chats' : 'New Chat'}</h2>
           <button
-            onClick={() => logoutUser()}
+            onClick={() => dispatch(logoutUser())}
             className='bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200'>
             Logout
           </button>

@@ -1,31 +1,29 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from './Register';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../redux/reducers/userAuthenticationReducer';
 
 export function Login() {
-  const { user, loginUser } = useAuth();
-  const navigate = useNavigate()
-
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [showRegisterForm, setShowRegisterForm] = useState(false)
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const { user, isAuthenticated, error } = useSelector(state => state.userAuthentication)
+
   useEffect(() => {
-    if (user) {
+    if (user && isAuthenticated) {
       navigate('/chat')
     }
-  }, [user, navigate])
+  }, [user, isAuthenticated, navigate])
 
   function handleLogin(event) {
     event.preventDefault()
 
-    loginUser({ username, password })
-      .then(_ => navigate('/chat'))
-      .catch(error => {
-        console.error(error)
-        //TODO: Notification here
-      })
+    dispatch(loginUser({ username, password }))
   }
 
   function handleShowRegisterForm(event) {
