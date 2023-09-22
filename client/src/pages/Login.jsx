@@ -12,7 +12,7 @@ export function Login() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { user, isAuthenticated, error } = useSelector(state => state.userAuthentication)
+  const { user, isAuthenticated } = useSelector(state => state.userAuthentication)
 
   useEffect(() => {
     if (user && isAuthenticated) {

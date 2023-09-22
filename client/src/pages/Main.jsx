@@ -4,7 +4,7 @@ import { Outlet, useParams, useNavigate } from 'react-router';
 import { Header } from '../components/Header/Header';
 import ChatInstance from '../services/ChatInstance';
 import { useDispatch, useSelector } from 'react-redux'
-import { activateChat, resetStateAction } from '../redux/reducers/userChatsReducer';
+import { resetUserChatsState } from '../redux/reducers/userChatsReducer';
 import { logoutUser } from '../redux/reducers/userAuthenticationReducer';
 
 function Main() {
@@ -21,21 +21,12 @@ function Main() {
 
   useEffect(() => {
     // * Navigate to the correct url when activating a chat
-    const navigationToChatRoomRequired = isAuthenticated && activeChatId && activeChatId !== id && !error
+    const navigationToChatRoomRequired = activeChatId && activeChatId !== id && !error
 
     if (navigationToChatRoomRequired) {
       navigate(`/chat/${activeChatId}`)
     }
-  }, [activeChatId, id, navigate, error, isAuthenticated])
-
-  useEffect(() => {
-    // * If there is an id in the url and no chat is active is very likely that a manual refresh on the page just happened
-    const activeChatDataMissing = isAuthenticated && id && data?.chatRooms && !activeChatId && !error
-
-    if (activeChatDataMissing) {
-      dispatch(activateChat(id))
-    }
-  }, [id, data, dispatch, error, activeChatId, isAuthenticated])
+  }, [activeChatId, id, navigate, error])
 
   // TODO: Create contacts reducer and move it there
   useEffect(() => {
@@ -45,6 +36,7 @@ function Main() {
           setUsers(response.data.filter(responseUser => responseUser.id !== user.id))
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) {
@@ -59,7 +51,7 @@ function Main() {
   if (error) {
     // TODO: Keep rendering the page and show error notification if possible
     setTimeout(() => {
-      dispatch(resetStateAction())
+      dispatch(resetUserChatsState())
 
       if (error.message.toLowerCase().includes('missing authorization token')) {
         return dispatch(logoutUser())

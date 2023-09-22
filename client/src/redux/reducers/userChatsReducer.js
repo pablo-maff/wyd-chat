@@ -208,7 +208,7 @@ export const createChatRoomMessage = (newMessage) => {
   }
 }
 
-export const resetStateAction = () => {
+export const resetUserChatsState = () => {
   return (dispatch) => {
     dispatch(resetState())
   }

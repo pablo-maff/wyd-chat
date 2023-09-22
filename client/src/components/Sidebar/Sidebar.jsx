@@ -32,8 +32,10 @@ export function Sidebar({ chats, users, activeChatId }) {
       dispatch(activateChat(existingChat.id))
       handleNewChatView()
     }
+    setToggleNewChat(false)
   }
 
+  // TODO: Refactor into smaller components
   return (
     <>
       <div className='relative sidebar flex flex-col w-[22rem] h-screen items-center pt-10 gap-6 bg-blueChat-100 px-8'>

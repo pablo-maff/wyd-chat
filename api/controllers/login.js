@@ -32,12 +32,6 @@ loginRouter.post('/', async (req, res) => {
     token,
     id: user._id,
     username: user.username,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    fullName: `${user.firstName} ${user.lastName}`,
-    avatarPhoto: user.avatarPhoto,
-    lastTimeOnline: new Date().toISOString(),
-    chatRooms: user.chatRooms
   })
 
   user.lastTimeOnline = new Date().toISOString()

@@ -8,10 +8,15 @@ export class LocalStorageManager {
   }
 
   static getItem(key) {
-    const value = localStorage.getItem(key);
-    const parsedValue = JSON.parse(value);
+    try {
+      const value = localStorage.getItem(key);
+      const parsedValue = JSON.parse(value);
 
-    return parsedValue
+      return parsedValue
+    } catch (error) {
+      console.error('Error getting item from localStorage:', error);
+      return null;
+    }
   }
 
   static removeItem(key) {

@@ -2,8 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 import LoginService from '../../services/loginService';
 // import { setNotification } from './notificationReducer'
 import { LocalStorageManager } from '../../utils/LocalStorageManager';
+import { resetUserChatsState } from './userChatsReducer';
 
-const { getItem, setItem, removeItem } = LocalStorageManager
+const { setItem, removeItem } = LocalStorageManager
 
 const initialState = {
   user: null,
@@ -49,24 +50,16 @@ export const loginUser = (credentials) => {
   }
 }
 
-export const keepUserSessionAlive = () => {
+export const keepUserSessionAlive = (user) => {
   return (dispatch) => {
-    try {
-      const user = getItem('user')
-
-      console.log('keep user', user);
-      if (user) {
-        dispatch(login(user))
-      }
-    } catch (error) {
-      console.error('keepusersession Error', error)
-    }
+    dispatch(login(user))
   }
 }
 
 export const logoutUser = () => {
   return (dispatch) => {
     dispatch(logout(null))
+    dispatch(resetUserChatsState())
   }
 }
 

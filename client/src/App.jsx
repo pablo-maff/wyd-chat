@@ -5,52 +5,42 @@ import Chat from './components/Chat';
 import RegisterForm from './pages/Register';
 import { useDispatch, useSelector } from 'react-redux';
 import { initializeUserChats } from './redux/reducers/userChatsReducer';
-import SocketClient from './utils/SocketClient';
 import { useEffect } from 'react';
 import { keepUserSessionAlive } from './redux/reducers/userAuthenticationReducer';
+import { LocalStorageManager } from './utils/LocalStorageManager';
 
 function PrivateRoute({ redirectPath = '/login' }) {
-  const { user, isAuthenticated } = useSelector(state => state.userAuthentication)
+  const { user } = useSelector(state => state.userAuthentication)
 
   const dispatch = useDispatch()
 
-  // const socket = new SocketClient()
-
-  // useEffect(() => {
-  //   socket.connect()
-  //   console.log('Connected to socket!');
-
-  //   return () => {
-  //     socket.disconnect()
-  //     console.log('Disconnected from socket!');
-
-  //   }
-  // }, [])
-
   useEffect(() => {
-    if (!user) {
-      console.log('keep session ALIVE!');
-      dispatch(keepUserSessionAlive())
+    if (user) {
+      dispatch(initializeUserChats(user.id))
     }
-  }, [dispatch, user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (!user) {
     return <Navigate to={redirectPath} replace />
   }
 
-  console.log('sneakyy', user);
-
-  dispatch(initializeUserChats(user.id))
-
   return <Outlet />
 }
 
 export default function App() {
-  const { user, isAuthenticated } = useSelector(state => state.userAuthentication)
+  const isAuthenticated = useSelector(state => state.userAuthentication)?.isAuthenticated
+  const { getItem } = LocalStorageManager
 
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    const userInStorage = getItem('user')
 
+    if (!isAuthenticated && userInStorage) {
+      dispatch(keepUserSessionAlive(userInStorage))
+    }
+  }, [getItem, isAuthenticated, dispatch])
 
   return (
     <Router>
