@@ -43,8 +43,6 @@ const io = new Server(httpServer, {
   }
 });
 
-app.use('/api/login', loginRouter)
-
 io.on('connection', (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
   socket.on('disconnect', () => {
@@ -52,16 +50,14 @@ io.on('connection', (socket) => {
   });
 
   // * Send Message
-
   socket.on('send message', (message) => {
-    console.log('message', message);
 
-    // messages.push(message)
-
-    // ! It works but the sender also receives the message
     io.emit('receive message', message)
   })
 });
+
+app.use('/api/login', loginRouter)
+
 app.use('/api/users', usersRouter)
 
 app.use(middleware.tokenExtractor)

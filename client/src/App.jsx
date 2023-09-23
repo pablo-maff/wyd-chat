@@ -8,6 +8,7 @@ import { initializeUserChats } from './redux/reducers/userChatsReducer';
 import { useEffect } from 'react';
 import { keepUserSessionAlive } from './redux/reducers/userAuthenticationReducer';
 import { LocalStorageManager } from './utils/LocalStorageManager';
+import { initializeUserContacts } from './redux/reducers/userContactsReducer';
 
 function PrivateRoute({ redirectPath = '/login' }) {
   const { user } = useSelector(state => state.userAuthentication)
@@ -17,6 +18,7 @@ function PrivateRoute({ redirectPath = '/login' }) {
   useEffect(() => {
     if (user) {
       dispatch(initializeUserChats(user.id))
+      dispatch(initializeUserContacts(user.id))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

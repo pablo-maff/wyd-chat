@@ -127,7 +127,7 @@ const userChatsSlice = createSlice({
         }
       }
     },
-    sendMessage: (state, payload) => {
+    sendMessage: (state, action) => {
       // * We don't add message to the state here because we are using the websockets as single source of truth.
       // * When a receive message is received, the message is added from the middleware
       return state
