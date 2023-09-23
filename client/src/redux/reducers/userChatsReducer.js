@@ -127,6 +127,11 @@ const userChatsSlice = createSlice({
         }
       }
     },
+    sendMessage: (state, action) => {
+      // * We don't add message to the state here because we are using the websockets as single source of truth.
+      // * When a receive message is received, the message is added from the middleware
+      return state
+    },
     setUserChatsLoading(state) {
       state.loading = true
       state.error = null
@@ -146,6 +151,7 @@ export const {
   createUserChatRoom,
   setActiveChat,
   appendChatRoomMessage,
+  sendMessage,
   setUserChatsLoading,
   setUserChatsError,
   resetState
@@ -157,7 +163,6 @@ export const initializeUserChats = (userId) => {
       dispatch(setUserChatsLoading());
 
       const { data: userChatData } = await UserService.getUser(userId)
-
 
       dispatch(setUserChats({ data: userChatData }))
     }
@@ -200,7 +205,9 @@ export const createChatRoomMessage = (newMessage) => {
     try {
       const { data: message } = await ChatRoomService.createMessage(newMessage)
 
-      dispatch(appendChatRoomMessage({ message }))
+      console.log('New created message', message);
+
+      dispatch(sendMessage({ message }))
     }
     catch (error) {
       console.error(error)
@@ -209,7 +216,7 @@ export const createChatRoomMessage = (newMessage) => {
   }
 }
 
-export const resetStateAction = () => {
+export const resetUserChatsState = () => {
   return (dispatch) => {
     dispatch(resetState())
   }
