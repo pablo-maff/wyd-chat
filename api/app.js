@@ -36,6 +36,7 @@ app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :chatRoom')
 )
 
+// TODO Wrap it up in a middleware and contemplate all the actions needed
 const io = new Server(httpServer, {
   cors: {
     origin: 'http://localhost:5173'
@@ -57,6 +58,7 @@ io.on('connection', (socket) => {
 
     // messages.push(message)
 
+    // ! It works but the sender also receives the message
     io.emit('receive message', message)
   })
 });

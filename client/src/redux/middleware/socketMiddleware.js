@@ -1,75 +1,80 @@
 // import { addMessage } from '../store/messages.slice'
 // import { addUser, removeTypingUser, setOnlineUsersByUsername, setTypingUser } from '../store/users.slice'
 
+import { appendChatRoomMessage } from "../reducers/userChatsReducer";
+
 export default function socketMiddleware(socket) {
   return (params) => (next) => (action) => {
     const { dispatch } = params
     const { type, payload } = action
 
+    console.log('type', type);
+
     switch (type) {
       // Connect to the socket when a user logs in
-      // case 'users/login': {
-      //   socket.connect()
+      case 'userAuthentication/login': {
+        socket.connect()
 
-      //   // Set up all the socket event handlers
-      //   // When these events are received from the socket, they'll dispatch the proper Redux action
+        // Set up all the socket event handlers
+        // When these events are received from the socket, they'll dispatch the proper Redux action
 
-      //   // Update the online users list every time a user logs in or out
-      //   socket.on('users online', (onlineUsers) => {
-      //     dispatch(setOnlineUsersByUsername(onlineUsers))
-      //   })
+        // Update the online users list every time a user logs in or out
+        socket.on('users online', (onlineUsers) => {
+          // dispatch(setOnlineUsersByUsername(onlineUsers))
+        })
 
-      //   // Append a message every time a new one comes in
-      //   socket.on('receive message', (message) => {
-      //     dispatch(addMessage(message))
-      //   })
+        // Append a message every time a new one comes in
+        socket.on('receive message', (message) => {
+          console.log('message received', message);
+          // dispatch(addMessage(message))
+          dispatch(appendChatRoomMessage(message))
+        })
 
-      //   // Remove if some user stops typing
-      //   socket.on('user stopped typing...', (username) => {
-      //     dispatch(removeTypingUser(username));
-      //   })
+        // Remove if some user stops typing
+        socket.on('user stopped typing...', (username) => {
+          // dispatch(removeTypingUser(username));
+        })
 
-      //   // Add if some user starts typing
-      //   socket.on('user starts typing...', (username) => {
-      //     dispatch(setTypingUser(username));
-      //   })
+        // Add if some user starts typing
+        socket.on('user starts typing...', (username) => {
+          // dispatch(setTypingUser(username));
+        })
 
-      //   // Append a user every time a new one is registered
-      //   socket.on('new user added', (user) => {
-      //     dispatch(addUser(user))
-      //   })
+        // Append a user every time a new one is registered
+        socket.on('new user added', (user) => {
+          // dispatch(addUser(user))
+        })
 
-      //   // Add the current user to the online users list
-      //   socket.emit('new login', payload)
+        // Add the current user to the online users list
+        socket.emit('new login', payload)
 
-      //   break
-      // }
+        break
+      }
 
-      // // Telling the sever that this user is typing...
-      // case 'users/sendThisUserIsTyping': {
-      //   socket.emit('typing...', payload)
+      // Telling the sever that this user is typing...
+      case 'users/sendThisUserIsTyping': {
+        socket.emit('typing...', payload)
 
-      //   break
-      // }
+        break
+      }
 
-      // // Telling the server that this user stopped typing..
-      // case 'users/sendThisUserStoppedTyping': {
-      //   socket.emit('stopped typing...', payload)
+      // Telling the server that this user stopped typing..
+      case 'users/sendThisUserStoppedTyping': {
+        socket.emit('stopped typing...', payload)
 
-      //   return
-      // }
+        return
+      }
 
-      // // Disconnect from the socket when a user logs out
-      // case 'users/logout': {
-      //   socket.disconnect()
+      // Disconnect from the socket when a user logs out
+      case 'users/logout': {
+        socket.disconnect()
 
-      //   break
-      // }
+        break
+      }
+
       // Let the server be the source of truth for all messages; don't dispatch anything
-      case 'userChats/appendChatRoomMessage': {
-        console.log('Sending message signal!')
+      case 'userChats/sendMessage': {
         socket.emit('send message', payload)
-
         return
       }
     }
