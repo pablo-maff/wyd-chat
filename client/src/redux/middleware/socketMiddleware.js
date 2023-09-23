@@ -2,6 +2,7 @@
 // import { addUser, removeTypingUser, setOnlineUsersByUsername, setTypingUser } from '../store/users.slice'
 
 import { appendChatRoomMessage } from '../reducers/userChatsReducer';
+import { addUser } from '../reducers/userContactsReducer';
 
 export default function socketMiddleware(socket) {
   return (params) => (next) => (action) => {
@@ -40,7 +41,7 @@ export default function socketMiddleware(socket) {
 
         // TODO: Append a user every time a new one is registered
         socket.on('new user added', (user) => {
-          // dispatch(addUser(user))
+          dispatch(addUser(user))
         })
 
         // TODO: Add the current user to the online users list

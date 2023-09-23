@@ -11,10 +11,10 @@ function Main() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { data, loading: chatsLoading, error: chatsError } = useSelector(state => state.userChats)
-  const { users, loading: usersLoading, error: usersError } = useSelector(state => state.userContacts)
+  const { data: chatRooms, loading: chatsLoading, error: chatsError } = useSelector(state => state.userChats)
+  const { data: users, loading: usersLoading, error: usersError } = useSelector(state => state.userContacts)
 
-  const activeChatId = data?.activeChat?.id
+  const activeChatId = chatRooms?.activeChat?.id
 
   useEffect(() => {
     // * Navigate to the correct url when activating a chat
@@ -61,10 +61,10 @@ function Main() {
 
   return (
     <div className='w-full h-full flex flex-nowrap'>
-      <Sidebar chats={data?.chatRooms} users={users} activeChatId={activeChatId} />
+      <Sidebar chats={chatRooms?.chatRooms} users={users} activeChatId={activeChatId} />
       {activeChatId ?
         <div className='flex flex-1 flex-col'>
-          <Header activeChat={data.activeChat} />
+          <Header activeChat={chatRooms.activeChat} />
           <Outlet />
         </div>
         :

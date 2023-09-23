@@ -2,7 +2,7 @@ import { createSlice, current } from '@reduxjs/toolkit'
 import ChatInstance from '../../services/ChatInstance';
 
 const initialState = {
-  users: null,
+  data: null,
   onlineUsersByUsername: [],
   loading: false,
   error: null,
@@ -14,17 +14,17 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     setUsers: (state, action) => {
-      const { users, currentUserId } = action.payload
+      const { data, currentUserId } = action.payload
 
-      const filterCurrentUser = users.filter(user => user.id !== currentUserId)
+      const filterCurrentUser = data.filter(user => user.id !== currentUserId)
 
-      return { ...state, users: filterCurrentUser, loading: false, error: null }
+      return { ...state, data: filterCurrentUser, loading: false, error: null }
     },
     setOnlineUsersByUsername: (state, action) => {
       return { ...state, onlineUsersByUsername: action.payload }
     },
     addUser: (state, action) => {
-      return { ...state, users: [...state.users, action.payload] }
+      return { ...state, data: [...state.data, action.payload] }
     },
     setTypingUser: (state, action) => {
       state.typingUsers = [action.payload, ...[...state.typingUsers].filter(username => username !== action.payload)]
@@ -75,11 +75,11 @@ export function initializeUserContacts(currentUserId) {
 
       console.log('data', data);
 
-      dispatch(setUsers({ users: data, currentUserId }))
+      dispatch(setUsers({ data: data, currentUserId }))
     } catch (error) {
       // Not handling errors
       console.error(error)
-      dispatch(setUsersError(`Unable to fetch users data: ${error.message}: ${error.response?.data?.error}`));
+      dispatch(setUsersError(`Unable to fetch data data: ${error.message}: ${error.response?.data?.error}`));
 
     }
   }
