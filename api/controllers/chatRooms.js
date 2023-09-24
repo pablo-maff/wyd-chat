@@ -58,8 +58,8 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   res.status(201).json(savedChatRoom)
 })
 
-chatRoomsRouter.get('/:id/messages', isValidId, async (req, res) => {
-  const { id } = req.params
+chatRoomsRouter.get('/:id/messages', [isValidId, chatRoomExtractor], async (req, res) => {
+  const { id } = req.chatRoom
 
   const chatRoomMessages = await Message.find({
     chatRoomId: id
