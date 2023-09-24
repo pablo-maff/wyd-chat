@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create a new Axios instance with custom configuration
 let ChatInstance = axios.create({
-  baseURL: 'http://localhost:3003/api',
+  baseURL: '/api',
   timeout: 10000, // Request timeout in milliseconds (10 seconds in this example)
   headers: {
     'Content-Type': 'application/json',
