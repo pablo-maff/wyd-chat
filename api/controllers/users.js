@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const { faker } = require('@faker-js/faker');
-const { isValidId } = require('../utils/middleware');
+const { isValidId, userExtractor } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
 
 usersRouter.get('/', async (req, res) => {
@@ -11,8 +11,8 @@ usersRouter.get('/', async (req, res) => {
   res.json(users)
 })
 
-usersRouter.get('/:id', isValidId, async (req, res) => {
-  const { id } = req.params
+usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
+  const { id } = req.user
 
   const users = await User.findById(id)
     .populate({

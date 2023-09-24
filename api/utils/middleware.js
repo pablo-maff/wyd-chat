@@ -33,32 +33,31 @@ const errorHandler = (error, req, res, next) => {
   next(error)
 }
 
-const tokenExtractor = (req, res, next) => {
+const getTokenFrom = req => {
   const authorization = req.get('authorization')
-
-  if (!authorization) {
-    return res.status(401).json({
-      error: 'Missing authorization token'
-    })
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
   }
+  return null
+}
 
-  if (authorization.toLowerCase().startsWith('bearer ')) {
-    const token = authorization.substring(7)
-
-    req.token = jwt.verify(token, process.env.SECRET) // Verify token validity and decode token (returns the Object which the token was based on)
-
-    next()
-  }
+const tokenExtractor = (req, res, next) => {
+  req.token = getTokenFrom(req)
+  next()
 }
 
 const userExtractor = async (req, res, next) => {
-  if (!req.token?.id) {
+  const token = getTokenFrom(req)
+
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+
+  if (!decodedToken.id) {
     return res.status(401).json({
-      error: 'Invalid authorization token'
+      error: 'invalid token'
     })
   }
 
-  const findUser = await User.findById(req.token.id)
+  const findUser = await User.findById(decodedToken.id)
 
   if (!findUser) {
     return res.status(404).json({
@@ -66,12 +65,22 @@ const userExtractor = async (req, res, next) => {
     })
   }
 
-  req.user = await User.findById(req.token.id)
+  req.user = await User.findById(decodedToken.id)
 
   next()
 }
 
 const chatRoomExtractor = async (req, res, next) => {
+  const token = getTokenFrom(req)
+
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+
+  if (!decodedToken.id) {
+    return res.status(401).json({
+      error: 'invalid token'
+    })
+  }
+
   const chatRoom = await ChatRoom.findById(req.params.id)
 
   if (!chatRoom) {
