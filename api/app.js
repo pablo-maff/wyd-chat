@@ -29,6 +29,8 @@ mongoose
     logger.error('Error connecting to MongoDB:', error.message)
   })
 
+app.use(express.static('build'))
+
 app.use(cors())
 app.use(express.json())
 
