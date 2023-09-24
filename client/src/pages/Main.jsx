@@ -40,8 +40,10 @@ function Main() {
       dispatch(resetUserChatsState())
 
       const isMissingTokenError =
-        chatsError.message.toLowerCase().includes('missing authorization token') ||
-        usersError.message.toLowerCase().includes('missing authorization token')
+        chatsError.message.toLowerCase().includes('invalid token') ||
+        usersError.message.toLowerCase().includes('invalid token') ||
+        chatsError.message.toLowerCase().includes('token expired') ||
+        usersError.message.toLowerCase().includes('token expired')
 
       if (isMissingTokenError) {
         return dispatch(logoutUser())

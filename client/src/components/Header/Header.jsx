@@ -1,11 +1,9 @@
-import { faker } from '@faker-js/faker';
 import { BsCameraVideo, BsInfoCircle, BsTelephone } from 'react-icons/bs';
 import { CiSettings } from 'react-icons/ci';
-import logo from '~/assets/wyd-logos-blue/logo-tab.png';
+import logo from '../../assets/wyd-logos-blue/logo-tab.png';
 import { Button } from '../Button';
 import { Contact } from '../Contact';
 import { Icon } from '../Icon';
-import { useSelector } from 'react-redux';
 
 export function Header({ activeChat }) {
   return (

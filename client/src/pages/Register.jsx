@@ -1,4 +1,3 @@
-// src/components/RegisterForm.js
 import { useState } from 'react';
 import { validateEmail } from '../utils/helperFunctions';
 import UsersService from '../services/usersService';
