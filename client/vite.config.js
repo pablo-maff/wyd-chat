@@ -19,11 +19,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      host: '0.0.0.0',
       '/api': {
         target: 'http://localhost:3003',
         changeOrigin: true,
       },
-      host: '0.0.0.0',
       '/socket.io/': {
         target: 'http://localhost:3003',
         changeOrigin: true,

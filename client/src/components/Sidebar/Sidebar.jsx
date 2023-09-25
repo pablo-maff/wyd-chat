@@ -7,6 +7,7 @@ import { logoutUser } from '../../redux/reducers/userAuthenticationReducer';
 export function Sidebar({ chats, users, activeChatId }) {
   const [toggleNewChat, setToggleNewChat] = useState(false)
 
+
   const { user } = useSelector(state => state.userAuthentication)
 
   const dispatch = useDispatch()
@@ -53,18 +54,23 @@ export function Sidebar({ chats, users, activeChatId }) {
               <>
                 {!toggleNewChat ?
                   <>
-                    {chats.map((chat) => (
-                      <li key={chat.id} onClick={() => handleSelectChat(chat.id)} className='hover:cursor-pointer'>
-                        <Contact
-                          key={chat?.contact?.id}
-                          name={chat?.title}
-                          avatar={chat?.contact?.avatarPhoto}
-                          lastMessage={chat?.contact?.lastMessage}
-                          typing={false}
-                          selectedChat={chat.id === activeChatId ? true : false}
-                        />
-                      </li>
-                    ))}
+                    {chats.map((chat) => {
+                      const lastContactMessage = chat?.messages
+                        ?.filter(message => message.from !== user.id)
+                        .at(-1)
+
+                      return (
+                        <li key={chat.id} onClick={() => handleSelectChat(chat.id)} className='hover:cursor-pointer'>
+                          <Contact
+                            key={chat?.contact?.id}
+                            name={chat?.title}
+                            avatar={chat?.contact?.avatarPhoto}
+                            lastMessage={lastContactMessage}
+                            typing={false}
+                            selectedChat={chat.id === activeChatId ? true : false} />
+                        </li>
+                      );
+                    })}
                   </>
                   :
                   <>

@@ -18,7 +18,6 @@ export default function socketMiddleware(socket) {
     switch (type) {
       // * Connect to the socket when a user logs in
       case 'userAuthentication/login': {
-        console.log('login!');
         socket.connect()
 
         // * Set up all the socket event handlers
