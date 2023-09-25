@@ -1,4 +1,4 @@
 # wyd-chat
 
 ### Try me!
-[wyd-chat](https://wyd-chat.onrender.com/chat)
+[wyd-chat](https://wyd-chat.onrender.com)
