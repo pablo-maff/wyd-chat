@@ -6,7 +6,7 @@ export default class SocketClient {
   socket
 
   connect() {
-    this.socket = io('/')
+    this.socket = io()
   }
 
   disconnect() {

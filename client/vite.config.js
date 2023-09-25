@@ -17,6 +17,21 @@ export default defineConfig({
   build: {
     outDir: 'build',
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3003',
+        changeOrigin: true,
+      },
+      host: '0.0.0.0',
+      '/socket.io/': {
+        target: 'http://localhost:3003',
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+      },
+    }
+  },
   plugins: [react()],
   optimizeDeps: {
     exclude: ['react-textarea-autosize']
