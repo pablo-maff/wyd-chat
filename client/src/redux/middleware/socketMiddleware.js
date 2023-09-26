@@ -11,6 +11,10 @@ export default function socketMiddleware(socket) {
 
     console.log('type', type);
 
+    socket.on('connect_error', (err) => {
+      console.log(`connect_error due to ${err.message}`);
+    });
+
     switch (type) {
       // * Connect to the socket when a user logs in
       case 'userAuthentication/login': {

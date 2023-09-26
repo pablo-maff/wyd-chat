@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, current } from '@reduxjs/toolkit'
 import UserService from '../../services/usersService';
 import ChatRoomService from '../../services/chatRoomsService';
 import { isAfter, parseISO } from 'date-fns';
@@ -9,29 +9,7 @@ function parseChatRooms(chatRooms) {
       id: chatRoom?.id,
       title: `${chatRoom?.members[0]?.firstName} ${chatRoom?.members[0]?.lastName}`,
       messages: chatRoom.messages,
-      contact: {
-        ...chatRoom?.members[0],
-        lastMessage: chatRoom?.messages
-          .reduce((latestMessage, message) => {
-            if (message?.from !== chatRoom?.members[0]?.id) {
-              return latestMessage
-            }
-
-            if (!latestMessage) {
-              return message
-            }
-
-            const messageTimestamp = parseISO(message.timestamp);
-            const latestTimestamp = parseISO(latestMessage.timestamp);
-
-            if (isAfter(messageTimestamp, latestTimestamp)) {
-
-              return message;
-            }
-
-            return latestMessage;
-          }, null)
-      },
+      contact: { ...chatRoom?.members[0] }
     }
   })
 }
@@ -103,7 +81,7 @@ const userChatsSlice = createSlice({
       if (!message?.id) {
         const error = {
           message:
-            'Error: Unable to send this message, please try again'
+            'Error: Unable to add this message, please try again'
         }
         console.error(error.message);
 
@@ -113,7 +91,24 @@ const userChatsSlice = createSlice({
         }
       }
 
-      const appendedMessageToActiveChat = { ...activeChat, messages: [...activeChat.messages, message] }
+      console.log('message', message);
+
+      const destinationChatRoom = state.data.chatRooms?.find(chatRoom => chatRoom.id === message.chatRoomId)
+
+      console.log('findDestinationChatRoom', current(destinationChatRoom))
+
+      // TODO: Get rid of activeChat state, handle it only with chatRooms
+      const appendedMessageToActiveChat = activeChat ? {
+        ...activeChat,
+        messages: [...activeChat.messages, message]
+      }
+        : null
+
+
+      const appendedMessageToDestinationChatRoom = {
+        ...destinationChatRoom,
+        messages: [...destinationChatRoom.messages, message]
+      }
 
       return {
         ...state,
@@ -122,7 +117,7 @@ const userChatsSlice = createSlice({
           activeChat: appendedMessageToActiveChat,
           chatRooms: state.data.chatRooms
             .map(chatRoom =>
-              chatRoom.id !== appendedMessageToActiveChat.id ? chatRoom : appendedMessageToActiveChat
+              chatRoom.id !== destinationChatRoom.id ? chatRoom : appendedMessageToDestinationChatRoom
             )
         }
       }
