@@ -27,15 +27,15 @@ const usersSlice = createSlice({
       return { ...state, data: [...state.data, action.payload] }
     },
     setTypingUser: (state, action) => {
-      state.typingUsers = [action.payload, ...[...state.typingUsers].filter(username => username !== action.payload)]
+      return { ...state, typingUsers: [...state.typingUsers, action.payload] }
     },
-    removeTypingUser: (state, { payload }) => {
-      state.typingUsers = state.typingUsers.filter(username => username !== payload)
+    removeTypingUser: (state, action) => {
+      return { ...state, typingUsers: state.typingUsers.filter(userId => userId !== action.payload) }
     },
-    sendThisUserIsTyping: (state, { payload }) => {
+    sendThisUserIsTyping: (state, action) => {
 
     },
-    sendThisUserStoppedTyping: (state, { payload }) => {
+    sendThisUserStoppedTyping: (state, action) => {
 
     },
     setUsersLoading: (state) => {
