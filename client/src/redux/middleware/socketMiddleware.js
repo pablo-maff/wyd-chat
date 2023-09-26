@@ -10,15 +10,14 @@ export default function socketMiddleware(socket) {
     const { type, payload } = action
 
     console.log('type', type);
-
-    socket.on('connect_error', (err) => {
-      console.log(`connect_error due to ${err.message}`);
-    });
+    console.log('payload', payload);
 
     switch (type) {
       // * Connect to the socket when a user logs in
       case 'userAuthentication/login': {
         socket.connect()
+        socket.emit('login', payload)
+
 
         // * Set up all the socket event handlers
         // * When these events are received from the socket, they'll dispatch the proper Redux action
@@ -29,8 +28,8 @@ export default function socketMiddleware(socket) {
         })
 
         // * Append a message every time a new one comes in
-        socket.on('receive message', (message) => {
-          dispatch(appendChatRoomMessage(message))
+        socket.on('receive_message', (message) => {
+          dispatch(appendChatRoomMessage({ message }))
         })
 
         // TODO: Remove if some user stops typing
@@ -68,18 +67,18 @@ export default function socketMiddleware(socket) {
         return
       }
 
+      // * Let the server be the source of truth for all messages; don't dispatch anything
+      // case 'userChats/sendMessage': {
+      //   socket.emit('send_message', payload)
+
+      //   return
+      // }
+
       // * Disconnect from the socket when a user logs out
       case 'userAuthentication/logout': {
+        socket.emit('end', payload)
         socket.disconnect()
-
         break
-      }
-
-      // * Let the server be the source of truth for all messages; don't dispatch anything
-      case 'userChats/sendMessage': {
-        socket.emit('send message', payload)
-
-        return
       }
     }
 

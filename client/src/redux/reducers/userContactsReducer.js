@@ -73,8 +73,6 @@ export function initializeUserContacts(currentUserId) {
     try {
       const { data } = await ChatInstance.get('/users')
 
-      console.log('data', data);
-
       dispatch(setUsers({ data: data, currentUserId }))
     } catch (error) {
       // Not handling errors

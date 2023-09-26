@@ -91,16 +91,12 @@ const userChatsSlice = createSlice({
         }
       }
 
-      console.log('message', message);
-
       const destinationChatRoom = state.data.chatRooms?.find(chatRoom => chatRoom.id === message.chatRoomId)
-
-      console.log('findDestinationChatRoom', current(destinationChatRoom))
 
       // TODO: Get rid of activeChat state, handle it only with chatRooms
       const appendedMessageToActiveChat = activeChat ? {
         ...activeChat,
-        messages: [...activeChat.messages, message]
+        messages: destinationChatRoom.id === activeChat.id ? [...activeChat.messages, message] : activeChat.messages
       }
         : null
 
@@ -199,8 +195,6 @@ export const createChatRoomMessage = (newMessage) => {
   return async (dispatch) => {
     try {
       const { data: message } = await ChatRoomService.createMessage(newMessage)
-
-      console.log('New created message', message);
 
       dispatch(sendMessage({ message }))
     }

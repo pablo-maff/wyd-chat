@@ -12,6 +12,8 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const fallback = require('express-history-api-fallback');
 const { Server } = require('socket.io');
+const User = require('./models/user');
+const SocketServer = require('./utils/SocketServer');
 
 const app = express()
 
@@ -39,28 +41,42 @@ app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :chatRoom')
 )
 
+const socketServer = SocketServer.getInstance(httpServer)
 
+// TODO NEXT! Create websocket rooms
 // TODO Wrap it up in a middleware and contemplate all the actions needed
-const io = new Server(httpServer, {
-  cors: {
-    origin: 'http://localhost:5173'
-  }
-});
+// const io = new Server(httpServer, {
+//   cors: {
+//     origin: 'http://localhost:5173'
+//   }
+// });
 
-io.on('connection', (socket) => {
-  console.log(`⚡: ${socket.id} user just connected!`);
-  socket.on('disconnect', () => {
-    console.log('🔥: A user disconnected');
-  });
+// io.on('connection', (socket) => {
+//   socket.on('login', async ({ id }) => {
+//     console.log(`⚡: ${socket.id} user just connected!`);
+//     console.log('User Id', id)
+//     await User.findByIdAndUpdate(id, {
+//       socketId: socket.id,
+//       online: true,
+//     });
+//   })
 
-  // * Send Message
-  socket.on('send message', (message) => {
+//   // * Send Message
+//   socket.on('send_message', (message) => {
 
-    io.emit('receive message', message)
-  })
-});
+//     io.emit('receive_message', message)
+//   })
+
+//   socket.on('end', async (id) => {
+//     console.log(`🔥: ${id} user disconnected`);
+//     await User.findByIdAndUpdate(id, { online: false });
+//     socket.disconnect(true)
+//   });
+// });
 
 app.use(middleware.tokenExtractor)
+
+app.use(middleware.attachWebSocket(socketServer))
 
 app.use('/api/login', loginRouter)
 

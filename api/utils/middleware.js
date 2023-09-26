@@ -104,11 +104,19 @@ function isValidId(req, res, next) {
   next()
 }
 
+function attachWebSocket(socketServer) {
+  return (req, res, next) => {
+    req.socketServer = socketServer
+    next()
+  };
+}
+
 module.exports = {
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
   userExtractor,
+  chatRoomExtractor,
   isValidId,
-  chatRoomExtractor
+  attachWebSocket
 }
