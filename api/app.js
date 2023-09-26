@@ -11,8 +11,6 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const fallback = require('express-history-api-fallback');
-const { Server } = require('socket.io');
-const User = require('./models/user');
 const SocketServer = require('./utils/SocketServer');
 
 const app = express()
@@ -42,37 +40,6 @@ app.use(
 )
 
 const socketServer = SocketServer.getInstance(httpServer)
-
-// TODO NEXT! Create websocket rooms
-// TODO Wrap it up in a middleware and contemplate all the actions needed
-// const io = new Server(httpServer, {
-//   cors: {
-//     origin: 'http://localhost:5173'
-//   }
-// });
-
-// io.on('connection', (socket) => {
-//   socket.on('login', async ({ id }) => {
-//     console.log(`⚡: ${socket.id} user just connected!`);
-//     console.log('User Id', id)
-//     await User.findByIdAndUpdate(id, {
-//       socketId: socket.id,
-//       online: true,
-//     });
-//   })
-
-//   // * Send Message
-//   socket.on('send_message', (message) => {
-
-//     io.emit('receive_message', message)
-//   })
-
-//   socket.on('end', async (id) => {
-//     console.log(`🔥: ${id} user disconnected`);
-//     await User.findByIdAndUpdate(id, { online: false });
-//     socket.disconnect(true)
-//   });
-// });
 
 app.use(middleware.tokenExtractor)
 

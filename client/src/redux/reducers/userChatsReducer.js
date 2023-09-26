@@ -1,7 +1,6 @@
-import { createSlice, current } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import UserService from '../../services/usersService';
 import ChatRoomService from '../../services/chatRoomsService';
-import { isAfter, parseISO } from 'date-fns';
 
 function parseChatRooms(chatRooms) {
   return chatRooms.map(chatRoom => {
