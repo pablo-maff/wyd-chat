@@ -7,8 +7,8 @@ import { logoutUser } from '../../redux/reducers/userAuthenticationReducer';
 export function Sidebar({ chats, users, activeChatId }) {
   const [toggleNewChat, setToggleNewChat] = useState(false)
 
-
   const { user } = useSelector(state => state.userAuthentication)
+  const { typingUsers } = useSelector(state => state.userContacts)
 
   const dispatch = useDispatch()
 
@@ -66,7 +66,7 @@ export function Sidebar({ chats, users, activeChatId }) {
                             name={chat?.title}
                             avatar={chat?.contact?.avatarPhoto}
                             lastMessage={lastContactMessage}
-                            typing={false}
+                            typing={typingUsers.includes(chat?.contact?.id)}
                             selectedChat={chat.id === activeChatId ? true : false} />
                         </li>
                       );

@@ -1,8 +1,5 @@
-// import { addMessage } from '../store/messages.slice'
-// import { addUser, removeTypingUser, setOnlineUsersByUsername, setTypingUser } from '../store/users.slice'
-
 import { appendChatRoomMessage } from '../reducers/userChatsReducer';
-import { addUser } from '../reducers/userContactsReducer';
+import { addUser, removeTypingUser, setTypingUser } from '../reducers/userContactsReducer';
 
 export default function socketMiddleware(socket) {
   return (params) => (next) => (action) => {
@@ -32,14 +29,14 @@ export default function socketMiddleware(socket) {
           dispatch(appendChatRoomMessage({ message }))
         })
 
-        // TODO: Remove if some user stops typing
-        socket.on('user stopped typing...', (username) => {
-          // dispatch(removeTypingUser(username));
+        // * Remove if some user stops typing
+        socket.on('user_stopped_typing', (userId) => {
+          dispatch(removeTypingUser(userId));
         })
 
-        // TODO: Add if some user starts typing
-        socket.on('user starts typing...', (username) => {
-          // dispatch(setTypingUser(username));
+        // * Add if some user starts typing
+        socket.on('user_starts_typing', (userId) => {
+          dispatch(setTypingUser(userId))
         })
 
         // TODO: Append a user every time a new one is registered
@@ -53,26 +50,19 @@ export default function socketMiddleware(socket) {
         break
       }
 
-      // TODO: Telling the sever that this user is typing...
-      case 'users/sendThisUserIsTyping': {
-        socket.emit('typing...', payload)
+      // * Telling the sever that this user is typing...
+      case 'userContacts/sendThisUserIsTyping': {
+        socket.emit('typing', payload)
 
         break
       }
 
-      // TODO: Telling the server that this user stopped typing..
-      case 'users/sendThisUserStoppedTyping': {
-        socket.emit('stopped typing...', payload)
+      // * Telling the server that this user stopped typing..
+      case 'userContacts/sendThisUserStoppedTyping': {
+        socket.emit('stopped_typing', payload)
 
         return
       }
-
-      // * Let the server be the source of truth for all messages; don't dispatch anything
-      // case 'userChats/sendMessage': {
-      //   socket.emit('send_message', payload)
-
-      //   return
-      // }
 
       // * Disconnect from the socket when a user logs out
       case 'userAuthentication/logout': {

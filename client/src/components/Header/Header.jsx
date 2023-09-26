@@ -4,8 +4,11 @@ import logo from '../../assets/wyd-logos-blue/logo-tab.png';
 import { Button } from '../Button';
 import { Contact } from '../Contact';
 import { Icon } from '../Icon';
+import { useSelector } from 'react-redux';
 
 export function Header({ activeChat }) {
+  const { typingUsers } = useSelector(state => state.userContacts)
+
   return (
     <header className='bg-white p-4 shadow-md'>
       <div className='flex flex-row'>
@@ -17,7 +20,7 @@ export function Header({ activeChat }) {
           <Contact
             name={activeChat?.title}
             avatar={activeChat?.contact?.avatarPhoto}
-            typing={false}
+            typing={typingUsers.includes(activeChat?.contact?.id)}
             showLastSeen={activeChat.contact.lastTimeOnline}
           />
           <div className='w-32 mr-8 flex justify-between'>
