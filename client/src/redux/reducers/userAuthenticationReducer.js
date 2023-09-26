@@ -56,9 +56,9 @@ export const keepUserSessionAlive = (user) => {
   }
 }
 
-export const logoutUser = () => {
+export const logoutUser = ({ id }) => {
   return (dispatch) => {
-    dispatch(logout(null))
+    dispatch(logout(id))
     dispatch(resetUserChatsState())
   }
 }

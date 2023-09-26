@@ -72,6 +72,7 @@ chatRoomsRouter.post('/:id/messages', [isValidId, userExtractor, chatRoomExtract
   const { from, to, text } = req.body
   const selectedChatRoom = req.chatRoom
   const user = req.user
+  const io = req.socketServer
 
   if (user.id.toString() !== from) {
     return res.status(403).json({
@@ -92,6 +93,16 @@ chatRoomsRouter.post('/:id/messages', [isValidId, userExtractor, chatRoomExtract
   selectedChatRoom.messages = selectedChatRoom.messages.concat(savedMessage)
 
   await selectedChatRoom.save()
+
+  const toUser = await User.findById(to);
+  const fromUser = await User.findById(from);
+  // io.emit('receive_message', message)
+
+  io.emitEventToRoom(toUser.socketId, 'receive_message', message)
+  io.emitEventToRoom(fromUser.socketId, 'receive_message', message)
+
+  // io.to(fromUser.socketId).emit('receive_message', message)
+  // io.to(toUser.socketId).emit('receive_message', message)
 
   res.status(200).json(savedMessage)
 })

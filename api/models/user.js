@@ -17,6 +17,8 @@ const userSchema = new mongoose.Schema({
   passwordHash: String,
   avatarPhoto: String,
   lastTimeOnline: Date,
+  socketId: String,
+  online: Boolean,
   chatRooms: [
     {
       type: mongoose.Schema.Types.ObjectId,

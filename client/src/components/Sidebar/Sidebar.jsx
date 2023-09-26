@@ -43,7 +43,7 @@ export function Sidebar({ chats, users, activeChatId }) {
         <div className='sidebar-header w-full flex justify-around'>
           <h2 className='font-bold text-2xl self-start'>{!toggleNewChat ? 'Your Chats' : 'New Chat'}</h2>
           <button
-            onClick={() => dispatch(logoutUser())}
+            onClick={() => dispatch(logoutUser(user))}
             className='bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200'>
             Logout
           </button>
