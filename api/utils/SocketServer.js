@@ -35,6 +35,18 @@ class SocketServer {
       });
 
       // Add your socket event listeners here
+      socket.on('typing', async ({ from, to }) => {
+        const toUser = await User.findById(to);
+
+        this.emitEventToRoom(toUser.socketId, 'user_starts_typing', from)
+      })
+
+      socket.on('stopped_typing', async ({ from, to }) => {
+        const toUser = await User.findById(to);
+
+        this.emitEventToRoom(toUser.socketId, 'user_stopped_typing', from)
+      })
+
     })
   }
 
