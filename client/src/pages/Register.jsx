@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { validateEmail } from '../utils/helperFunctions';
 import UsersService from '../services/usersService';
 
 const RegisterForm = ({ handleShowRegisterForm }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    username: '',
+    username: '', // * It is an email for now, we just rely on native input email validation to not open that can of worms. Token verification through email is what we want here
     password: '',
   });
 
@@ -21,15 +20,6 @@ const RegisterForm = ({ handleShowRegisterForm }) => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    // * For now username can only be an email address
-    const validUsername = validateEmail(formData.username)
-
-    if (!validUsername) {
-      // TODO: Show notification
-      console.error('Invalid email address!');
-      return
-    }
-
     UsersService.register(formData)
       .then(_ => {
         //TODO: Notification here
@@ -39,7 +29,7 @@ const RegisterForm = ({ handleShowRegisterForm }) => {
         console.error(error)
         //TODO: Notification here
       })
-  };
+  }
 
   return (
     <div className="max-w-md mx-auto mt-8 p-4 border border-gray-300 rounded shadow">
