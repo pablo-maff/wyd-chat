@@ -72,10 +72,21 @@ class SocketServer {
   }
 
   emitEvent(event, data) {
+    if (!event || !data) {
+      console.error('Missing event or data')
+      return
+    }
+
     this.io.emit(event, data);
   }
 
+  // * room is user's socketId for now
   emitEventToRoom(room, event, data) {
+    if (!room || !event || !data) {
+      console.error('Missing room, event or data')
+      return
+    }
+
     this.io.to(room).emit(event, data)
   }
 

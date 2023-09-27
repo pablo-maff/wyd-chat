@@ -1,13 +1,10 @@
-import { appendChatRoomMessage } from '../reducers/userChatsReducer';
+import { appendChatRoomMessage, createUserChatRoom } from '../reducers/userChatsReducer';
 import { addUser, removeTypingUser, setOnlineUsersById, setTypingUser } from '../reducers/userContactsReducer';
 
 export default function socketMiddleware(socket) {
   return (params) => (next) => (action) => {
     const { dispatch } = params
     const { type, payload } = action
-
-    console.log('type', type);
-    console.log('payload', payload);
 
     switch (type) {
       // * Connect to the socket when a user logs in
@@ -39,9 +36,13 @@ export default function socketMiddleware(socket) {
           dispatch(setTypingUser(userId))
         })
 
-        // TODO: Append a user every time a new one is registered
+        // * Append a user every time a new one is registered
         socket.on('new_user_added', (user) => {
           dispatch(addUser(user))
+        })
+
+        socket.on('new_chatRoom', (chatRoom) => {
+          dispatch(createUserChatRoom(chatRoom))
         })
 
         break

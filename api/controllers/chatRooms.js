@@ -6,6 +6,7 @@ const { userExtractor, isValidId, chatRoomExtractor } = require('../utils/middle
 
 chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   const { members } = req.body
+  const io = req.socketServer
   const userId = req.user.id
 
   // * Query the ChatRoom collection to find a room with both members
@@ -42,7 +43,7 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   await savedChatRoom.populate({
     path: 'members',
     match: { _id: { $ne: userId } }, // * Only retrieve the members that are not the user making the request
-    select: 'firstName lastName avatarPhoto lastTimeOnline'
+    select: 'firstName lastName avatarPhoto lastTimeOnline online'
   })
 
   // Add the chat room to both users
@@ -56,6 +57,18 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   await Promise.all(updatePromises);
 
   res.status(201).json(savedChatRoom)
+
+  const savedChatRoomToJSON = savedChatRoom.toJSON()
+
+  const fromUser = await User.findById(userId).lean().select('firstName lastName avatarPhoto lastTimeOnline online')
+  const toUser = await User.findById(savedChatRoomToJSON?.members[0]?.id)
+
+  fromUser.id = fromUser._id.toString()
+  delete fromUser._id
+
+  const changedMemberToChatRoomCreator = [{ ...savedChatRoomToJSON, members: [fromUser] }]
+
+  io.emitEventToRoom(toUser.socketId, 'new_chatRoom', changedMemberToChatRoomCreator)
 })
 
 chatRoomsRouter.get('/:id/messages', [isValidId, chatRoomExtractor], async (req, res) => {
