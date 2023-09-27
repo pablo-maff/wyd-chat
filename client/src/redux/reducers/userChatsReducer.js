@@ -51,7 +51,6 @@ const userChatsSlice = createSlice({
         data: {
           ...state.data,
           chatRooms: [...state.data.chatRooms, ...parsedChatRoom],
-          activeChat: parsedChatRoom[0]
         }
       }
     },
@@ -163,7 +162,7 @@ export const createUserChatRoomAction = (newChatRoom) => {
       const { data: chatRoom } = await ChatRoomService.createChatRoom(newChatRoom)
 
       dispatch(createUserChatRoom([chatRoom]))
-
+      dispatch(activateChat(chatRoom.id))
     }
     catch (error) {
       console.error(error)

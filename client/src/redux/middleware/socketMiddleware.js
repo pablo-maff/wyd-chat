@@ -1,4 +1,4 @@
-import { appendChatRoomMessage } from '../reducers/userChatsReducer';
+import { appendChatRoomMessage, createUserChatRoom } from '../reducers/userChatsReducer';
 import { addUser, removeTypingUser, setOnlineUsersById, setTypingUser } from '../reducers/userContactsReducer';
 
 export default function socketMiddleware(socket) {
@@ -6,15 +6,11 @@ export default function socketMiddleware(socket) {
     const { dispatch } = params
     const { type, payload } = action
 
-    console.log('type', type);
-    console.log('payload', payload);
-
     switch (type) {
       // * Connect to the socket when a user logs in
       case 'userAuthentication/login': {
         socket.connect()
         socket.emit('login', payload)
-
 
         // * Set up all the socket event handlers
         // * When these events are received from the socket, they'll dispatch the proper Redux action
@@ -40,13 +36,14 @@ export default function socketMiddleware(socket) {
           dispatch(setTypingUser(userId))
         })
 
-        // TODO: Append a user every time a new one is registered
-        socket.on('new user added', (user) => {
+        // * Append a user every time a new one is registered
+        socket.on('new_user_added', (user) => {
           dispatch(addUser(user))
         })
 
-        // TODO: Add the current user to the online users list
-        socket.emit('new login', payload)
+        socket.on('new_chatRoom', (chatRoom) => {
+          dispatch(createUserChatRoom(chatRoom))
+        })
 
         break
       }
