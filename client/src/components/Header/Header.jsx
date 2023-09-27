@@ -7,7 +7,7 @@ import { Icon } from '../Icon';
 import { useSelector } from 'react-redux';
 
 export function Header({ activeChat }) {
-  const { typingUsers } = useSelector(state => state.userContacts)
+  const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
 
   return (
     <header className='bg-white p-4 shadow-md'>
@@ -20,8 +20,9 @@ export function Header({ activeChat }) {
           <Contact
             name={activeChat?.title}
             avatar={activeChat?.contact?.avatarPhoto}
-            typing={typingUsers.includes(activeChat?.contact?.id)}
-            showLastSeen={activeChat.contact.lastTimeOnline}
+            typing={typingUsersById.includes(activeChat?.contact?.id)}
+            showLastSeen={activeChat.contact?.lastTimeOnline}
+            isOnline={onlineUsersById.includes(activeChat?.contact?.id)}
           />
           <div className='w-32 mr-8 flex justify-between'>
             <Button text={<Icon IconComponent={BsCameraVideo} />} />

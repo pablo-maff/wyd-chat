@@ -1,6 +1,7 @@
 const { Server } = require('socket.io');
 const User = require('../models/user');
 
+// TODO: Apply api middlewares logic like isValidId and errors handling here
 class SocketServer {
   constructor(httpServer) {
     this.io = new Server(httpServer, {
@@ -20,11 +21,14 @@ class SocketServer {
 
       socket.on('login', async ({ id }) => {
         console.log(`⚡: ${socket.id} user just connected!`);
+        if (!id) return
+
         const user = await User.findByIdAndUpdate(id, {
           socketId: socket.id,
           online: true,
         })
 
+        // TODO: Remove code below when migration to webhooks is completed
         if (!user) return
 
         this.activeUserSessions = this.getUniqueArrayValues([...this.activeUserSessions, id])
@@ -33,8 +37,14 @@ class SocketServer {
       })
 
       socket.on('disconnect', async () => {
-        const user = await User.findOne({ socketId: socket.id })
+        if (!socket.id) return
 
+        const user = await User.findOneAndUpdate({ socketId: socket.id }, {
+          socketId: null,
+          online: false,
+        })
+
+        // TODO: Remove code below when migration to webhooks is completed
         if (!user) return
 
         this.activeUserSessions = this.activeUserSessions.filter(activeUser => activeUser !== user.id)
@@ -42,14 +52,17 @@ class SocketServer {
         this.io.emit('users_online', this.activeUserSessions)
       });
 
-      // Add your socket event listeners here
       socket.on('typing', async ({ from, to }) => {
+        if (!from || !to) return
+
         const toUser = await User.findById(to);
 
         this.emitEventToRoom(toUser.socketId, 'user_starts_typing', from)
       })
 
       socket.on('stopped_typing', async ({ from, to }) => {
+        if (!from || !to) return
+
         const toUser = await User.findById(to);
 
         this.emitEventToRoom(toUser.socketId, 'user_stopped_typing', from)
@@ -62,11 +75,10 @@ class SocketServer {
     this.io.to(room).emit(event, data)
   }
 
+  // TODO: Remove method below when migration to webhooks is completed
   getUniqueArrayValues(arrayValues) {
     return [...new Set(arrayValues)]
   }
-
-  // Add more methods as needed
 
   // Create a static method to get the SocketServer instance
   static getInstance(httpServer) {

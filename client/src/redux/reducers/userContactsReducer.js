@@ -6,7 +6,7 @@ const initialState = {
   onlineUsersById: [],
   loading: false,
   error: null,
-  typingUsers: []
+  typingUsersById: []
 }
 
 const usersSlice = createSlice({
@@ -20,6 +20,7 @@ const usersSlice = createSlice({
 
       return { ...state, data: filterCurrentUser, loading: false, error: null }
     },
+    // TODO: Remove method below when migration to webhooks is completed
     setOnlineUsersById: (state, action) => {
       return { ...state, onlineUsersById: action.payload }
     },
@@ -27,10 +28,10 @@ const usersSlice = createSlice({
       return { ...state, data: [...state.data, action.payload] }
     },
     setTypingUser: (state, action) => {
-      return { ...state, typingUsers: [...state.typingUsers, action.payload] }
+      return { ...state, typingUsersById: [...state.typingUsersById, action.payload] }
     },
     removeTypingUser: (state, action) => {
-      return { ...state, typingUsers: state.typingUsers.filter(userId => userId !== action.payload) }
+      return { ...state, typingUsersById: state.typingUsersById.filter(userId => userId !== action.payload) }
     },
     sendThisUserIsTyping: (state, action) => {
 

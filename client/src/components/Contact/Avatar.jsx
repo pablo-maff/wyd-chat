@@ -1,6 +1,6 @@
 import defaultAvatar from '../../assets/default-avatar/default_avatar.png'
 
-export function Avatar({ avatar, typing }) {
+export function Avatar({ avatar, typing, isOnline }) {
   const isTyping = typing ? 'border-2 border-blueChat-300' : ''
 
   return (
@@ -10,5 +10,6 @@ export function Avatar({ avatar, typing }) {
         className={`rounded-full min-w-16 min-h-16 ${isTyping}`}
         alt="avatar image"
       />
+      {isOnline && <div>Online</div>}
     </div>)
 }

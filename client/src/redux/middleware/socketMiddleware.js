@@ -19,6 +19,7 @@ export default function socketMiddleware(socket) {
         // * Set up all the socket event handlers
         // * When these events are received from the socket, they'll dispatch the proper Redux action
 
+        // TODO: Remove method below when migration to webhooks is completed
         // * Update the online users list every time a user logs in or out
         socket.on('users_online', (onlineUsers) => {
           dispatch(setOnlineUsersById(onlineUsers))
