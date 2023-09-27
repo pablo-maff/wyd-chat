@@ -8,7 +8,7 @@ export function Sidebar({ chats, users, activeChatId }) {
   const [toggleNewChat, setToggleNewChat] = useState(false)
 
   const { user } = useSelector(state => state.userAuthentication)
-  const { typingUsers } = useSelector(state => state.userContacts)
+  const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
 
   const dispatch = useDispatch()
 
@@ -66,8 +66,10 @@ export function Sidebar({ chats, users, activeChatId }) {
                             name={chat?.title}
                             avatar={chat?.contact?.avatarPhoto}
                             lastMessage={lastContactMessage}
-                            typing={typingUsers.includes(chat?.contact?.id)}
-                            selectedChat={chat.id === activeChatId ? true : false} />
+                            typing={typingUsersById.includes(chat?.contact?.id)}
+                            selectedChat={chat.id === activeChatId ? true : false}
+                            isOnline={onlineUsersById.includes(chat?.contact?.id)}
+                          />
                         </li>
                       );
                     })}

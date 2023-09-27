@@ -3,11 +3,11 @@ import { ContactInfo } from './ContactInfo';
 import { ContactName } from './ContactName';
 import clsx from 'clsx';
 
-export function Contact({ name, avatar, lastMessage, selectedChat, typing, showLastSeen }) {
+export function Contact({ name, avatar, lastMessage, selectedChat, typing, showLastSeen, isOnline }) {
   return (
     <div className={clsx('flex items-center', selectedChat && 'bg-blueChat-400 text-white')}>
       <div className="p-2 mr-2">
-        <Avatar avatar={avatar} typing={typing} />
+        <Avatar avatar={avatar} typing={typing} isOnline={isOnline} />
       </div>
       <div>
         <ContactName name={name} />

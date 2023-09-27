@@ -7,6 +7,7 @@ const { validateEmail } = require('../utils/helperFunctions');
 
 usersRouter.get('/', async (req, res) => {
   const users = await User.find({})
+    .select('firstName lastName avatarPhoto lastTimeOnline online chatRooms username')
 
   res.json(users)
 })
@@ -24,7 +25,7 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
         {
           path: 'members',
           match: { _id: { $ne: id } }, // * Only retrieve the members that are not the user making the request
-          select: 'firstName lastName avatarPhoto lastTimeOnline'
+          select: 'firstName lastName avatarPhoto lastTimeOnline online'
         },
       ],
     })

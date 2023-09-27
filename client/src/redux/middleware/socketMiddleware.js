@@ -1,5 +1,5 @@
 import { appendChatRoomMessage } from '../reducers/userChatsReducer';
-import { addUser, removeTypingUser, setTypingUser } from '../reducers/userContactsReducer';
+import { addUser, removeTypingUser, setOnlineUsersById, setTypingUser } from '../reducers/userContactsReducer';
 
 export default function socketMiddleware(socket) {
   return (params) => (next) => (action) => {
@@ -19,9 +19,10 @@ export default function socketMiddleware(socket) {
         // * Set up all the socket event handlers
         // * When these events are received from the socket, they'll dispatch the proper Redux action
 
-        // TODO: Update the online users list every time a user logs in or out
-        socket.on('users online', (onlineUsers) => {
-          // dispatch(setOnlineUsersByUsername(onlineUsers))
+        // TODO: Remove method below when migration to webhooks is completed
+        // * Update the online users list every time a user logs in or out
+        socket.on('users_online', (onlineUsers) => {
+          dispatch(setOnlineUsersById(onlineUsers))
         })
 
         // * Append a message every time a new one comes in
@@ -66,7 +67,6 @@ export default function socketMiddleware(socket) {
 
       // * Disconnect from the socket when a user logs out
       case 'userAuthentication/logout': {
-        socket.emit('end', payload)
         socket.disconnect()
         break
       }
