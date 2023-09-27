@@ -35,6 +35,7 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
 
 usersRouter.post('/', async (req, res) => {
   const { username, firstName, lastName, password } = req.body
+  const io = req.socketServer
 
   // * For now username can only be an email address
   const isValidUsername = validateEmail(username)
@@ -74,6 +75,8 @@ usersRouter.post('/', async (req, res) => {
   const savedUser = await user.save()
 
   res.status(201).json(savedUser)
+
+  io.emitEvent('new_user_added', user)
 })
 
 module.exports = usersRouter

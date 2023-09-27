@@ -33,7 +33,7 @@ class SocketServer {
 
         this.activeUserSessions = this.getUniqueArrayValues([...this.activeUserSessions, id])
 
-        this.io.emit('users_online', this.activeUserSessions)
+        this.emitEvent('users_online', this.activeUserSessions)
       })
 
       socket.on('disconnect', async () => {
@@ -49,7 +49,7 @@ class SocketServer {
 
         this.activeUserSessions = this.activeUserSessions.filter(activeUser => activeUser !== user.id)
 
-        this.io.emit('users_online', this.activeUserSessions)
+        this.emitEvent('users_online', this.activeUserSessions)
       });
 
       socket.on('typing', async ({ from, to }) => {
@@ -69,6 +69,10 @@ class SocketServer {
       })
 
     })
+  }
+
+  emitEvent(event, data) {
+    this.io.emit(event, data);
   }
 
   emitEventToRoom(room, event, data) {

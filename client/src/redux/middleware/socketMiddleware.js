@@ -15,7 +15,6 @@ export default function socketMiddleware(socket) {
         socket.connect()
         socket.emit('login', payload)
 
-
         // * Set up all the socket event handlers
         // * When these events are received from the socket, they'll dispatch the proper Redux action
 
@@ -41,12 +40,9 @@ export default function socketMiddleware(socket) {
         })
 
         // TODO: Append a user every time a new one is registered
-        socket.on('new user added', (user) => {
+        socket.on('new_user_added', (user) => {
           dispatch(addUser(user))
         })
-
-        // TODO: Add the current user to the online users list
-        socket.emit('new login', payload)
 
         break
       }
