@@ -3,7 +3,7 @@ import ChatInstance from '../../services/ChatInstance';
 
 const initialState = {
   data: null,
-  onlineUsersByUsername: [],
+  onlineUsersById: [],
   loading: false,
   error: null,
   typingUsers: []
@@ -20,8 +20,8 @@ const usersSlice = createSlice({
 
       return { ...state, data: filterCurrentUser, loading: false, error: null }
     },
-    setOnlineUsersByUsername: (state, action) => {
-      return { ...state, onlineUsersByUsername: action.payload }
+    setOnlineUsersById: (state, action) => {
+      return { ...state, onlineUsersById: action.payload }
     },
     addUser: (state, action) => {
       return { ...state, data: [...state.data, action.payload] }
@@ -55,7 +55,7 @@ const usersSlice = createSlice({
 export const {
   setUsers,
   addUser,
-  setOnlineUsersByUsername,
+  setOnlineUsersById,
   setTypingUser,
   removeTypingUser,
   sendThisUserIsTyping,

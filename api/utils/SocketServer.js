@@ -9,6 +9,8 @@ class SocketServer {
       }
     });
 
+    this.activeUserSessions = [];
+
     this.setupSocketListeners();
   }
 
@@ -18,20 +20,26 @@ class SocketServer {
 
       socket.on('login', async ({ id }) => {
         console.log(`⚡: ${socket.id} user just connected!`);
-        await User.findByIdAndUpdate(id, {
+        const user = await User.findByIdAndUpdate(id, {
           socketId: socket.id,
           online: true,
-        });
-      });
+        })
+
+        if (!user) return
+
+        this.activeUserSessions = this.getUniqueArrayValues([...this.activeUserSessions, id])
+
+        this.io.emit('users_online', this.activeUserSessions)
+      })
 
       socket.on('disconnect', async () => {
-        console.log(`🔥: DISCONNECT! ${socket.id} user disconnected`);
-      });
+        const user = await User.findOne({ socketId: socket.id })
 
-      socket.on('end', async (id) => {
-        console.log(`🔥: ${socket.id} user disconnected`);
-        await User.findByIdAndUpdate(id, { online: false });
-        socket.disconnect(0)
+        if (!user) return
+
+        this.activeUserSessions = this.activeUserSessions.filter(activeUser => activeUser !== user.id)
+
+        this.io.emit('users_online', this.activeUserSessions)
       });
 
       // Add your socket event listeners here
@@ -52,6 +60,10 @@ class SocketServer {
 
   emitEventToRoom(room, event, data) {
     this.io.to(room).emit(event, data)
+  }
+
+  getUniqueArrayValues(arrayValues) {
+    return [...new Set(arrayValues)]
   }
 
   // Add more methods as needed
