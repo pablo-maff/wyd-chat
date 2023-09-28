@@ -6,14 +6,31 @@ const User = require('../models/user')
 loginRouter.post('/', async (req, res) => {
   const { username, password } = req.body
 
+  if (!username) {
+    return res.status(401).json({
+      error: 'Missing username (it is your email)',
+    })
+  }
+
   const user = await User.findOne({ username })
 
-  const passwordCorrect =
-    user === null ? false : await bcrypt.compare(password, user.passwordHash)
+  if (!user) {
+    return res.status(404).json({
+      error: 'User not found',
+    })
+  }
 
-  if (!(user && passwordCorrect)) {
+  if (!user.isVerified) {
+    return res.status(403).json({
+      message: 'You need to verify your account before login in. Check your spam folder if you have not received the verification email'
+    })
+  }
+
+  const passwordCorrect = await bcrypt.compare(password, user.passwordHash)
+
+  if (!passwordCorrect) {
     return res.status(401).json({
-      error: 'Invalid username or password',
+      error: 'Invalid password',
     })
   }
 
@@ -24,7 +41,7 @@ loginRouter.post('/', async (req, res) => {
 
   const token = jwt.sign(
     userForToken,
-    process.env.SECRET,
+    process.env.SESSION_TOKEN_SECRET,
     // { expiresIn: 60 * 60 } // TODO: Enable for production
   )
 

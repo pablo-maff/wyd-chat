@@ -4,6 +4,15 @@ const User = require('../models/user')
 const { faker } = require('@faker-js/faker');
 const { isValidId, userExtractor } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: process.env.EMAIL_USERNAME,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
 
 usersRouter.get('/', async (req, res) => {
   const users = await User.find({})
@@ -33,9 +42,9 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
   res.json(users)
 })
 
+// TODO NEXT => Send validation email with token
 usersRouter.post('/', async (req, res) => {
   const { username, firstName, lastName, password } = req.body
-  const io = req.socketServer
 
   // * For now username can only be an email address
   const isValidUsername = validateEmail(username)
@@ -74,9 +83,18 @@ usersRouter.post('/', async (req, res) => {
 
   const savedUser = await user.save()
 
-  res.status(201).json(savedUser)
+  const verificationToken = savedUser.generateVerificationToken();
 
-  io.emitEvent('new_user_added', user)
+  const url = `http://localhost:3003/api/verify/${verificationToken}`
+  transporter.sendMail({
+    to: username,
+    subject: 'Verify Account',
+    html: `Click <a href = '${url}'>here</a> to confirm your email.`
+  })
+
+  res.status(201).json({
+    message: `Sent a verification email to ${username}`
+  })
 })
 
 module.exports = usersRouter

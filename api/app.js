@@ -12,6 +12,7 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const fallback = require('express-history-api-fallback');
 const SocketServer = require('./utils/SocketServer');
+const verifyRouter = require('./controllers/verify');
 
 const app = express()
 
@@ -44,6 +45,8 @@ const socketServer = SocketServer.getInstance(httpServer)
 app.use(middleware.tokenExtractor)
 
 app.use(middleware.attachWebSocket(socketServer))
+
+app.use('/api/verify', verifyRouter);
 
 app.use('/api/login', loginRouter)
 
