@@ -9,7 +9,6 @@ const unknownEndpoint = (req, res) => {
 }
 
 const errorHandler = (error, req, res, next) => {
-  console.log('ERROR NAMEL', error.name);
   if (error.name === 'ValidationError') {
     return res.status(400).json({
       error: error.message,
@@ -88,7 +87,7 @@ const chatRoomExtractor = async (req, res, next) => {
     })
   }
 
-  const chatRoom = await ChatRoom.findById(decodedToken.id)
+  const chatRoom = await ChatRoom.findById(req.params.id)
 
   if (!chatRoom) {
     return res.status(404).json({

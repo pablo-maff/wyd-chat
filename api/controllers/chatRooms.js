@@ -68,7 +68,11 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
 
   const changedMemberToChatRoomCreator = [{ ...savedChatRoomToJSON, members: [fromUser] }]
 
-  io.emitEventToRoom(toUser.socketId, 'new_chatRoom', changedMemberToChatRoomCreator)
+  if (toUser.socketId) {
+
+    io.emitEventToRoom(toUser.socketId, 'new_chatRoom', changedMemberToChatRoomCreator)
+
+  }
 })
 
 chatRoomsRouter.get('/:id/messages', [isValidId, chatRoomExtractor], async (req, res) => {
@@ -107,11 +111,13 @@ chatRoomsRouter.post('/:id/messages', [isValidId, userExtractor, chatRoomExtract
 
   await selectedChatRoom.save()
 
+  res.status(200).json(savedMessage)
+
   const toUser = await User.findById(to);
 
-  io.emitEventToRoom(toUser.socketId, 'receive_message', message)
-
-  res.status(200).json(savedMessage)
+  if (toUser.socketId) {
+    io.emitEventToRoom(toUser.socketId, 'receive_message', message)
+  }
 })
 
 module.exports = chatRoomsRouter

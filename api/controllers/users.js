@@ -45,7 +45,6 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
 // TODO NEXT => Send validation email with token
 usersRouter.post('/', async (req, res) => {
   const { username, firstName, lastName, password } = req.body
-  // const io = req.socketServer
 
   // * For now username can only be an email address
   const isValidUsername = validateEmail(username)
@@ -96,8 +95,6 @@ usersRouter.post('/', async (req, res) => {
   res.status(201).json({
     message: `Sent a verification email to ${username}`
   })
-
-  // io.emitEvent('new_user_added', user)
 })
 
 module.exports = usersRouter

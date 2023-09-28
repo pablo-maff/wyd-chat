@@ -2,8 +2,9 @@ const verifyRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
-verifyRouter.get('/', async (req, res) => {
-  const { token } = req
+verifyRouter.get('/:id', async (req, res) => {
+  const io = req.socketServer
+  const token = req.params.id
 
   if (!token) {
     return res.status(401).send({
@@ -25,9 +26,11 @@ verifyRouter.get('/', async (req, res) => {
 
   await user.save();
 
-  return res.status(200).json({
+  res.status(200).json({
     message: 'Account Verified'
-  });
+  })
+
+  io.emitEvent('new_user_added', user)
 })
 
 module.exports = verifyRouter

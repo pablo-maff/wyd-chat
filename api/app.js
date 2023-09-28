@@ -13,8 +13,6 @@ const morgan = require('morgan')
 const fallback = require('express-history-api-fallback');
 const SocketServer = require('./utils/SocketServer');
 const verifyRouter = require('./controllers/verify');
-const User = require('./models/user');
-const jwt = require('jsonwebtoken')
 
 const app = express()
 
@@ -48,37 +46,7 @@ app.use(middleware.tokenExtractor)
 
 app.use(middleware.attachWebSocket(socketServer))
 
-// app.get('/api/verify/:id', verifyRouter);
-app.get('/api/verify/:id', async (req, res) => {
-  console.log('req.token', req.params.id);
-  const token = req.params.id
-
-  if (!token) {
-    return res.status(401).send({
-      error: 'Missing Token'
-    })
-  }
-
-  const decodedToken = jwt.verify(token, process.env.USER_VERIFICATION_TOKEN_SECRET)
-
-  console.log('decodedToken', decodedToken);
-
-  const user = await User.findById(decodedToken.id)
-
-  if (!user) {
-    return res.status(404).send({
-      message: 'User does not  exists'
-    });
-  }
-
-  user.isVerified = true
-
-  await user.save();
-
-  return res.status(200).json({
-    message: 'Account Verified'
-  });
-})
+app.use('/api/verify', verifyRouter);
 
 app.use('/api/login', loginRouter)
 
