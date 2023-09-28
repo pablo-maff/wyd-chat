@@ -9,7 +9,6 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   const io = req.socketServer
   const userId = req.user.id
 
-  // * Query the ChatRoom collection to find a room with both members
   if (members?.length !== 2) {
     return res.status(400).json({
       error: 'Error: A chat room must have two members'
@@ -22,6 +21,7 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
     })
   }
 
+  // * Query the ChatRoom collection to find a room with both members
   const existingChatRoom = await ChatRoom.exists({
     members: {
       $all: members,

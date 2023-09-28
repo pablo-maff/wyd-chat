@@ -9,6 +9,7 @@ const unknownEndpoint = (req, res) => {
 }
 
 const errorHandler = (error, req, res, next) => {
+  console.log('ERROR NAMEL', error.name);
   if (error.name === 'ValidationError') {
     return res.status(400).json({
       error: error.message,
@@ -23,6 +24,12 @@ const errorHandler = (error, req, res, next) => {
     })
   }
   else if (error.name === 'SyntaxError') {
+    return res.status(400).json({
+      error: error.message,
+    })
+  }
+
+  else if (error.name === 'Invalid login') {
     return res.status(400).json({
       error: error.message,
     })
@@ -49,7 +56,7 @@ const tokenExtractor = (req, res, next) => {
 const userExtractor = async (req, res, next) => {
   const token = getTokenFrom(req)
 
-  const decodedToken = jwt.verify(token, process.env.SECRET)
+  const decodedToken = jwt.verify(token, process.env.SESSION_TOKEN_SECRET)
 
   if (!decodedToken.id) {
     return res.status(401).json({
@@ -73,7 +80,7 @@ const userExtractor = async (req, res, next) => {
 const chatRoomExtractor = async (req, res, next) => {
   const token = getTokenFrom(req)
 
-  const decodedToken = jwt.verify(token, process.env.SECRET)
+  const decodedToken = jwt.verify(token, process.env.SESSION_TOKEN_SECRET)
 
   if (!decodedToken.id) {
     return res.status(401).json({
@@ -81,7 +88,7 @@ const chatRoomExtractor = async (req, res, next) => {
     })
   }
 
-  const chatRoom = await ChatRoom.findById(req.params.id)
+  const chatRoom = await ChatRoom.findById(decodedToken.id)
 
   if (!chatRoom) {
     return res.status(404).json({
