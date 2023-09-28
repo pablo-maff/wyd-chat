@@ -85,7 +85,9 @@ usersRouter.post('/', async (req, res) => {
 
   const verificationToken = savedUser.generateVerificationToken();
 
-  const url = `http://localhost:3003/api/verify/${verificationToken}`
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://wyd-chat.onrender.com' : 'http://localhost:3003'
+
+  const url = `${baseURL}/api/verify/${verificationToken}`
   transporter.sendMail({
     to: username,
     subject: 'Verify Account',
