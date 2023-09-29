@@ -43,7 +43,7 @@ export const loginUser = (credentials) => {
 
       dispatch(login(loggedInUser.data))
       console.log('loggedInUser.data', loggedInUser.data);
-      dispatch(toast(`Welcome ${loggedInUser.data.username}`, 'success', 100))
+      dispatch(toast(`Welcome ${loggedInUser.data.username}`, 'success'))
     } catch (error) {
       console.error(error);
       // dispatch(setNotification('Invalid credentials', 'alert', 5))
