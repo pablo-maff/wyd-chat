@@ -3,13 +3,13 @@ import { AiFillInfoCircle, AiFillCheckCircle, AiFillWarning, AiOutlineClose } fr
 import { BiSolidErrorCircle } from 'react-icons/bi'
 
 export function Toast() {
-  // const { notification } = useSelector(state => state)
+  const notification = useSelector(state => state.notification)
 
-  // if (!notification.message || !notification.type) return null
+  if (!notification.message || !notification.type) return null
 
-  // const { message, type } = notification
-  const message = 'info message'
-  const type = 'error'
+  const { message, type } = notification
+  // const message = 'info message'
+  // const type = 'error'
   const iconClassName = 'mr-2 fill-current'
   const iconSize = '1.5em'
 
@@ -42,14 +42,11 @@ export function Toast() {
   return (
     <>
       <div
-        className={`${toastColor} fixed top-4 right-4 pointer-events-auto mx-auto mb-4 hidden w-96 max-w-full rounded-lg bg-primary-100 bg-clip-padding text-sm text-primary-700 shadow-lg shadow-black/5 data-[te-toast-show]:block data-[te-toast-hide]:hidden`}
+        className={`${toastColor} fixed top-4 right-4 pointer-events-auto mx-auto mb-4 w-96 max-w-full rounded-lg bg-primary-100 bg-clip-padding text-sm text-primary-700 shadow-lg shadow-black/5`}
         id="static-example"
         role="alert"
         aria-live="assertive"
         aria-atomic="true"
-        data-te-autohide="false"
-        data-te-toast-init
-        data-te-toast-show
       >
         <div
           className="flex items-center justify-between rounded-t-lg border-b-2 border-primary-200 bg-primary-100 bg-clip-padding px-4 pb-2 pt-2.5 text-primary-700">
@@ -61,7 +58,6 @@ export function Toast() {
             <button
               type="button"
               className="ml-2 box-content rounded-none border-none opacity-80 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-              data-te-toast-dismiss
               aria-label="Close">
               <span
                 className="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">

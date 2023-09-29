@@ -4,7 +4,7 @@ export const notificationSlice = createSlice({
   name: 'notification',
   initialState: {
     timeoutId: null,
-    msg: null,
+    message: null,
     type: null,
   },
   reducers: {
@@ -17,7 +17,7 @@ export const notificationSlice = createSlice({
     removeNotification: () => {
       return {
         timeoutId: null,
-        msg: null,
+        message: null,
         type: null,
       }
     },
@@ -27,13 +27,19 @@ export const notificationSlice = createSlice({
 export const { addNotification, removeNotification } =
   notificationSlice.actions
 
-export const toast = (msg, type, timeout = 5) => {
+// * type: 'info' || 'success' || 'warning' || 'error'
+export const toast = (message, type, timeout = 5) => {
   return (dispatch) => {
+    if (!message || !type) {
+      console.error('Error: notification\'s message or type missing')
+      return
+    }
+
     const timeoutId = setTimeout(
       () => dispatch(removeNotification()),
       timeout * 1000
     )
-    const notification = { msg, type, timeoutId }
+    const notification = { message, type, timeoutId }
     dispatch(addNotification(notification))
   }
 }

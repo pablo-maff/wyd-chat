@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { keepUserSessionAlive } from './redux/reducers/userAuthenticationReducer';
 import { LocalStorageManager } from './utils/LocalStorageManager';
 import { initializeUserContacts } from './redux/reducers/userContactsReducer';
-import { Toast } from './components/Toast/Toast';
+import { Toast } from './components/Toast';
 
 function PrivateRoute({ redirectPath = '/auth' }) {
   const { user } = useSelector(state => state.userAuthentication)
@@ -45,17 +45,20 @@ export default function App() {
   }, [getItem, isAuthenticated, dispatch])
 
   return (
-    <Router>
-      <Routes>
-        <Route path='/dev' element={<Toast />} />
-        <Route path='*' element={<Navigate to={'/auth'} />} />
-        <Route path='/auth' element={<Login />} />
-        <Route element={<PrivateRoute />} >
-          <Route path='/chat' element={<Main />} >
-            <Route path='/chat/:id' element={<Chat />} />
+    <>
+      <Router>
+        <Routes>
+          <Route path='/dev' element={<Toast />} />
+          <Route path='*' element={<Navigate to={'/auth'} />} />
+          <Route path='/auth' element={<Login />} />
+          <Route element={<PrivateRoute />} >
+            <Route path='/chat' element={<Main />} >
+              <Route path='/chat/:id' element={<Chat />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </Router >
+        </Routes>
+      </Router>
+      <Toast />
+    </>
   )
 }
