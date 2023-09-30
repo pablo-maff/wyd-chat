@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import RegisterForm from './Register';
+import RegisterForm from '../components/AuthForms/RegisterForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/reducers/userAuthenticationReducer';
 
@@ -40,7 +40,7 @@ export function Login() {
       {!showRegisterForm ?
         <div className="min-h-screen flex flex-col items-center justify-center pb-40">
           <div className="shadow-xl bg-blueChat-200 p-8 rounded-lg">
-            <h3 className="text-xl mb-2">Login</h3>
+            <h3 className="text-xl mb-2 text-white font-semibold">Login</h3>
             <div className="flex flex-col items-center w-60">
               <form onSubmit={handleLogin}>
                 <input

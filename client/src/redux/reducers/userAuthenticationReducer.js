@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import LoginService from '../../services/loginService';
-// import { setNotification } from './notificationReducer'
 import { LocalStorageManager } from '../../utils/LocalStorageManager';
 import { resetUserChatsState } from './userChatsReducer';
+import { toast } from './notificationsReducer';
 
 const { setItem, removeItem } = LocalStorageManager
 
@@ -42,7 +42,8 @@ export const loginUser = (credentials) => {
       const loggedInUser = await LoginService.login(credentials)
 
       dispatch(login(loggedInUser.data))
-      // dispatch(setNotification(`Welcome ${loggedInUser.name}`, 'success', 5))
+      console.log('loggedInUser.data', loggedInUser.data);
+      dispatch(toast(`Welcome ${loggedInUser.data.username}`, 'success'))
     } catch (error) {
       console.error(error);
       // dispatch(setNotification('Invalid credentials', 'alert', 5))
