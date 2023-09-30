@@ -1,19 +1,25 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AiFillInfoCircle, AiFillCheckCircle, AiFillWarning, AiOutlineClose } from 'react-icons/ai'
 import { BiSolidErrorCircle } from 'react-icons/bi'
+import { removeNotification } from '../../redux/reducers/notificationsReducer';
 
 export function Toast() {
   const notification = useSelector(state => state.notification)
 
+  const dispatch = useDispatch()
+
   if (!notification.message || !notification.type) return null
 
   const { message, type } = notification
-  // const message = 'info message'
-  // const type = 'error'
+
+  function handleClose() {
+    dispatch(removeNotification())
+  }
+
   const iconClassName = 'mr-2 fill-current'
   const iconSize = '1.5em'
 
-  let toastIcon;
+  let toastIcon
   let toastColor
 
   switch (type) {
@@ -61,7 +67,7 @@ export function Toast() {
               aria-label="Close">
               <span
                 className="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
-                <AiOutlineClose size='1.5em' className='m-1' />
+                <AiOutlineClose onClick={handleClose} size='1.5em' className='m-1' />
               </span>
             </button>
           </div>

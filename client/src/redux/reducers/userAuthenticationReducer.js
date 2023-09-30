@@ -46,7 +46,7 @@ export const loginUser = (credentials) => {
       dispatch(toast(`Welcome ${loggedInUser.data.username}`, 'success'))
     } catch (error) {
       console.error(error);
-      // dispatch(setNotification('Invalid credentials', 'alert', 5))
+      dispatch(toast(error?.response?.data.error, 'error'))
     }
   }
 }

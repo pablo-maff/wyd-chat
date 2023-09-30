@@ -14,9 +14,9 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-usersRouter.get('/', async (req, res) => {
+usersRouter.get('/', userExtractor, async (req, res) => {
   const users = await User.find({})
-    .select('firstName lastName avatarPhoto lastTimeOnline online chatRooms username')
+    .select('firstName lastName avatarPhoto lastTimeOnline online')
 
   res.json(users)
 })

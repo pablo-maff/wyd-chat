@@ -18,7 +18,7 @@ verifyRouter.get('/:id', async (req, res) => {
 
   if (!user) {
     return res.status(404).send({
-      message: 'User does not  exists'
+      error: 'User does not  exists'
     });
   }
 
@@ -27,7 +27,7 @@ verifyRouter.get('/:id', async (req, res) => {
   await user.save();
 
   res.status(200).json({
-    message: 'Account Verified'
+    error: 'Account Verified'
   })
 
   io.emitEvent('new_user_added', user)
