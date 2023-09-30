@@ -32,11 +32,11 @@ const RegisterForm = ({ handleShowRegisterForm }) => {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-4 border border-gray-300 rounded shadow">
-      <h2 className="text-2xl font-semibold text-center mb-4">Register</h2>
+    <div className="max-w-md mx-auto mt-8 p-4 border bg-blueChat-200 rounded shadow">
+      <h2 className="text-2xl font-semibold text-center mb-4 text-white">Register</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
+          <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-white">
             First Name
           </label>
           <input
@@ -45,12 +45,12 @@ const RegisterForm = ({ handleShowRegisterForm }) => {
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 glow"
             required
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="lastName" className="block mb-2 text-sm font-medium">
+          <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-white">
             Last Name
           </label>
           <input
@@ -59,12 +59,12 @@ const RegisterForm = ({ handleShowRegisterForm }) => {
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 glow"
             required
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="email" className="block mb-2 text-sm font-medium">
+          <label htmlFor="email" className="block mb-2 text-sm font-medium text-white">
             Email
           </label>
           <input
@@ -73,12 +73,12 @@ const RegisterForm = ({ handleShowRegisterForm }) => {
             name="username"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 glow"
             required
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="password" className="block mb-2 text-sm font-medium">
+          <label htmlFor="password" className="block mb-2 text-sm font-medium text-white">
             Password
           </label>
           <input
@@ -87,7 +87,7 @@ const RegisterForm = ({ handleShowRegisterForm }) => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 glow"
             required
           />
         </div>

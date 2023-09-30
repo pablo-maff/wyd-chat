@@ -48,7 +48,7 @@ export function Login() {
                   name="username"
                   placeholder="Username"
                   onChange={(event) => setUserName(event.target.value)}
-                  className="mb-2 p-2 rounded border bg-white border-gray-400 w-full"
+                  className="mb-2 p-2 rounded border bg-white border-gray-400 w-full glow"
                   required
                 />
                 <input
@@ -56,7 +56,7 @@ export function Login() {
                   name="password"
                   placeholder="Password"
                   onChange={(event) => setPassword(event.target.value)}
-                  className="mb-4 p-2 rounded border bg-white border-gray-400 w-full"
+                  className="mb-4 p-2 rounded border bg-white border-gray-400 w-full glow"
                   required
                 />
                 <button
