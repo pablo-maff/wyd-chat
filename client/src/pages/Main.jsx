@@ -1,7 +1,7 @@
 import { Sidebar } from '../components/Sidebar/Sidebar';
 import { useEffect } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router';
-import { Header } from '../components/Header/Header';
+import { ChatHeader } from '../components/Chat/ChatHeader';
 import { useDispatch, useSelector } from 'react-redux'
 import { resetUserChatsState } from '../redux/reducers/userChatsReducer';
 import { logoutUser } from '../redux/reducers/userAuthenticationReducer';
@@ -66,7 +66,7 @@ function Main() {
       <Sidebar chats={chatRooms?.chatRooms} users={users} activeChatId={activeChatId} />
       {activeChatId ?
         <div className='flex flex-1 flex-col'>
-          <Header activeChat={chatRooms.activeChat} />
+          <ChatHeader activeChat={chatRooms.activeChat} />
           <Outlet />
         </div>
         :

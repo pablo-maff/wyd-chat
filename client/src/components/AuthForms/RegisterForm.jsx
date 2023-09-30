@@ -1,114 +1,101 @@
-import { useState } from 'react';
 import UsersService from '../../services/usersService';
+import { useField } from '../../hooks/useField';
+import { useDispatch } from 'react-redux';
+import { toast } from '../../redux/reducers/notificationsReducer';
 
-const RegisterForm = ({ handleShowRegisterForm }) => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    username: '', // * It is an email for now, we just rely on native input email validation to not open that can of worms. Token verification through email is what we want here
-    password: '',
-  });
+const RegisterForm = ({ handleToggleForm }) => {
+  const username = useField('email')
+  const firstName = useField('text')
+  const lastName = useField('text')
+  const password = useField('password')
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  }
+  const dispatch = useDispatch()
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    UsersService.register(formData)
+    const newUser = {
+      firstName: firstName.inputs.value,
+      lastName: lastName.inputs.value,
+      username: username.inputs.value,
+      password: password.inputs.value,
+    }
+
+    UsersService.register(newUser)
       .then(_ => {
-        //TODO: Notification here
-        handleShowRegisterForm(e)
+        dispatch(toast('We sent you an e-mail to verify that is you. Please click on the verification link and proceed to login', 'success', 10))
+        handleToggleForm(e)
       })
       .catch(error => {
         console.error(error)
-        //TODO: Notification here
+        dispatch(toast(`${error.response?.data?.error}`, 'error', 10))
       })
   }
 
   return (
-    <div className="flex justify-center min-h-screen bg-blueChat-100">
-      <div className='min-h-screen flex flex-col items-center justify-center pb-40'>
-        <div className='shadow-xl bg-blueChat-200 p-8 rounded-lg'>
-          <h2 className="text-2xl font-semibold text-center text-white mb-4">Register</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label htmlFor="firstName" className="block mb-2 text-sm text-white font-medium">
-                First Name
-              </label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 glow"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="lastName" className="block mb-2 text-sm text-white font-medium">
-                Last Name
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 glow"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block mb-2 text-sm text-white font-medium">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="username"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 glow"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="password" className="block mb-2 text-sm text-white font-medium">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 glow"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
-            >
-              Register
-            </button>
-          </form>
-          <button
-            onClick={handleShowRegisterForm}
-            className="w-full mt-2 bg-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
-          >
-            Back to Login
-          </button>
+    <>
+      <form onSubmit={handleSubmit} className='w-full'>
+        <div className="mb-2">
+          <label htmlFor="firstName" className="block mb-2 text-sm text-white font-medium">
+            First Name
+          </label>
+          <input
+            id="firstName"
+            name="firstName"
+            required
+            minLength={2}
+            {...firstName.inputs}
+          />
         </div>
-      </div>
-    </div>
+        <div className="mb-2">
+          <label htmlFor="lastName" className="block mb-2 text-sm text-white font-medium">
+            Last Name
+          </label>
+          <input
+            id="lastName"
+            name="lastName"
+            required
+            minLength={2}
+            {...lastName.inputs}
+          />
+        </div>
+        <div className="mb-2">
+          <label htmlFor="email" className="block mb-2 text-sm text-white font-medium">
+            Email
+          </label>
+          <input
+            id="email"
+            name="username"
+            required
+            {...username.inputs}
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="password" className="block mb-2 text-sm text-white font-medium">
+            Password
+          </label>
+          <input
+            id="password"
+            name="password"
+            required
+            minLength={8}
+            {...password.inputs}
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
+        >
+          Register
+        </button>
+      </form>
+      <button
+        onClick={handleToggleForm}
+        className="w-full mt-2 bg-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
+      >
+        Back to Login
+      </button>
+    </>
   );
 };
 
