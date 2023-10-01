@@ -45,7 +45,7 @@ export function LoginForm({ handleToggleForm }) {
           type="submit"
           className='w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200'
         >
-          Login
+          Auth
         </button>
       </form>
       <button

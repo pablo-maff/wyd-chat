@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Header } from '../components/Header/Header';
 import { LoginForm } from '../components/AuthForms/LoginForm';
 
-export function Login() {
+export function Auth() {
   const [toggleForm, setToggleForm] = useState(false)
 
   const navigate = useNavigate()
@@ -31,7 +31,7 @@ export function Login() {
         <div className="mt-16 flex flex-col items-center justify-center">
           <div className="min-w-[300px] shadow-xl p-8 rounded-lg mb-4 bd-filter">
             <h3 className="text-2xl mb-4 font-semibold text-center">
-              {!toggleForm ? 'Login' : 'Register'}
+              {!toggleForm ? 'Auth' : 'Register'}
             </h3>
             {!toggleForm ?
               <LoginForm handleToggleForm={handleToggleForm} />
