@@ -4,7 +4,7 @@ export const useField = (type) => {
   const [value, setValue] = useState('')
   const inputRef = useRef(null);
 
-  const initialStyling = 'p-2 rounded border border-gray-500 bg-white w-full'
+  const initialStyling = 'p-2 rounded border border-gray-500 bg-white w-full glow'
 
   useEffect(() => {
     // * Set the initial className when the component mounts
@@ -22,10 +22,14 @@ export const useField = (type) => {
     const isValid = inputRef.current.validity.valid
 
     // * Set the border color based on validity
-    const borderColorClass = isValid ? 'border-green-500' : 'border-red-500'
+    const borderColorClass = isValid ? 'border-green-600' : 'border-red-600'
+
+    console.log('borderColorClass', borderColorClass);
 
     // * Update the input's className to change the border color
     inputRef.current.className = `${initialStyling} ${borderColorClass}`
+
+    console.log('inputRef.current.className', inputRef.current.className);
   }
 
   function clearValue() {
