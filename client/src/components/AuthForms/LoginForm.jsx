@@ -21,7 +21,7 @@ export function LoginForm({ handleToggleForm }) {
     <>
       <form onSubmit={handleLogin} className='w-full' >
         <div className="mb-2">
-          <label htmlFor="login-email" className="block mb-2 text-sm text-white font-medium">E-mail</label>
+          <label htmlFor="login-email" className="block mb-2 text-sm  font-medium">E-mail</label>
           <input
             id='login-email'
             name="username"
@@ -31,7 +31,7 @@ export function LoginForm({ handleToggleForm }) {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="login-password" className="block mb-2 text-sm text-white font-medium">Password</label>
+          <label htmlFor="login-password" className="block mb-2 text-sm font-medium">Password</label>
           <input
             name="password"
             id='login-password'
@@ -50,7 +50,7 @@ export function LoginForm({ handleToggleForm }) {
       </form>
       <button
         onClick={handleToggleForm}
-        className="w-full mt-2 bg-white py-2 rounded hover:bg-blue-600 hover:text-white focus:outline-none focus:ring focus:ring-blue-200"
+        className="w-full mt-2 border border-gray-500 bg-white py-2 rounded hover:bg-blue-600 hover:text-white focus:outline-none focus:ring focus:ring-blue-200"
       >
         Register
       </button>
