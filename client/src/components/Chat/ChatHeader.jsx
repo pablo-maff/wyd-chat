@@ -8,7 +8,7 @@ export function ChatHeader({ activeChat }) {
   const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
 
   return (
-    <header className='bg-white p-4 shadow-md'>
+    <div className='bg-white p-4 shadow-md'>
       <div className='w-full flex flex-row justify-between items-center'>
         <Contact
           name={activeChat?.title}
@@ -23,6 +23,6 @@ export function ChatHeader({ activeChat }) {
           <Button text={<Icon IconComponent={BsInfoCircle} />} />
         </div>
       </div>
-    </header>
+    </div>
   );
 }

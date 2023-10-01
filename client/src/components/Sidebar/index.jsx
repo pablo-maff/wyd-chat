@@ -39,65 +39,55 @@ export function Sidebar({ chats, users, activeChatId }) {
 
   // TODO: Refactor into smaller components
   return (
-    <>
-      <div className='relative sidebar flex flex-col w-[22rem] h-screen items-center gap-6 bg-blueChat-100'>
-        <SidebarHeader />
-        {/* <div className='sidebar-header w-full flex justify-around'>
-          <h2 className='font-bold text-2xl self-start'>{!toggleNewChat ? 'Your Chats' : 'New Chat'}</h2>
-          <button
-            onClick={() => dispatch(logoutUser(user))}
-            className='bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200'>
-            Logout
-          </button>
-        </div> */}
-        <div>
-          {chats && users &&
-            <ul className='chat-list flex flex-col gap-y-1 w-full'>
-              <>
-                {!toggleNewChat ?
-                  <>
-                    {chats.map((chat) => {
-                      const lastContactMessage = chat?.messages
-                        ?.filter(message => message.from !== user.id)
-                        .at(-1)
+    <div className='relative sidebar flex flex-col w-[22rem] h-screen items-center gap-6 bg-blueChat-100'>
+      <SidebarHeader />
+      <div className='w-full  '>
+        {chats && users &&
+          <ul className='chat-list flex flex-col gap-y-1 m-2'>
+            <>
+              {!toggleNewChat ?
+                <>
+                  {chats.map((chat) => {
+                    const lastContactMessage = chat?.messages
+                      ?.filter(message => message.from !== user.id)
+                      .at(-1)
 
-                      return (
-                        <li key={chat.id} onClick={() => handleSelectChat(chat.id)} className='hover:cursor-pointer'>
-                          <Contact
-                            key={chat?.contact?.id}
-                            name={chat?.title}
-                            avatar={chat?.contact?.avatarPhoto}
-                            lastMessage={lastContactMessage}
-                            typing={typingUsersById.includes(chat?.contact?.id)}
-                            selectedChat={chat.id === activeChatId ? true : false}
-                            isOnline={onlineUsersById.includes(chat?.contact?.id)}
-                          />
-                        </li>
-                      );
-                    })}
-                  </>
-                  :
-                  <>
-                    {users.map((user) => (
-                      <li key={user.id} onClick={() => handleCreateChatRoom(user.id)} className='hover:cursor-pointer'>
+                    return (
+                      <li key={chat.id} onClick={() => handleSelectChat(chat.id)} className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg'>
                         <Contact
-                          key={user.id}
-                          name={`${user?.firstName} ${user?.lastName}`}
-                          avatar={user?.avatarPhoto}
-                          showLastSeen={user?.lastTimeOnline}
+                          key={chat?.contact?.id}
+                          name={chat?.title}
+                          avatar={chat?.contact?.avatarPhoto}
+                          lastMessage={lastContactMessage}
+                          typing={typingUsersById.includes(chat?.contact?.id)}
+                          selectedChat={chat.id === activeChatId ? true : false}
+                          isOnline={onlineUsersById.includes(chat?.contact?.id)}
                         />
                       </li>
-                    ))}
-                  </>
-                }
-              </>
-            </ul>
-          }
-        </div>
-        <div className='absolute bottom-10 right-4'>
-          <button onClick={handleNewChatView} className='bg-blueChat-200'>{!toggleNewChat ? 'New Chat' : 'Your Chats'}</button>
-        </div>
+                    );
+                  })}
+                </>
+                :
+                <>
+                  {users.map((user) => (
+                    <li key={user.id} onClick={() => handleCreateChatRoom(user.id)} className='hover:cursor-pointer'>
+                      <Contact
+                        key={user.id}
+                        name={`${user?.firstName} ${user?.lastName}`}
+                        avatar={user?.avatarPhoto}
+                        showLastSeen={user?.lastTimeOnline}
+                      />
+                    </li>
+                  ))}
+                </>
+              }
+            </>
+          </ul>
+        }
       </div>
-    </>
+      <div className='absolute bottom-10 right-4'>
+        <button onClick={handleNewChatView} className='bg-blueChat-200'>{!toggleNewChat ? 'New Chat' : 'Your Chats'}</button>
+      </div>
+    </div>
   );
 }

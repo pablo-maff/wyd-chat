@@ -12,7 +12,7 @@ export function ContactInfo({ typing, lastMessage, showLastSeen, selectedChat })
         <>
           {
             !showLastSeen && lastMessage ?
-              <p className='text-sm line-clamp-1'>{lastMessage?.text}</p >
+              <p className='text-sm line-clamp-1'>{lastMessage?.text}</p>
               :
               formattedTimePassed ?
                 <p className='text-sm line-clamp-1'>Last seen {formattedTimePassed} ago</p>

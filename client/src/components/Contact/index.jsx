@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 export function Contact({ name, avatar, lastMessage, selectedChat, typing, showLastSeen, isOnline }) {
   return (
-    <div className={clsx('flex items-center', selectedChat && 'bg-blueChat-400 text-white')}>
+    <div className={clsx('flex items-center', selectedChat && 'bg-blueChat-300 text-white rounded-lg')}>
       <div className="p-2 mr-2">
         <Avatar avatar={avatar} typing={typing} isOnline={isOnline} />
       </div>
