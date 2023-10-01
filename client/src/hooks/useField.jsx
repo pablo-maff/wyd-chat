@@ -4,7 +4,7 @@ export const useField = (type) => {
   const [value, setValue] = useState('')
   const inputRef = useRef(null);
 
-  const initialStyling = 'p-2 rounded border border-gray-400 bg-white w-full'
+  const initialStyling = 'p-2 rounded border border-gray-500 bg-white w-full'
 
   useEffect(() => {
     // * Set the initial className when the component mounts

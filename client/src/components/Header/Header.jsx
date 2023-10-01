@@ -2,7 +2,7 @@ import logo from '../../assets/wyd-logos-blue/logo-tab.png';
 
 export function Header() {
   return (
-    <header className="flex items-center justify-between p-4">
+    <header className="flex items-center justify-between p-4 bg-white">
       <div className="flex items-center">
         <img
           src={logo}

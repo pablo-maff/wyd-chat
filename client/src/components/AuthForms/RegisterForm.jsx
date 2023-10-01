@@ -15,6 +15,7 @@ const RegisterForm = ({ handleToggleForm }) => {
 
   useEffect(() => {
     if (password.inputs.value !== confirmPassword.inputs.value) {
+      // * Set native html input validation error
       confirmPassword.inputs.ref.current.setCustomValidity('Passwords don\'t match');
       return
     }
@@ -120,7 +121,7 @@ const RegisterForm = ({ handleToggleForm }) => {
       </form>
       <button
         onClick={handleToggleForm}
-        className="w-full mt-2 bg-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
+        className="w-full mt-2 border border-gray-500 bg-white py-2 rounded hover:bg-blue-600 hover:text-white focus:outline-none focus:ring focus:ring-blue-200"
       >
         Back to Login
       </button>

@@ -48,7 +48,7 @@ export function Toast() {
   return (
     <>
       <div
-        className={`${toastColor} fixed top-4 right-4 pointer-events-auto mx-auto mb-4 w-96 max-w-full rounded-lg bg-primary-100 bg-clip-padding text-sm text-primary-700 shadow-lg shadow-black/5`}
+        className={`${toastColor} fixed bottom-4 right-4 pointer-events-auto mx-auto mb-4 w-96 max-w-full rounded-lg bg-primary-100 bg-clip-padding text-sm text-primary-700 shadow-lg shadow-black/5`}
         id="static-example"
         role="alert"
         aria-live="assertive"

@@ -14,11 +14,9 @@
 /* background-blur.css */
 .blur-overlay {
   /* Add styles for the blur overlay */
-  position: absolute;
   inset: 0;
   background-color: rgba(255, 255, 255, 0.5); /* Adjust the background color and opacity */
   backdrop-filter: blur(60px); /* Apply the blur effect */
-  pointer-events: none; /* Allow interactions with the content below */
 }
 
 .bd-filter {
