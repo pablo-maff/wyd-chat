@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Contact } from '../Contact'
 import { useDispatch, useSelector } from 'react-redux';
 import { activateChat, createUserChatRoomAction } from '../../redux/reducers/userChatsReducer';
-import { logoutUser } from '../../redux/reducers/userAuthenticationReducer';
 import { SidebarHeader } from './SidebarHeader';
 
 export function Sidebar({ chats, users, activeChatId }) {
@@ -39,7 +38,7 @@ export function Sidebar({ chats, users, activeChatId }) {
 
   // TODO: Refactor into smaller components
   return (
-    <div className='relative sidebar flex flex-col w-[22rem] h-screen items-center gap-6 bg-blueChat-100'>
+    <div className='relative sidebar flex flex-col min-w-[22rem] h-screen items-center gap-6 bg-blueChat-100'>
       <SidebarHeader />
       <div className='w-full  '>
         {chats && users &&
@@ -70,7 +69,7 @@ export function Sidebar({ chats, users, activeChatId }) {
                 :
                 <>
                   {users.map((user) => (
-                    <li key={user.id} onClick={() => handleCreateChatRoom(user.id)} className='hover:cursor-pointer'>
+                    <li key={user.id} onClick={() => handleCreateChatRoom(user.id)} className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg'>
                       <Contact
                         key={user.id}
                         name={`${user?.firstName} ${user?.lastName}`}
