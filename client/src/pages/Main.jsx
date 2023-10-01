@@ -1,4 +1,4 @@
-import { Sidebar } from '../components/Sidebar/Sidebar';
+import { Sidebar } from '../components/Sidebar';
 import { useEffect } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router';
 import { ChatHeader } from '../components/Chat/ChatHeader';
@@ -62,17 +62,17 @@ function Main() {
   }
 
   return (
-    <div className='w-full h-full flex flex-nowrap'>
+    <div className='w-full h-full flex flex-nowrap bg-blur'>
       <Sidebar chats={chatRooms?.chatRooms} users={users} activeChatId={activeChatId} />
       {activeChatId ?
-        <div className='flex flex-1 flex-col'>
+        <div className='flex flex-1 flex-col blur-overlay'>
           <ChatHeader activeChat={chatRooms.activeChat} />
           <Outlet />
         </div>
         :
         <div className='w-2/3 bg-blueChat-50' />
       }
-    </div>
+    </div >
   );
 }
 

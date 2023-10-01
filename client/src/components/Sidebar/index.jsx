@@ -3,6 +3,7 @@ import { Contact } from '../Contact'
 import { useDispatch, useSelector } from 'react-redux';
 import { activateChat, createUserChatRoomAction } from '../../redux/reducers/userChatsReducer';
 import { logoutUser } from '../../redux/reducers/userAuthenticationReducer';
+import { SidebarHeader } from './SidebarHeader';
 
 export function Sidebar({ chats, users, activeChatId }) {
   const [toggleNewChat, setToggleNewChat] = useState(false)
@@ -39,15 +40,16 @@ export function Sidebar({ chats, users, activeChatId }) {
   // TODO: Refactor into smaller components
   return (
     <>
-      <div className='relative sidebar flex flex-col w-[22rem] h-screen items-center pt-10 gap-6 bg-blueChat-100 px-8'>
-        <div className='sidebar-header w-full flex justify-around'>
+      <div className='relative sidebar flex flex-col w-[22rem] h-screen items-center gap-6 bg-blueChat-100'>
+        <SidebarHeader />
+        {/* <div className='sidebar-header w-full flex justify-around'>
           <h2 className='font-bold text-2xl self-start'>{!toggleNewChat ? 'Your Chats' : 'New Chat'}</h2>
           <button
             onClick={() => dispatch(logoutUser(user))}
             className='bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200'>
             Logout
           </button>
-        </div>
+        </div> */}
         <div>
           {chats && users &&
             <ul className='chat-list flex flex-col gap-y-1 w-full'>

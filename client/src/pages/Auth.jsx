@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../components/AuthForms/RegisterForm';
 import { useSelector } from 'react-redux';
-import { Header } from '../components/Header/Header';
+import { Header } from '../components/Header';
 import { LoginForm } from '../components/AuthForms/LoginForm';
 
 export function Auth() {
@@ -31,7 +31,7 @@ export function Auth() {
         <div className="mt-16 flex flex-col items-center justify-center">
           <div className="min-w-[300px] shadow-xl p-8 rounded-lg mb-4 bd-filter">
             <h3 className="text-2xl mb-4 font-semibold text-center">
-              {!toggleForm ? 'Auth' : 'Register'}
+              {!toggleForm ? 'Login' : 'Register'}
             </h3>
             {!toggleForm ?
               <LoginForm handleToggleForm={handleToggleForm} />
