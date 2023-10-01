@@ -1,4 +1,4 @@
-import logo from '../../assets/wyd-logos-blue/logo-blue-white.png'
+import logo from '../../assets/wyd-logos-blue/logo-tab.png';
 
 export function Header() {
   return (

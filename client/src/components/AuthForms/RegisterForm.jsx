@@ -2,14 +2,26 @@ import UsersService from '../../services/usersService';
 import { useField } from '../../hooks/useField';
 import { useDispatch } from 'react-redux';
 import { toast } from '../../redux/reducers/notificationsReducer';
+import { useEffect } from 'react';
 
 const RegisterForm = ({ handleToggleForm }) => {
   const username = useField('email')
   const firstName = useField('text')
   const lastName = useField('text')
   const password = useField('password')
+  const confirmPassword = useField('password')
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (password.inputs.value !== confirmPassword.inputs.value) {
+      confirmPassword.inputs.ref.current.setCustomValidity('Passwords don\'t match');
+      return
+    }
+
+    confirmPassword.inputs.ref.current.setCustomValidity('');
+
+  }, [confirmPassword.inputs.ref, confirmPassword.inputs.value, password.inputs.value])
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -36,42 +48,45 @@ const RegisterForm = ({ handleToggleForm }) => {
     <>
       <form onSubmit={handleSubmit} className='w-full'>
         <div className="mb-2">
-          <label htmlFor="firstName" className="block mb-2 text-sm text-white font-medium">
+          <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
             First Name
           </label>
           <input
             id="firstName"
             name="firstName"
+            autoComplete="given-name"
             required
             minLength={2}
             {...firstName.inputs}
           />
         </div>
         <div className="mb-2">
-          <label htmlFor="lastName" className="block mb-2 text-sm text-white font-medium">
+          <label htmlFor="lastName" className="block mb-2 text-sm font-medium">
             Last Name
           </label>
           <input
             id="lastName"
             name="lastName"
+            autoComplete="familiy-name"
             required
             minLength={2}
             {...lastName.inputs}
           />
         </div>
         <div className="mb-2">
-          <label htmlFor="email" className="block mb-2 text-sm text-white font-medium">
+          <label htmlFor="email" className="block mb-2 text-sm font-medium">
             Email
           </label>
           <input
             id="email"
             name="username"
+            autoComplete="email"
             required
             {...username.inputs}
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="password" className="block mb-2 text-sm text-white font-medium">
+          <label htmlFor="password" className="block mb-2 text-sm font-medium">
             Password
           </label>
           <input
@@ -79,7 +94,21 @@ const RegisterForm = ({ handleToggleForm }) => {
             name="password"
             required
             minLength={8}
+            autoComplete="password"
             {...password.inputs}
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium">
+            Confirm Password
+          </label>
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+            minLength={8}
+            autoComplete="new-password"
+            {...confirmPassword.inputs}
           />
         </div>
         <button
