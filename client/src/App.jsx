@@ -1,6 +1,6 @@
 import { Navigate, Outlet, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Main from './pages/Main';
-import { Login } from './pages/Login';
+import { Auth } from './pages/Auth';
 import Chat from './components/Chat';
 import { useDispatch, useSelector } from 'react-redux';
 import { initializeUserChats } from './redux/reducers/userChatsReducer';
@@ -50,7 +50,7 @@ export default function App() {
         <Routes>
           <Route path='/dev' element={<Toast />} />
           <Route path='*' element={<Navigate to={'/auth'} />} />
-          <Route path='/auth' element={<Login />} />
+          <Route path='/auth' element={<Auth />} />
           <Route element={<PrivateRoute />} >
             <Route path='/chat' element={<Main />} >
               <Route path='/chat/:id' element={<Chat />} />

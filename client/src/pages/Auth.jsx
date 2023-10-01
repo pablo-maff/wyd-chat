@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../components/AuthForms/RegisterForm';
 import { useSelector } from 'react-redux';
-import { Header } from '../components/Header/Header';
+import { Header } from '../components/Header';
 import { LoginForm } from '../components/AuthForms/LoginForm';
 
-export function Login() {
+export function Auth() {
   const [toggleForm, setToggleForm] = useState(false)
 
   const navigate = useNavigate()

@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 });
 
 usersRouter.get('/', userExtractor, async (req, res) => {
-  const users = await User.find({})
+  const users = await User.find({ isVerified: true })
     .select('firstName lastName avatarPhoto lastTimeOnline online')
 
   res.json(users)

@@ -24,7 +24,7 @@ function Chat() {
   }
 
   return (
-    <div className='flex flex-col h-full bg-blueChat-50' >
+    <div className='flex flex-col h-full' >
       {activeChat.messages &&
         <>
           <div className='flex-grow'>

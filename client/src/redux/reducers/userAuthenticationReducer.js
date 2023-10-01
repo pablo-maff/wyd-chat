@@ -42,7 +42,6 @@ export const loginUser = (credentials) => {
       const loggedInUser = await LoginService.login(credentials)
 
       dispatch(login(loggedInUser.data))
-      dispatch(toast(`Welcome ${loggedInUser.data.username}`, 'success'))
     } catch (error) {
       console.error(error);
       dispatch(toast(error?.response?.data.error, 'error'))

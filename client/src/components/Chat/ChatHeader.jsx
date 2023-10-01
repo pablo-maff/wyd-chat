@@ -1,6 +1,4 @@
 import { BsCameraVideo, BsInfoCircle, BsTelephone } from 'react-icons/bs';
-import { CiSettings } from 'react-icons/ci';
-import logo from '../../assets/wyd-logos-blue/logo-tab.png';
 import { Button } from '../Button';
 import { Contact } from '../Contact';
 import { Icon } from '../Icon';
@@ -10,27 +8,21 @@ export function ChatHeader({ activeChat }) {
   const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
 
   return (
-    <header className='bg-white p-4 shadow-md'>
-      <div className='flex flex-row'>
-        <div className='w-1/3 pr-4 flex justify-between items-center'>
-          <img src={logo} className='w-24 h-24' />
-          <Button text={<Icon IconComponent={CiSettings} />} />
-        </div>
-        <div className='w-2/3 flex justify-between items-center'>
-          <Contact
-            name={activeChat?.title}
-            avatar={activeChat?.contact?.avatarPhoto}
-            typing={typingUsersById.includes(activeChat?.contact?.id)}
-            showLastSeen={activeChat.contact?.lastTimeOnline}
-            isOnline={onlineUsersById.includes(activeChat?.contact?.id)}
-          />
-          <div className='w-32 mr-8 flex justify-between'>
-            <Button text={<Icon IconComponent={BsCameraVideo} />} />
-            <Button text={<Icon IconComponent={BsTelephone} />} />
-            <Button text={<Icon IconComponent={BsInfoCircle} />} />
-          </div>
+    <div className='bg-white p-4 shadow-md'>
+      <div className='w-full flex flex-row justify-between items-center'>
+        <Contact
+          name={activeChat?.title}
+          avatar={activeChat?.contact?.avatarPhoto}
+          typing={typingUsersById.includes(activeChat?.contact?.id)}
+          showLastSeen={activeChat.contact?.lastTimeOnline}
+          isOnline={onlineUsersById.includes(activeChat?.contact?.id)}
+        />
+        <div className='w-32 mx-4 flex justify-between'>
+          <Button text={<Icon IconComponent={BsCameraVideo} />} />
+          <Button text={<Icon IconComponent={BsTelephone} />} />
+          <Button text={<Icon IconComponent={BsInfoCircle} />} />
         </div>
       </div>
-    </header>
+    </div>
   );
 }
