@@ -7,7 +7,7 @@ export function ContactInfo({ typing, lastMessage, showLastSeen, selectedChat })
   return (
     <>
       {typing ?
-        <h6 className={clsx(selectedChat && !showLastSeen ? 'text-white' : 'text-blueChat-300')}>Typing ...</h6>
+        <h6 className={clsx(selectedChat && !showLastSeen ? 'text-white animate-pulse' : 'text-blueChat-300 animate-pulse')}>Typing ...</h6>
         :
         <>
           {
