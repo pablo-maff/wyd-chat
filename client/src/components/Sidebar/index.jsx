@@ -6,13 +6,17 @@ import { SidebarHeader } from './SidebarHeader';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { AiOutlineClose } from 'react-icons/ai'
 
-export function Sidebar({ chats, users, activeChatId }) {
+export function Sidebar() {
   const [toggleNewChat, setToggleNewChat] = useState(false)
 
+  const { data: chatsData } = useSelector(state => state.userChats)
+  const { data: usersData } = useSelector(state => state.userContacts)
   const { user } = useSelector(state => state.userAuthentication)
   const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
 
   const dispatch = useDispatch()
+
+  const activeChatId = chatsData?.activeChat?.id
 
   function handleSelectChat(chatId) {
     dispatch(activateChat(chatId))
@@ -23,7 +27,7 @@ export function Sidebar({ chats, users, activeChatId }) {
   }
 
   function handleCreateChatRoom(contactId) {
-    const existingChat = chats?.find(chat => chat.contact.id === contactId)
+    const existingChat = chatsData?.chatRooms?.find(chat => chat.contact.id === contactId)
 
     if (!existingChat) {
       const newChatRoom = {
@@ -40,15 +44,21 @@ export function Sidebar({ chats, users, activeChatId }) {
 
   // TODO: Refactor into smaller components
   return (
-    <div className='sidebar relative flex flex-col min-w-[22rem] h-screen items-center bg-white'>
+    <div
+      id='sidebar-container'
+      className='relative min-w-[22rem] flex flex-grow-0 flex-col items-center bg-white'
+    >
       <SidebarHeader />
-      <div className='relative h-full w-full'>
-        {chats && users &&
-          <ul className='chat-list absolute inset-0 overflow-y-scroll overflow-x-hidden flex flex-col gap-y-1 m-2 mr-0'>
+      <div
+        id='contacts-list-container'
+        className='relative w-full h-full'
+      >
+        {chatsData?.chatRooms && usersData &&
+          <ul className='chat-list absolute inset-0 overflow-y-scroll flex flex-col gap-y-1 m-2 mr-0'>
             <>
               {!toggleNewChat ?
                 <>
-                  {chats.map((chat) => {
+                  {chatsData.chatRooms.map((chat) => {
                     const lastContactMessage = chat?.messages
                       ?.filter(message => message.from !== user.id)
                       .at(-1)
@@ -74,7 +84,7 @@ export function Sidebar({ chats, users, activeChatId }) {
                 </>
                 :
                 <>
-                  {users.map((user) => (
+                  {usersData.map((user) => (
                     <li key={user.id} onClick={() => handleCreateChatRoom(user.id)} className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg'>
                       <Contact
                         key={user.id}
