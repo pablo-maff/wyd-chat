@@ -42,7 +42,7 @@ loginRouter.post('/', async (req, res) => {
   const token = jwt.sign(
     userForToken,
     process.env.SESSION_TOKEN_SECRET,
-    // { expiresIn: 60 * 60 } // TODO: Enable for production
+    { expiresIn: '7d' }
   )
 
   res.status(200).json({

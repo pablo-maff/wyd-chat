@@ -32,7 +32,7 @@ export function ChatsList() {
               key={chat?.contact?.id}
               name={chat?.title}
               avatar={chat?.contact?.avatarPhoto}
-              lastMessage={lastContactMessage}
+              showLastMessage={lastContactMessage}
               typing={typingUsersById.includes(chat?.contact?.id)}
               selectedChat={chat.id === activeChatId ? true : false}
               isOnline={onlineUsersById.includes(chat?.contact?.id)}
