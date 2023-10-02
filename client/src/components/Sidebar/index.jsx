@@ -3,6 +3,8 @@ import { Contact } from '../Contact'
 import { useDispatch, useSelector } from 'react-redux';
 import { activateChat, createUserChatRoomAction } from '../../redux/reducers/userChatsReducer';
 import { SidebarHeader } from './SidebarHeader';
+import { BsFillPencilFill } from 'react-icons/bs';
+import { AiOutlineClose } from 'react-icons/ai'
 
 export function Sidebar({ chats, users, activeChatId }) {
   const [toggleNewChat, setToggleNewChat] = useState(false)
@@ -38,7 +40,7 @@ export function Sidebar({ chats, users, activeChatId }) {
 
   // TODO: Refactor into smaller components
   return (
-    <div className='sidebar flex flex-col min-w-[22rem] h-screen items-center bg-white'>
+    <div className='sidebar relative flex flex-col min-w-[22rem] h-screen items-center bg-white'>
       <SidebarHeader />
       <div className='relative h-full w-full'>
         {chats && users &&
@@ -88,8 +90,15 @@ export function Sidebar({ chats, users, activeChatId }) {
           </ul>
         }
       </div>
-      <div className='absolute bottom-10 right-4'>
-        <button onClick={handleNewChatView} className='bg-blueChat-200'>{!toggleNewChat ? 'New Chat' : 'Your Chats'}</button>
+      <div className='absolute bottom-4 right-5'>
+        <div className='bg-blueChat-400 w-14 h-14  rounded-full flex justify-center items-center'>
+          <button onClick={handleNewChatView}>
+            {!toggleNewChat ?
+              <BsFillPencilFill size='1.5rem' color='white' />
+              : <AiOutlineClose size='1.5rem' color='white' />
+            }
+          </button>
+        </div>
       </div>
     </div>
   );
