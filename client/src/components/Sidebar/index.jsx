@@ -3,6 +3,8 @@ import { Contact } from '../Contact'
 import { useDispatch, useSelector } from 'react-redux';
 import { activateChat, createUserChatRoomAction } from '../../redux/reducers/userChatsReducer';
 import { SidebarHeader } from './SidebarHeader';
+import { BsFillPencilFill } from 'react-icons/bs';
+import { AiOutlineClose } from 'react-icons/ai'
 
 export function Sidebar({ chats, users, activeChatId }) {
   const [toggleNewChat, setToggleNewChat] = useState(false)
@@ -38,11 +40,11 @@ export function Sidebar({ chats, users, activeChatId }) {
 
   // TODO: Refactor into smaller components
   return (
-    <div className='relative sidebar flex flex-col min-w-[22rem] h-screen items-center gap-6 bg-blueChat-100'>
+    <div className='sidebar relative flex flex-col min-w-[22rem] h-screen items-center bg-white'>
       <SidebarHeader />
-      <div className='w-full  '>
+      <div className='relative h-full w-full'>
         {chats && users &&
-          <ul className='chat-list flex flex-col gap-y-1 m-2'>
+          <ul className='chat-list absolute inset-0 overflow-y-scroll overflow-x-hidden flex flex-col gap-y-1 m-2 mr-0'>
             <>
               {!toggleNewChat ?
                 <>
@@ -52,7 +54,11 @@ export function Sidebar({ chats, users, activeChatId }) {
                       .at(-1)
 
                     return (
-                      <li key={chat.id} onClick={() => handleSelectChat(chat.id)} className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg'>
+                      <li
+                        key={chat.id}
+                        onClick={() => handleSelectChat(chat.id)}
+                        className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg mx-1'
+                      >
                         <Contact
                           key={chat?.contact?.id}
                           name={chat?.title}
@@ -84,8 +90,15 @@ export function Sidebar({ chats, users, activeChatId }) {
           </ul>
         }
       </div>
-      <div className='absolute bottom-10 right-4'>
-        <button onClick={handleNewChatView} className='bg-blueChat-200'>{!toggleNewChat ? 'New Chat' : 'Your Chats'}</button>
+      <div className='absolute bottom-4 right-5'>
+        <div className='bg-blueChat-400 w-14 h-14  rounded-full flex justify-center items-center'>
+          <button onClick={handleNewChatView}>
+            {!toggleNewChat ?
+              <BsFillPencilFill size='1.5rem' color='white' />
+              : <AiOutlineClose size='1.5rem' color='white' />
+            }
+          </button>
+        </div>
       </div>
     </div>
   );
