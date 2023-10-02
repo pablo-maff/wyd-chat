@@ -1,4 +1,3 @@
-import { BsCameraVideo, BsInfoCircle, BsTelephone } from 'react-icons/bs';
 import { CiSettings } from 'react-icons/ci';
 import logo from '../../assets/wyd-logos-blue/logo-tab.png';
 import { Button } from '../Button';
@@ -12,8 +11,8 @@ export function SidebarHeader() {
   const dispatch = useDispatch()
 
   return (
-    <div className='bg-white p-4 shadow-md w-full'>
-      <div className='w-full flex justify-between items-center'>
+    <div className='p-4 shadow-md w-full'>
+      <div className='flex justify-between items-center'>
         <div className='mx-4'>
           <img src={logo} className='w-16 h-16' />
         </div>

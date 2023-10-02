@@ -54,13 +54,18 @@ export function Sidebar() {
               {!toggleNewChat ?
                 <ChatsList />
                 :
-                <ContactsList handleCreateChatRoom={handleCreateChatRoom} />
+                <ContactsList
+                  handleCreateChatRoom={handleCreateChatRoom}
+                />
               }
             </>
           </ul>
         }
       </div>
-      <ToggleSidebarView handleNewChatView={handleNewChatView} toggleNewChat={toggleNewChat} />
+      <ToggleSidebarView
+        handleNewChatView={handleNewChatView}
+        toggleNewChat={toggleNewChat}
+      />
     </div>
   );
 }
