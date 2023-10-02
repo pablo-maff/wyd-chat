@@ -3,6 +3,7 @@ import { ChatInput } from './ChatInput';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { createChatRoomMessage } from '../../redux/reducers/userChatsReducer';
+import { ChatHeader } from './ChatHeader';
 
 function Chat() {
   const { id } = useParams()
@@ -24,17 +25,19 @@ function Chat() {
   }
 
   return (
-    <div className='flex flex-col h-full' >
-      {activeChat.messages &&
-        <>
-          <div className='flex-grow'>
-            <div className='relative flex flex-col h-full'>
-              <MessagesList messages={activeChat.messages} />
-            </div>
-          </div>
-          <ChatInput submitNewMessage={submitNewMessage} />
-        </>
-      }
+    <div className='flex flex-1 flex-col blur-overlay'>
+      <ChatHeader activeChat={activeChat} />
+      <div
+        id='chat-container'
+        className='flex flex-col flex-grow'
+      >
+        {activeChat.messages &&
+          <>
+            <MessagesList messages={activeChat.messages} />
+            <ChatInput submitNewMessage={submitNewMessage} />
+          </>
+        }
+      </div>
     </div>
   );
 }
