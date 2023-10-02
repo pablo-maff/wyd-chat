@@ -17,7 +17,7 @@ export function ContactsList({ handleCreateChatRoom }) {
             key={user.id}
             name={`${user?.firstName} ${user?.lastName}`}
             avatar={user?.avatarPhoto}
-            showLastSeen={user?.lastTimeOnline}
+            showLastTimeOnline={user?.lastTimeOnline}
           />
         </li>
       ))}

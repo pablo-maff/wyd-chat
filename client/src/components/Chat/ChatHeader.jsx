@@ -14,7 +14,7 @@ export function ChatHeader({ activeChat }) {
           name={activeChat?.title}
           avatar={activeChat?.contact?.avatarPhoto}
           typing={typingUsersById.includes(activeChat?.contact?.id)}
-          showLastSeen={activeChat.contact?.lastTimeOnline}
+          showLastTimeOnline={activeChat.contact?.lastTimeOnline}
           isOnline={onlineUsersById.includes(activeChat?.contact?.id)}
         />
         <div className='w-32 mx-4 flex justify-between'>

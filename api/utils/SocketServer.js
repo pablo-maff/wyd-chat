@@ -1,5 +1,6 @@
 const { Server } = require('socket.io');
 const User = require('../models/user');
+const logger = require('./logger')
 
 // TODO: Apply api middlewares logic like isValidId and errors handling here
 class SocketServer {
@@ -17,10 +18,9 @@ class SocketServer {
 
   setupSocketListeners() {
     this.io.on('connection', (socket) => {
-      console.log('A client connected.');
+      logger.info(`${socket.id} client wants to connect.`);
 
       socket.on('login', async ({ id }) => {
-        console.log(`⚡: ${socket.id} user just connected!`);
         if (!id) return
 
         const user = await User.findByIdAndUpdate(id, {
@@ -30,6 +30,8 @@ class SocketServer {
 
         // TODO: Remove code below when migration to webhooks is completed
         if (!user) return
+
+        logger.info(`⚡: ${user.username} just connected!`);
 
         this.activeUserSessions = this.getUniqueArrayValues([...this.activeUserSessions, id])
 
@@ -42,6 +44,7 @@ class SocketServer {
         const user = await User.findOneAndUpdate({ socketId: socket.id }, {
           socketId: null,
           online: false,
+          lastTimeOnline: new Date().toISOString()
         })
 
         // TODO: Remove code below when migration to webhooks is completed
@@ -73,7 +76,7 @@ class SocketServer {
 
   emitEvent(event, data) {
     if (!event || !data) {
-      console.error('Missing event or data')
+      logger.error('Missing event or data')
       return
     }
 
@@ -83,7 +86,7 @@ class SocketServer {
   // * room is user's socketId for now
   emitEventToRoom(room, event, data) {
     if (!room || !event || !data) {
-      console.error('Missing room, event or data')
+      logger.error('Missing room, event or data')
       return
     }
 
