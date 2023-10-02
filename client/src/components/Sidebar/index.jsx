@@ -38,11 +38,11 @@ export function Sidebar({ chats, users, activeChatId }) {
 
   // TODO: Refactor into smaller components
   return (
-    <div className='relative sidebar flex flex-col min-w-[22rem] h-screen items-center gap-6 bg-blueChat-100'>
+    <div className='sidebar flex flex-col min-w-[22rem] h-screen items-center bg-white'>
       <SidebarHeader />
-      <div className='w-full  '>
+      <div className='relative h-full w-full'>
         {chats && users &&
-          <ul className='chat-list flex flex-col gap-y-1 m-2'>
+          <ul className='chat-list absolute inset-0 overflow-y-scroll overflow-x-hidden flex flex-col gap-y-1 m-2 mr-0'>
             <>
               {!toggleNewChat ?
                 <>
@@ -52,7 +52,11 @@ export function Sidebar({ chats, users, activeChatId }) {
                       .at(-1)
 
                     return (
-                      <li key={chat.id} onClick={() => handleSelectChat(chat.id)} className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg'>
+                      <li
+                        key={chat.id}
+                        onClick={() => handleSelectChat(chat.id)}
+                        className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg mx-1'
+                      >
                         <Contact
                           key={chat?.contact?.id}
                           name={chat?.title}
