@@ -1,19 +1,23 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken');
+const { validateEmail } = require('../utils/helperFunctions');
 
 // TODO: Add contacts
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true
+    required: true,
+    validate: [validateEmail, 'invalid email']
   },
   firstName: {
     type: String,
-    required: true
+    required: true,
+    minLength: 2
   },
   lastName: {
     type: String,
-    required: true
+    required: true,
+    minLength: 2
   },
   passwordHash: String,
   avatarPhoto: String,
