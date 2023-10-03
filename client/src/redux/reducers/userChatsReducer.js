@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import UserService from '../../services/usersService';
 import ChatRoomService from '../../services/chatRoomsService';
 import { compareDesc, parseISO } from 'date-fns';
+import { toast } from './notificationsReducer';
 
 function parseChatRooms(chatRooms) {
   return chatRooms
@@ -171,6 +172,8 @@ export const initializeUserChats = (userId) => {
     catch (error) {
       console.error(error)
       dispatch(setUserChatsError(`Unable to fetch your chats data: ${error.message}: ${error.response?.data?.error}`));
+      dispatch(toast(`Unable to fetch your chats data: ${error.message}: ${error.response?.data?.error}`, 'error'))
+
     }
   }
 }
@@ -186,6 +189,7 @@ export const createUserChatRoomAction = (newChatRoom) => {
     catch (error) {
       console.error(error)
       dispatch(setUserChatsError(`Unable to create new chat: ${error.message}: ${error.response?.data?.error}`));
+      dispatch(toast(`Unable to create new chat: ${error.message}: ${error.response?.data?.error}`, 'error'))
     }
   }
 }
@@ -198,6 +202,8 @@ export const activateChat = (chatId) => {
     catch (error) {
       console.error(error)
       dispatch(setUserChatsError(`Unable to select that chat: ${error.message}`));
+      dispatch(toast(`Unable to select that chat: ${error.message}`, 'error'))
+
     }
   }
 }
@@ -210,8 +216,9 @@ export const createChatRoomMessage = (newMessage) => {
       dispatch(appendChatRoomMessage({ message }))
     }
     catch (error) {
-      console.error(error)
-      dispatch(setUserChatsError(`Unable to send your message: ${error.message}: ${error.response?.data?.error}`));
+      console.error('ERRORRRR', error)
+      dispatch(setUserChatsError(`Unable to send your message: ${error.message}: ${error.response?.data?.error}`))
+      dispatch(toast(`Unable to send your message: ${error.message}: ${error.response?.data?.error}`, 'error'))
     }
   }
 }

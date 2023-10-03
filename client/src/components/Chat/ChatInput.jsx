@@ -44,7 +44,6 @@ export function ChatInput({ submitNewMessage }) {
       debouncedTypingIndicationEmit()
     }
     else if (event.target.value === '') {
-
       // * Delay the stopped typing emit to compensate for the debounce
       setTimeout(() => {
         dispatch(sendThisUserStoppedTyping({
@@ -86,6 +85,8 @@ export function ChatInput({ submitNewMessage }) {
         value={newMessage}
         onChange={handleChangeNewMessage}
         maxRows={15}
+        minLength={1}
+        maxLength={4001}
         ref={textareaRef}
         onKeyDown={handleKeyDown} // Listen for Enter key press
         className='p-2 rounded-lg resize-none w-full focus:outline-none shadow-lg hover:shadow-xl'

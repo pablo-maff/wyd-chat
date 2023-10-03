@@ -1,5 +1,6 @@
 import { createSlice, current } from '@reduxjs/toolkit'
 import ChatInstance from '../../services/ChatInstance';
+import { toast } from './notificationsReducer';
 
 const initialState = {
   data: null,
@@ -78,8 +79,8 @@ export function initializeUserContacts(currentUserId) {
     } catch (error) {
       // Not handling errors
       console.error(error)
-      dispatch(setUsersError(`Unable to fetch data data: ${error.message}: ${error.response?.data?.error}`));
-
+      dispatch(setUsersError(`Unable to fetch users data: ${error.message}: ${error.response?.data?.error}`));
+      dispatch(toast(`Unable to fetch users data: ${error.message}: ${error.response?.data?.error}`, 'error'))
     }
   }
 }
