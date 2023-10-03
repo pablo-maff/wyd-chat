@@ -32,7 +32,17 @@ mongoose
     logger.error('Error connecting to MongoDB:', error.message)
   })
 
-app.use(helmet())
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'img-src': 'https: data:'
+      },
+    },
+  })
+);
+
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
