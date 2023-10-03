@@ -37,7 +37,7 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'img-src': 'https: data:'
+        'img-src': 'https: data:' // * Allow images from anywhere as long as it is an https link
       },
     },
   })
