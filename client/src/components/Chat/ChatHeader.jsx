@@ -3,13 +3,23 @@ import { Button } from '../Button';
 import { Contact } from '../Contact';
 import { Icon } from '../Icon';
 import { useSelector } from 'react-redux';
+import { BiArrowBack } from 'react-icons/bi'
+import { useSidebarContext } from '../../hooks/useSidebarContext';
 
 export function ChatHeader({ activeChat }) {
+  const { sidebarOpen, toggleSidebar } = useSidebarContext()
+
   const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
 
   return (
-    <div className='bg-white p-4 shadow-md'>
-      <div className='w-full flex flex-row justify-between items-center'>
+    <div className='bg-white p-4 shadow-md flex items-center'>
+      <Button
+        className='mr-2 block md:hidden'
+        onClick={() => toggleSidebar(!sidebarOpen)}
+        text={<BiArrowBack size='1.5rem' color='#70757' />}
+      >
+      </Button>
+      <div className='w-full flex justify-between'>
         <Contact
           name={activeChat?.title}
           avatar={activeChat?.contact?.avatarPhoto}
