@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../components/AuthForms/RegisterForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/reducers/userAuthenticationReducer';
+import { Link } from 'react-router-dom';
 
 export function Login() {
   const [username, setUserName] = useState('')
@@ -34,9 +35,6 @@ export function Login() {
 
   return (
     <div className="min-h-screen  bg-blueChat-50">
-      <header className="flex items-center justify-center p-4">
-        <h1 className="text-3xl">Welcome to wyd chat!</h1>
-      </header>
       {!showRegisterForm ?
         <div className="min-h-screen flex flex-col items-center justify-center pb-40">
           <div className="shadow-xl bg-blueChat-200 p-8 rounded-lg">
