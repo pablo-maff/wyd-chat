@@ -42,7 +42,6 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
   res.json(users)
 })
 
-// TODO NEXT => Send validation email with token
 usersRouter.post('/', async (req, res) => {
   const { username, firstName, lastName, password } = req.body
 

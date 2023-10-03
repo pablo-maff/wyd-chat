@@ -1,5 +1,6 @@
 const { MONGODB_URI } = require('./utils/config')
 const express = require('express')
+const helmet = require('helmet')
 require('express-async-errors')
 const { createServer } = require('http');
 const cors = require('cors')
@@ -31,7 +32,7 @@ mongoose
     logger.error('Error connecting to MongoDB:', error.message)
   })
 
-
+app.use(helmet())
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
