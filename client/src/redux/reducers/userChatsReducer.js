@@ -1,16 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit'
 import UserService from '../../services/usersService';
 import ChatRoomService from '../../services/chatRoomsService';
+import { compareDesc, parseISO } from 'date-fns';
 
 function parseChatRooms(chatRooms) {
-  return chatRooms.map(chatRoom => {
-    return {
-      id: chatRoom?.id,
-      title: `${chatRoom?.members[0]?.firstName} ${chatRoom?.members[0]?.lastName}`,
-      messages: chatRoom.messages,
-      contact: { ...chatRoom?.members[0] }
-    }
-  })
+  return chatRooms
+    .map(chatRoom => {
+      return {
+        id: chatRoom?.id,
+        title: `${chatRoom?.members[0]?.firstName} ${chatRoom?.members[0]?.lastName}`,
+        messages: chatRoom.messages,
+        contact: { ...chatRoom?.members[0] }
+      };
+    })
+}
+
+function sortChatRoomsByLatestMessage(chatRooms) {
+  return [...chatRooms].sort((roomA, roomB) => {
+    const latestMessageA = roomA.messages.at(-1);
+    const latestMessageB = roomB.messages.at(-1);
+
+
+    if (!latestMessageA) return 1; // Place rooms with no messages at the end.
+    if (!latestMessageB) return -1;
+
+    const timestampA = parseISO(latestMessageA.timestamp);
+    const timestampB = parseISO(latestMessageB.timestamp);
+
+    // Compare timestamps in descending order (latest first).
+    return compareDesc(timestampA, timestampB);
+  });
 }
 
 const initialState = { data: null, loading: false, error: null }
@@ -25,7 +44,7 @@ const userChatsSlice = createSlice({
       const parsedData = {
         ...data,
         activeChat: null,
-        chatRooms: parseChatRooms(data.chatRooms)
+        chatRooms: sortChatRoomsByLatestMessage(parseChatRooms(data.chatRooms))
       }
 
       return { ...state, data: parsedData, loading: false, error: null }
@@ -109,10 +128,10 @@ const userChatsSlice = createSlice({
         data: {
           ...state.data,
           activeChat: appendedMessageToActiveChat,
-          chatRooms: state.data.chatRooms
+          chatRooms: sortChatRoomsByLatestMessage(state.data.chatRooms
             .map(chatRoom =>
               chatRoom.id !== destinationChatRoom.id ? chatRoom : appendedMessageToDestinationChatRoom
-            )
+            ))
         }
       }
     },

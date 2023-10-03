@@ -13,12 +13,20 @@ export function MessagesList({ messages }) {
   }, [messages]);
 
   return (
-    <div ref={chatContainerRef} className='absolute bottom-2 inset-0 overflow-y-scroll overflow-x-hidden p-8'>
-      <ul className='flex flex-col'>
-        {messages?.map(message =>
-          <Message key={message.id} message={message} />
-        )}
-      </ul>
+    <div
+      id='messages-list-container'
+      className='relative flex flex-col flex-grow'
+    >
+      <div
+        ref={chatContainerRef}
+        className='absolute bottom-2 inset-0 overflow-y-scroll overflow-x-hidden p-8'
+      >
+        <ul className='flex flex-col'>
+          {messages?.map(message =>
+            <Message key={message.id} message={message} />
+          )}
+        </ul>
+      </div>
     </div>
   )
 }

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../components/AuthForms/RegisterForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/reducers/userAuthenticationReducer';
-import { Link } from 'react-router-dom';
 
 export function Login() {
   const [username, setUserName] = useState('')
