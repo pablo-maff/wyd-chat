@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { activateChat } from '../../redux/reducers/userChatsReducer';
 import { Contact } from '../Contact';
+import { useSidebarContext } from '../../hooks/useSidebarContext';
 
 export function ChatsList() {
   const dispatch = useDispatch()
+  const { toggleSidebar } = useSidebarContext()
 
   const { data: chatsData } = useSelector(state => state.userChats)
   const { user } = useSelector(state => state.userAuthentication)
@@ -13,7 +15,9 @@ export function ChatsList() {
 
   function handleSelectChat(chatId) {
     dispatch(activateChat(chatId))
+    toggleSidebar(false)
   }
+
   return (
     <>
       {chatsData.chatRooms.map((chat) => {

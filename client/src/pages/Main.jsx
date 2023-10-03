@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { EmptyChat } from '../components/Chat/EmptyChat';
 import { Redirect } from '../components/Redirect/Redirect';
 import { Loader } from '../components/Loader/Loader';
+import { SidebarProvider } from '../context/SidebarContext';
 
 function Main() {
   const { id } = useParams()
@@ -33,14 +34,16 @@ function Main() {
   }
 
   return (
-    <main id='main-container' className='w-full h-screen flex flex-nowrap bg-blur'>
-      <Sidebar />
-      {activeChatId ?
-        <Outlet />
-        :
-        <EmptyChat />
-      }
-    </main>
+    <SidebarProvider>
+      <main id='main-container' className='w-full h-screen flex flex-nowrap bg-blur'>
+        <Sidebar />
+        {activeChatId ?
+          <Outlet />
+          :
+          <EmptyChat />
+        }
+      </main>
+    </SidebarProvider>
   );
 }
 
