@@ -36,7 +36,7 @@ loginRouter.post('/', async (req, res) => {
 
   const userForToken = {
     username: user.username,
-    id: user._id
+    id: user._id,
   }
 
   const token = jwt.sign(
@@ -49,6 +49,9 @@ loginRouter.post('/', async (req, res) => {
     token,
     id: user._id,
     username: user.username,
+    avatarPhoto: user.avatarPhoto,
+    firstName: user.firstName,
+    lastName: user.lastName
   })
 
   user.lastTimeOnline = new Date().toISOString()
