@@ -5,9 +5,13 @@ import { SidebarHeader } from './SidebarHeader';
 import { ChatsList } from './ChatsList';
 import { ContactsList } from './ContactsList';
 import { ToggleSidebarView } from './ToggleSidebarView';
+import { useSidebarContext } from '../../hooks/useSidebarContext';
+import clsx from 'clsx';
 
 export function Sidebar() {
   const [toggleNewChat, setToggleNewChat] = useState(false)
+
+  const { sidebarOpen, toggleSidebar } = useSidebarContext()
 
   const { data: chatsData } = useSelector(state => state.userChats)
   const { data: usersData } = useSelector(state => state.userContacts)
@@ -31,14 +35,16 @@ export function Sidebar() {
     } else {
       dispatch(activateChat(existingChat.id))
       handleNewChatView()
+      toggleSidebar(false)
     }
     setToggleNewChat(false)
+    toggleSidebar(false)
   }
 
   return (
     <div
       id='sidebar-container'
-      className='relative min-w-[22rem] flex flex-grow-0 flex-col items-center bg-white'
+      className={clsx('min-w-[22rem] relative flex-grow-0 flex-col items-center bg-white', chatsData?.activeChat && !sidebarOpen ? 'hidden md:flex' : 'flex min-w-full md:min-w-[22rem]')}
     >
       <SidebarHeader />
       <div

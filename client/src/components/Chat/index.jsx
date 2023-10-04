@@ -4,10 +4,13 @@ import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { createChatRoomMessage } from '../../redux/reducers/userChatsReducer';
 import { ChatHeader } from './ChatHeader';
+import { useSidebarContext } from '../../hooks/useSidebarContext';
+import clsx from 'clsx';
 
 function Chat() {
   const { id } = useParams()
 
+  const { sidebarOpen } = useSidebarContext()
   const { user } = useSelector(state => state.userAuthentication)
   const activeChat = useSelector((state) => state.userChats).data.activeChat
 
@@ -25,7 +28,7 @@ function Chat() {
   }
 
   return (
-    <div className='flex flex-1 flex-col blur-overlay'>
+    <div className={clsx('flex flex-1 flex-col blur-overlay', sidebarOpen && 'hidden md:flex')}>
       <ChatHeader activeChat={activeChat} />
       <div
         id='chat-container'
