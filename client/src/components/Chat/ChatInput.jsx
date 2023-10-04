@@ -4,7 +4,6 @@ import { useParams } from 'react-router';
 import debounce from 'lodash.debounce'
 import { useDispatch, useSelector } from 'react-redux';
 import { sendThisUserIsTyping, sendThisUserStoppedTyping } from '../../redux/reducers/userContactsReducer';
-import EmojiPicker, { EmojiStyle } from 'emoji-picker-react';
 import Picker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
 import { BsEmojiSmile } from 'react-icons/bs'
