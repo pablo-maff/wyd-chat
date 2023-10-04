@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import { format, parseISO } from 'date-fns';
 import Linkify from 'linkify-react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 export function Message({ message }) {
   const { user } = useSelector(state => state.userAuthentication)

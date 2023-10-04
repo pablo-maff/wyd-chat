@@ -4,6 +4,10 @@ import { useParams } from 'react-router';
 import debounce from 'lodash.debounce'
 import { useDispatch, useSelector } from 'react-redux';
 import { sendThisUserIsTyping, sendThisUserStoppedTyping } from '../../redux/reducers/userContactsReducer';
+import EmojiPicker, { EmojiStyle } from 'emoji-picker-react';
+import Picker from '@emoji-mart/react'
+import data from '@emoji-mart/data'
+import { BsEmojiSmile } from 'react-icons/bs'
 
 export function ChatInput({ submitNewMessage }) {
   const { id } = useParams()
@@ -11,6 +15,7 @@ export function ChatInput({ submitNewMessage }) {
   const activeChat = useSelector((state) => state.userChats).data.activeChat
 
   const [newMessage, setNewMessage] = useState('')
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const textareaRef = useRef(null)
 
   const dispatch = useDispatch()
@@ -62,6 +67,7 @@ export function ChatInput({ submitNewMessage }) {
     if (newMessage && newMessage.trim() !== '') {
       submitNewMessage(newMessage)
       setNewMessage('')
+      setShowEmojiPicker(false)
 
       // * Delay the stopped typing emit to compensate for the debounce
       setTimeout(() => {
@@ -73,25 +79,69 @@ export function ChatInput({ submitNewMessage }) {
     }
   }
 
+  function onEmojiSelection(emojiData, event) {
+    setNewMessage(
+      (prevMessage) =>
+        `${prevMessage} ${emojiData.native}`
+    )
+    textareaRef.current.focus()
+  }
+
   function handleKeyDown(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
       handleSubmitNewMessage(event)
+    }
+    if (event.key === 'Escape' && showEmojiPicker) {
+      setShowEmojiPicker(false)
+    }
+  }
+
+  function handleShowEmojiPicker(event) {
+    event.preventDefault()
+    event.stopPropagation()
+
+    setShowEmojiPicker(!showEmojiPicker)
+    textareaRef.current.focus()
+  }
+
+  function handleClickOutsideEmojiPicker() {
+    if (showEmojiPicker) {
+      setShowEmojiPicker(false)
+      textareaRef.current.focus()
     }
   }
 
   return (
     <form onSubmit={handleSubmitNewMessage} className="flex pt-1 pb-4 px-6">
-      <TextareaAutosize
-        value={newMessage}
-        onChange={handleChangeNewMessage}
-        maxRows={15}
-        minLength={1}
-        maxLength={4000}
-        ref={textareaRef}
-        onKeyDown={handleKeyDown} // Listen for Enter key press
-        className='p-2 rounded-lg resize-none w-full focus:outline-none shadow-lg hover:shadow-xl'
-        placeholder="Message"
-      />
+      <div className='relative w-full'>
+        {showEmojiPicker &&
+          <div className='absolute bottom-12'>
+            <Picker
+              data={data}
+              onEmojiSelect={onEmojiSelection}
+              onClickOutside={handleClickOutsideEmojiPicker}
+              previewPosition='none'
+              navPosition='bottom'
+            />
+          </div>
+        }
+        <div className='flex bg-white rounded-lg shadow-lg hover:shadow-xl'>
+          <div className='flex items-center justify-center m-2 mt-auto'>
+            <button onClick={handleShowEmojiPicker} ><BsEmojiSmile size='1.3rem' color='grey' /></button>
+          </div>
+          <TextareaAutosize
+            value={newMessage}
+            onChange={handleChangeNewMessage}
+            maxRows={15}
+            minLength={1}
+            maxLength={4000}
+            ref={textareaRef}
+            onKeyDown={handleKeyDown}
+            className='p-2 resize-none w-full focus:outline-none rounded-lg'
+            placeholder="Message"
+          />
+        </div>
+      </div>
       <button type='submit' className='hidden' />
     </form>
   )
