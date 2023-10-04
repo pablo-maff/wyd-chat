@@ -86,7 +86,7 @@ export function ChatInput({ submitNewMessage }) {
         onChange={handleChangeNewMessage}
         maxRows={15}
         minLength={1}
-        maxLength={4001}
+        maxLength={4000}
         ref={textareaRef}
         onKeyDown={handleKeyDown} // Listen for Enter key press
         className='p-2 rounded-lg resize-none w-full focus:outline-none shadow-lg hover:shadow-xl'
