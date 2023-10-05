@@ -1,18 +1,24 @@
+import { useDispatch } from 'react-redux'
 import { useField } from '../../hooks/useField'
 import ChatInstance from '../../services/ChatInstance'
+import { updateUserAction } from '../../redux/reducers/userAuthenticationReducer'
 
 export function SettingsForm({ user }) {
   const firstName = useField('text', user.firstName)
   const lastName = useField('text', user.lastName)
 
+  const dispatch = useDispatch()
+
   function handleSubmit(event) {
     event.preventDefault()
 
     const updatedUser = {
+      id: user.id,
       firstName: firstName.inputs.value,
       lastName: lastName.inputs.value
     }
-    ChatInstance.put(`/users/${user.id}`, updatedUser)
+
+    dispatch(updateUserAction(updatedUser))
   }
 
   return (
