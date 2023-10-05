@@ -1,5 +1,6 @@
 const { MONGODB_URI } = require('./utils/config')
 const express = require('express')
+const helmet = require('helmet')
 require('express-async-errors')
 const { createServer } = require('http');
 const cors = require('cors')
@@ -31,6 +32,16 @@ mongoose
     logger.error('Error connecting to MongoDB:', error.message)
   })
 
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'img-src': 'https: data:' // * Allow images from anywhere as long as it is an https link
+      },
+    },
+  })
+);
 
 app.use(cors())
 app.use(express.static('build'))

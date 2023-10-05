@@ -14,6 +14,8 @@ const messageSchema = new mongoose.Schema({
   text: {
     type: String,
     required: true,
+    minLength: 1,
+    maxLength: [4000, 'Too many characters, max length is 4000']
   },
   timestamp: {
     type: Date,
