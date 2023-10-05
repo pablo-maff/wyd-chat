@@ -1,13 +1,25 @@
 import { useDispatch } from 'react-redux'
 import { useField } from '../../hooks/useField'
-import ChatInstance from '../../services/ChatInstance'
+import { AiOutlineCheck } from 'react-icons/ai'
 import { updateUserAction } from '../../redux/reducers/userAuthenticationReducer'
+import { useEffect, useState } from 'react'
 
-export function SettingsForm({ user }) {
+export function SettingsForm({ user, handleShowEditUserForm }) {
+  const [showSubmitButton, setShowSubmitButton] = useState(false)
+
   const firstName = useField('text', user.firstName)
   const lastName = useField('text', user.lastName)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (firstName.inputs.value !== user.firstName || lastName.inputs.value !== user.lastName) {
+      return setShowSubmitButton(true)
+    }
+
+    setShowSubmitButton(false)
+
+  }, [firstName.inputs.value, lastName.inputs.value, user.firstName, user.lastName])
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -19,6 +31,12 @@ export function SettingsForm({ user }) {
     }
 
     dispatch(updateUserAction(updatedUser))
+    setShowSubmitButton(false)
+
+    // TODO: replace with transition
+    setTimeout(() => {
+      handleShowEditUserForm()
+    }, 200);
   }
 
   return (
@@ -56,7 +74,24 @@ export function SettingsForm({ user }) {
           />
         </div>
       </div>
-      <button type='submit' >Save</button>
+      {showSubmitButton &&
+        <div
+          id='settings-submit-container'
+          className='absolute bottom-4 right-5'
+        >
+          <div
+            id='settings-submit-background'
+            className='bg-blueChat-400 w-14 h-14 rounded-full flex justify-center items-center'
+          >
+            <button
+              id='settings-submit-button'
+              type='submit'
+            >
+              <AiOutlineCheck size='1.5rem' color='white' />
+            </button>
+          </div>
+        </div>
+      }
     </form>
   )
 }
