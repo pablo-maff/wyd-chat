@@ -98,4 +98,27 @@ usersRouter.post('/', async (req, res) => {
   })
 })
 
+usersRouter.put('/:id', [isValidId, userExtractor], async (req, res) => {
+  const { id } = req.user
+  const { firstName, lastName } = req.body
+
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    { firstName, lastName },
+    {
+      new: true,
+    }
+  ).select('firstName lastName')
+
+  if (!updatedUser) {
+    return res
+      .status(404)
+      .json({ error: 'Unable to find user' })
+  }
+
+  res.status(200).json({
+    updatedUser
+  })
+})
+
 module.exports = usersRouter

@@ -15,7 +15,14 @@ async function register(userData) {
   return register
 }
 
+async function updateUser(updatedUser) {
+  const updateUser = await ChatInstance.put(`${baseURL}/${updatedUser.id}`, updatedUser)
+
+  return updateUser
+}
+
 export default {
   getUser,
-  register
+  register,
+  updateUser
 }
