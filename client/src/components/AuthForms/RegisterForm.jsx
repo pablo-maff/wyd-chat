@@ -3,7 +3,7 @@ import { useField } from '../../hooks/useField';
 import { useDispatch } from 'react-redux';
 import { toast } from '../../redux/reducers/notificationsReducer';
 import { useEffect } from 'react';
-import { ProfilePhotoInput } from '../UploadFiles/ProfilePhotoInput';
+import { useProfilePhotoInput } from '../../hooks/useProfilePhotoInput';
 
 const RegisterForm = ({ handleToggleForm }) => {
   const username = useField('email')
@@ -11,6 +11,8 @@ const RegisterForm = ({ handleToggleForm }) => {
   const lastName = useField('text')
   const password = useField('password')
   const confirmPassword = useField('password')
+
+  const { photoPreview, photoInputComponent } = useProfilePhotoInput()
 
   const dispatch = useDispatch()
 
@@ -33,6 +35,7 @@ const RegisterForm = ({ handleToggleForm }) => {
       lastName: lastName.inputs.value,
       username: username.inputs.value,
       password: password.inputs.value,
+      avatarPhoto: photoPreview
     }
 
     UsersService.register(newUser)
@@ -53,7 +56,8 @@ const RegisterForm = ({ handleToggleForm }) => {
           <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
             Profile picture
           </label>
-          <ProfilePhotoInput />
+          {/* <ProfilePhotoInput /> */}
+          {photoInputComponent}
         </div>
         <div className="mb-2">
           <label htmlFor="firstName" className="block mb-2 text-sm font-medium">

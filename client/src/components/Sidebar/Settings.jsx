@@ -27,19 +27,19 @@ export function Settings({ user, handleShowSettings }) {
         }
       </div>
       <div className='flex justify-center'>
-        <div className=' w-[50%] md:w-full'>
+        <div className='w-full md:w-full'>
           {!showEditUserForm ?
             <>
               <div className='p-4 mt-4 w-full'>
                 <img
                   src={user.avatarPhoto}
-                  className='rounded-full min-w-14 min-h-14 m-auto'
+                  className='rounded-full w-40 h-40 m-auto'
                   alt="avatar image" />
                 <h6 className='text-lg font-semibold text-center mt-4'>{user.firstName} {user.lastName}</h6>
               </div>
-              <div className='flex items-center justify-evenly'>
+              <div className='flex items-center justify-center'>
                 <GoMention size='1.5rem' color='gray' />
-                <div>
+                <div className='ml-8'>
                   <p>{user.username}</p>
                   <p className='font-light text-sm'>Username</p>
                 </div>

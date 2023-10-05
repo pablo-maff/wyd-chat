@@ -1,23 +1,31 @@
 import { useRef, useState } from 'react'
 import { MdOutlineAddAPhoto } from 'react-icons/md'
-import defaultAvatar from '../../assets/default-avatar/default_avatar.png'
+import defaultAvatar from '../assets/default-avatar/default_avatar.png'
+import { useDispatch } from 'react-redux';
+import { toast } from '../redux/reducers/notificationsReducer';
 
-export function ProfilePhotoInput() {
-  const [file, setFile] = useState(defaultAvatar);
-  const [photoPreview, setPhotoPreview] = useState(defaultAvatar);
-
+export function useProfilePhotoInput(avatarPhoto) {
+  console.log('avatarPhoto', avatarPhoto);
+  const [photoPreview, setPhotoPreview] = useState(avatarPhoto ? avatarPhoto : defaultAvatar);
   const fileInputRef = useRef(null);
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFile(file);
+  const dispatch = useDispatch()
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+
+    if (file.size > 100000) {
+      dispatch(toast('File size can\'t be bigger than 10kb', 'error'))
+      return
+    }
+
+    const previewReader = new FileReader();
+    previewReader.onload = (e) => {
       setPhotoPreview(e.target.result);
     };
-    reader.readAsDataURL(file);
-  };
+    previewReader.readAsDataURL(file);
+
+  }
 
   const clickHandler = () => {
     if (fileInputRef.current) {
@@ -25,8 +33,8 @@ export function ProfilePhotoInput() {
     }
   };
 
-  return (
-    <div className="col-span-6 ml-2 sm:col-span-4 md:mr-3">
+  const photoInputComponent = (
+    <div>
       <input
         type="file"
         ref={fileInputRef}
@@ -35,11 +43,10 @@ export function ProfilePhotoInput() {
         accept="image/*"
       />
       <div className="text-center relative">
-        {/* Current Profile Photo */}
         <div className='mt-2'>
           <img
             src={photoPreview}
-            className="w-40 h-40 m-auto rounded-full shadow"
+            className="min-w-40 min-h-40 w-40 h-40 m-auto rounded-full"
             alt="Current Profile"
           />
         </div>
@@ -58,5 +65,10 @@ export function ProfilePhotoInput() {
         </div>
       </div>
     </div>
-  );
+  )
+
+  return {
+    photoPreview,
+    photoInputComponent
+  }
 }

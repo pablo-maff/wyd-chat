@@ -3,6 +3,7 @@ import { useField } from '../../hooks/useField'
 import { AiOutlineCheck } from 'react-icons/ai'
 import { updateUserAction } from '../../redux/reducers/userAuthenticationReducer'
 import { useEffect, useState } from 'react'
+import { useProfilePhotoInput } from '../../hooks/useProfilePhotoInput'
 
 export function SettingsForm({ user, handleShowEditUserForm }) {
   const [showSubmitButton, setShowSubmitButton] = useState(false)
@@ -10,16 +11,21 @@ export function SettingsForm({ user, handleShowEditUserForm }) {
   const firstName = useField('text', user.firstName)
   const lastName = useField('text', user.lastName)
 
+  const { photoPreview, photoInputComponent } = useProfilePhotoInput(user.avatarPhoto)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (firstName.inputs.value !== user.firstName || lastName.inputs.value !== user.lastName) {
+    if (firstName.inputs.value !== user.firstName ||
+      lastName.inputs.value !== user.lastName ||
+      photoPreview !== user.avatarPhoto
+    ) {
       return setShowSubmitButton(true)
     }
 
     setShowSubmitButton(false)
 
-  }, [firstName.inputs.value, lastName.inputs.value, user.firstName, user.lastName])
+  }, [firstName.inputs.value, lastName.inputs.value, photoPreview, user.avatarPhoto, user.firstName, user.lastName])
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -27,7 +33,8 @@ export function SettingsForm({ user, handleShowEditUserForm }) {
     const updatedUser = {
       id: user.id,
       firstName: firstName.inputs.value,
-      lastName: lastName.inputs.value
+      lastName: lastName.inputs.value,
+      avatarPhoto: photoPreview
     }
 
     dispatch(updateUserAction(updatedUser))
@@ -42,11 +49,7 @@ export function SettingsForm({ user, handleShowEditUserForm }) {
   return (
     <form onSubmit={handleSubmit} >
       <div className='p-4 mt-4 w-full'>
-        <img
-          src={user.avatarPhoto}
-          className='rounded-full min-w-14 min-h-14 m-auto'
-          alt="avatar image"
-        />
+        {photoInputComponent}
         <div className="mb-2 mt-4">
           <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
             First Name
