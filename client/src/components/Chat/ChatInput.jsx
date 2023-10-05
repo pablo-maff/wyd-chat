@@ -7,6 +7,7 @@ import { sendThisUserIsTyping, sendThisUserStoppedTyping } from '../../redux/red
 import Picker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
 import { BsEmojiSmile } from 'react-icons/bs'
+import {GrAttachment} from 'react-icons/gr'
 
 export function ChatInput({ submitNewMessage }) {
   const { id } = useParams()
@@ -112,7 +113,7 @@ export function ChatInput({ submitNewMessage }) {
 
   return (
     <form onSubmit={handleSubmitNewMessage} className="flex pt-1 pb-4 px-6">
-      <div className='relative w-full'>
+      <div className='relative w-full flex items-center justify-center'>
         {showEmojiPicker &&
           <div className='absolute bottom-12'>
             <Picker
@@ -124,7 +125,7 @@ export function ChatInput({ submitNewMessage }) {
             />
           </div>
         }
-        <div className='flex bg-white rounded-lg shadow-lg hover:shadow-xl'>
+        <div className='flex items-center justify-between bg-white w-[70%] rounded-lg shadow-lg hover:shadow-xl'>
           <div className='flex items-center justify-center m-2 mt-auto'>
             <button onClick={handleShowEmojiPicker} ><BsEmojiSmile size='1.3rem' color='grey' /></button>
           </div>
@@ -139,6 +140,9 @@ export function ChatInput({ submitNewMessage }) {
             className='p-2 resize-none w-full focus:outline-none rounded-lg'
             placeholder="Message"
           />
+          <div className='flex items-center justify-center m-2 mt-auto'>
+            <button><GrAttachment size='1.3rem' color='grey' /></button>
+          </div>
         </div>
       </div>
       <button type='submit' className='hidden' />
