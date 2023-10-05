@@ -33,9 +33,9 @@ const loggedUserSlice = createSlice({
       return initialState
     },
     updateUserDetails(state, action) {
-      const { firstName, lastName } = action.payload
+      const { firstName, lastName, avatarPhoto } = action.payload
 
-      const updatedUser = { ...state.user, firstName, lastName }
+      const updatedUser = { ...state.user, firstName, lastName, avatarPhoto }
 
       removeItem('user')
       setItem('user', updatedUser)
