@@ -3,6 +3,7 @@ import { useField } from '../../hooks/useField';
 import { useDispatch } from 'react-redux';
 import { toast } from '../../redux/reducers/notificationsReducer';
 import { useEffect } from 'react';
+import { ProfilePhotoInput } from '../UploadFiles/ProfilePhotoInput';
 
 const RegisterForm = ({ handleToggleForm }) => {
   const username = useField('email')
@@ -48,6 +49,12 @@ const RegisterForm = ({ handleToggleForm }) => {
   return (
     <>
       <form onSubmit={handleSubmit} className='w-full'>
+        <div className="mb-2 mt-4">
+          <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
+            Profile picture
+          </label>
+          <ProfilePhotoInput />
+        </div>
         <div className="mb-2">
           <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
             First Name
@@ -58,6 +65,7 @@ const RegisterForm = ({ handleToggleForm }) => {
             autoComplete="given-name"
             required
             minLength={2}
+            maxLength={30}
             {...firstName.inputs}
           />
         </div>
@@ -71,6 +79,7 @@ const RegisterForm = ({ handleToggleForm }) => {
             autoComplete="familiy-name"
             required
             minLength={2}
+            maxLength={30}
             {...lastName.inputs}
           />
         </div>
@@ -95,6 +104,7 @@ const RegisterForm = ({ handleToggleForm }) => {
             name="password"
             required
             minLength={8}
+            maxLength={30}
             autoComplete="password"
             {...password.inputs}
           />
@@ -108,6 +118,7 @@ const RegisterForm = ({ handleToggleForm }) => {
             name="confirmPassword"
             required
             minLength={8}
+            maxLength={30}
             autoComplete="new-password"
             {...confirmPassword.inputs}
           />
