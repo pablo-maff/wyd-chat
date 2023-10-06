@@ -19,7 +19,7 @@ export function Message({ message }) {
   };
 
   return (
-    <li className={clsx('max-w-[45%] py-2', isUserMessage ? 'self-end' : 'self-start')}>
+    <li className={clsx('max-w-[45%] flex py-2', isUserMessage ? 'self-end' : 'self-start')}>
       <p className={clsx('text-xs', isUserMessage ? 'mr-2 text-right' : 'ml-2')}>{parsedMessageTime}</p>
       <div className={clsx(isUserMessage ? 'bg-blueChat-300 text-white rounded-tl-lg' : 'rounded-tr-lg bg-white', 'rounded-bl-lg rounded-br-lg')}>
         <Linkify
