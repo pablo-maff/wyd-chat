@@ -28,8 +28,8 @@ export function Auth() {
     <div className="min-h-screen bg-blueChat-100 bg-blur">
       <div className='blur-overlay min-h-screen'>
         <Header />
-        <div className="mt-16 flex flex-col items-center justify-center">
-          <div className="min-w-[300px] shadow-xl p-8 rounded-lg mb-4 bd-filter">
+        <div className="mt-8 flex flex-col items-center justify-center">
+          <div className="min-w-[350px] shadow-xl p-8 rounded-lg mb-4 bd-filter">
             <h3 className="text-2xl mb-4 font-semibold text-center">
               {!toggleForm ? 'Login' : 'Register'}
             </h3>

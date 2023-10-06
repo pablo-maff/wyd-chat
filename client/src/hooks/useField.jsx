@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
-export const useField = (type) => {
-  const [value, setValue] = useState('')
+export const useField = (type, defaultValue) => {
+  const [value, setValue] = useState(defaultValue ? defaultValue : '')
   const inputRef = useRef(null);
 
   const initialStyling = 'p-2 rounded border border-gray-500 bg-white w-full glow'

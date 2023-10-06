@@ -3,6 +3,7 @@ import { useField } from '../../hooks/useField';
 import { useDispatch } from 'react-redux';
 import { toast } from '../../redux/reducers/notificationsReducer';
 import { useEffect } from 'react';
+import { useProfilePhotoInput } from '../../hooks/useProfilePhotoInput';
 
 const RegisterForm = ({ handleToggleForm }) => {
   const username = useField('email')
@@ -10,6 +11,8 @@ const RegisterForm = ({ handleToggleForm }) => {
   const lastName = useField('text')
   const password = useField('password')
   const confirmPassword = useField('password')
+
+  const { photoPreview, photoInputComponent } = useProfilePhotoInput()
 
   const dispatch = useDispatch()
 
@@ -32,6 +35,7 @@ const RegisterForm = ({ handleToggleForm }) => {
       lastName: lastName.inputs.value,
       username: username.inputs.value,
       password: password.inputs.value,
+      avatarPhoto: photoPreview
     }
 
     UsersService.register(newUser)
@@ -48,6 +52,13 @@ const RegisterForm = ({ handleToggleForm }) => {
   return (
     <>
       <form onSubmit={handleSubmit} className='w-full'>
+        <div className="mb-2 mt-4">
+          <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
+            Profile picture
+          </label>
+          {/* <ProfilePhotoInput /> */}
+          {photoInputComponent}
+        </div>
         <div className="mb-2">
           <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
             First Name
@@ -58,6 +69,7 @@ const RegisterForm = ({ handleToggleForm }) => {
             autoComplete="given-name"
             required
             minLength={2}
+            maxLength={30}
             {...firstName.inputs}
           />
         </div>
@@ -71,6 +83,7 @@ const RegisterForm = ({ handleToggleForm }) => {
             autoComplete="familiy-name"
             required
             minLength={2}
+            maxLength={30}
             {...lastName.inputs}
           />
         </div>
@@ -95,6 +108,7 @@ const RegisterForm = ({ handleToggleForm }) => {
             name="password"
             required
             minLength={8}
+            maxLength={30}
             autoComplete="password"
             {...password.inputs}
           />
@@ -108,6 +122,7 @@ const RegisterForm = ({ handleToggleForm }) => {
             name="confirmPassword"
             required
             minLength={8}
+            maxLength={30}
             autoComplete="new-password"
             {...confirmPassword.inputs}
           />
