@@ -45,10 +45,10 @@ export function useProfilePhotoInput(avatarPhoto) {
         accept="image/*"
       />
       <div className="text-center relative">
-        <div className='mt-2'>
+        <div className='mt-2 w-40 h-40 m-auto'>
           <img
             src={photo.data}
-            className="min-w-40 min-h-40 w-40 h-40 m-auto rounded-full"
+            className="w-40 h-40 rounded-full"
             alt="Current Profile"
           />
         </div>

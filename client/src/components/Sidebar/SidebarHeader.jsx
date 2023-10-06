@@ -14,7 +14,7 @@ export function SidebarHeader({ handleShowSettings }) {
   return (
     <div className='p-4 shadow-md w-full'>
       <div className='flex justify-between items-center'>
-        <div className='mx-4'>
+        <div className='mx-4 w-16 h-16'>
           <img src={logo} className='w-16 h-16' />
         </div>
         <div className='mx-4'>
