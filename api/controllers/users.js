@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-const { isValidId, userExtractor } = require('../utils/middleware');
+const { isValidId, userExtractor, writeFile } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
 const nodemailer = require('nodemailer');
 
@@ -41,8 +41,9 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
   res.json(users)
 })
 
-usersRouter.post('/', async (req, res) => {
-  const { username, firstName, lastName, password, avatarPhoto } = req.body
+usersRouter.post('/', writeFile, async (req, res) => {
+  const { username, firstName, lastName, password } = req.body
+  const avatarPhoto = req.fileName
 
   // * For now username can only be an email address
   const isValidUsername = validateEmail(username)
@@ -94,9 +95,10 @@ usersRouter.post('/', async (req, res) => {
   })
 })
 
-usersRouter.put('/:id', [isValidId, userExtractor], async (req, res) => {
+usersRouter.put('/:id', [isValidId, userExtractor, writeFile], async (req, res) => {
   const { id } = req.user
-  const { firstName, lastName, avatarPhoto } = req.body
+  const { firstName, lastName } = req.body
+  const avatarPhoto = req.fileName
 
   const updatedUser = await User.findByIdAndUpdate(
     id,

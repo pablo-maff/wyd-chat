@@ -9,7 +9,7 @@ export function Contact({ name, avatar, showLastMessage, selectedChat, typing, s
       <div className="px-2 py-1 mr-2">
         <Avatar avatar={avatar} typing={typing} isOnline={isOnline} />
       </div>
-      <div>
+      <div className='overflow-hidden text-ellipsis break-words'>
         <ContactName name={name} />
         <ContactInfo
           typing={typing}
