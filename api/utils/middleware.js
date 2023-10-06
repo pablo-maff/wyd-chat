@@ -122,7 +122,12 @@ function writeFile(req, res, next) {
   const { file } = req.body
 
   if (file) {
-    console.log('size', file.data.length);
+    if (file.data?.length > 100000) {
+      return res.status(400).json({
+        error: 'file is bigger than 100kb'
+      })
+    }
+
     const parts = file.name.split('.');
 
     const ext = parts[parts.length - 1];

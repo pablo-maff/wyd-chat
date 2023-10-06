@@ -7,7 +7,7 @@ export function Avatar({ avatar, typing, isOnline }) {
   return (
     <div className="relative w-14 h-14">
       <img
-        src={avatar ? avatar : defaultAvatar}
+        src={avatar || defaultAvatar}
         className={`rounded-full w-14 h-14 ${isTyping}`}
         alt="avatar image"
       />

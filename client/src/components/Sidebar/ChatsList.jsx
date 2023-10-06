@@ -12,8 +12,6 @@ export function ChatsList({ filteredChatsData }) {
   const { user } = useSelector(state => state.userAuthentication)
   const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
 
-  console.log('activeChatId', activeChatId);
-
   function handleSelectChat(chatId) {
     dispatch(activateChat(chatId))
     toggleSidebar(false)
