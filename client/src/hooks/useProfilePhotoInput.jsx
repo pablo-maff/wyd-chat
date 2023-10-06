@@ -13,8 +13,8 @@ export function useProfilePhotoInput(avatarPhoto) {
   function handleFileChange(e) {
     const file = e.target.files[0];
 
-    if (file.size > 100000) {
-      dispatch(toast('File size can\'t be bigger than 10kb', 'error'))
+    if (file.size > 70000) {
+      dispatch(toast('File size can\'t be bigger than 70kb', 'error'))
       return
     }
 

@@ -9,6 +9,7 @@ import data from '@emoji-mart/data'
 import { BsEmojiSmile } from 'react-icons/bs'
 import { ImAttachment } from 'react-icons/im'
 import { createChatRoomMessage } from '../../redux/reducers/userChatsReducer';
+import { toast } from '../../redux/reducers/notificationsReducer';
 
 export function ChatInput() {
   const { id } = useParams()
@@ -94,11 +95,18 @@ export function ChatInput() {
   }
 
   function handleSendFile(event) {
+    const file = event.target.files[0];
+
+    if (file.size > 70000) {
+      dispatch(toast('File size can\'t be bigger than 70kb', 'error'))
+      return
+    }
+
     const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload = () => {
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
       submitNewMessage(null, {
-        name: event.target.files[0].name,
+        name: file.name,
         data: reader.result,
       });
     };
