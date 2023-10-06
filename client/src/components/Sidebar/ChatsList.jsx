@@ -26,22 +26,24 @@ export function ChatsList() {
           .at(-1)
 
         return (
-          <li
-            key={chat.id}
-            onClick={() => handleSelectChat(chat.id)}
-            id='chat-list-item'
-            className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg mx-1'
-          >
-            <Contact
-              key={chat?.contact?.id}
-              name={chat?.title}
-              avatar={chat?.contact?.avatarPhoto}
-              showLastMessage={lastContactMessage}
-              typing={typingUsersById.includes(chat?.contact?.id)}
-              selectedChat={chat.id === activeChatId ? true : false}
-              isOnline={onlineUsersById.includes(chat?.contact?.id)}
-            />
-          </li>
+          <>
+            <li
+              key={chat.id}
+              onClick={() => handleSelectChat(chat.id)}
+              id='chat-list-item'
+              className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg mx-1'
+            >
+              <Contact
+                key={chat?.contact?.id}
+                name={chat?.title}
+                avatar={chat?.contact?.avatarPhoto}
+                showLastMessage={lastContactMessage}
+                typing={typingUsersById.includes(chat?.contact?.id)}
+                selectedChat={chat.id === activeChatId ? true : false}
+                isOnline={onlineUsersById.includes(chat?.contact?.id)}
+              />
+            </li> <hr /> 
+          </>
         );
       })}
     </>
