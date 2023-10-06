@@ -57,37 +57,35 @@ export function Sidebar() {
       className={clsx('min-w-[22rem] relative flex-grow-0 flex-col items-center bg-white', chatsData?.activeChat && !sidebarOpen ? 'hidden md:flex' : 'flex min-w-full md:min-w-[22rem]')}
     >
       {!showSettings &&
-        <SidebarHeader handleShowSettings={handleShowSettings} />
+        <>
+          <SidebarHeader handleShowSettings={handleShowSettings} />
+          <div id='sidebar-search-container' className='w-full p-2'>
+            {!toggleNewChat ?
+              chatsSearchInput
+              :
+              usersSearchInput
+            }
+          </div>
+        </>
       }
-      <div className='w-full p-2'>
-        {!toggleNewChat ?
-          chatsSearchInput
-          :
-          usersSearchInput
-        }
-      </div>
       <div
-        id='list-container'
+        id='sidebar-body-container'
         className='relative w-full h-full bg-slate-100'
       >
         {!showSettings ?
-          <>
-            {filteredChatsData && filteredUsersData &&
-              <ul
-                id='chat-list'
-                className='absolute inset-0 overflow-y-scroll flex flex-col gap-y-1 mt-1 mr-0'
-              >
-                {!toggleNewChat ?
-                  <ChatsList filteredChatsData={filteredChatsData} />
-                  :
-                  <ContactsList
-                    filteredUsersData={filteredUsersData}
-                    handleCreateChatRoom={handleCreateChatRoom}
-                  />
-                }
-              </ul>
+          <ul
+            id='chat-list'
+            className='absolute inset-0 overflow-y-scroll flex flex-col gap-y-1 mt-1 mr-0'
+          >
+            {!toggleNewChat ?
+              <ChatsList filteredChatsData={filteredChatsData} />
+              :
+              <ContactsList
+                filteredUsersData={filteredUsersData}
+                handleCreateChatRoom={handleCreateChatRoom}
+              />
             }
-          </>
+          </ul>
           :
           <Settings
             user={user}

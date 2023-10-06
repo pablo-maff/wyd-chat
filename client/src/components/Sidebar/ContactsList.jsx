@@ -2,6 +2,11 @@ import { Contact } from '../Contact';
 import { NoSearchResults } from '../NoSearchResults';
 
 export function ContactsList({ filteredUsersData, handleCreateChatRoom }) {
+
+  if (!filteredUsersData) {
+    return null
+  }
+
   return (
     <>
       {filteredUsersData.length > 0 ?
