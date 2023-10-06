@@ -1,14 +1,13 @@
 import { useSelector } from 'react-redux';
 import { Contact } from '../Contact';
-import { useState } from 'react'; // Import useState
-
+import { useState } from 'react';
 export function ContactsList({ handleCreateChatRoom }) {
   const { data: usersData } = useSelector(state => state.userContacts);
 
-  // add a state variable for the filter
+  // * add a state variable for the filter
   const [filterText, setFilterText] = useState('');
 
-  // filtering function
+  // * filtering function
   const filteredUsers = usersData.filter((user) => {
     const fullName = `${user?.firstName} ${user?.lastName}`.toLowerCase();
     return fullName.includes(filterText.toLowerCase());
@@ -38,7 +37,8 @@ export function ContactsList({ handleCreateChatRoom }) {
               avatar={user?.avatarPhoto}
               showLastTimeOnline={user?.lastTimeOnline}
             />
-          </li> <hr /> 
+          </li> 
+          <hr /> 
         </>
       ))}
     </>
