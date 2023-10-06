@@ -2,7 +2,7 @@ const chatRoomsRouter = require('express').Router()
 const ChatRoom = require('../models/chatRoom')
 const Message = require('../models/message')
 const User = require('../models/user')
-const { userExtractor, isValidId, chatRoomExtractor } = require('../utils/middleware')
+const { userExtractor, isValidId, chatRoomExtractor, writeFile } = require('../utils/middleware')
 
 chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   const { members } = req.body
@@ -85,8 +85,9 @@ chatRoomsRouter.get('/:id/messages', [isValidId, chatRoomExtractor], async (req,
   res.status(200).json(chatRoomMessages)
 })
 
-chatRoomsRouter.post('/:id/messages', [isValidId, userExtractor, chatRoomExtractor], async (req, res) => {
+chatRoomsRouter.post('/:id/messages', [isValidId, userExtractor, chatRoomExtractor, writeFile], async (req, res) => {
   const { from, to, text } = req.body
+  const fileName = req.fileName
   const selectedChatRoom = req.chatRoom
   const user = req.user
   const io = req.socketServer
@@ -101,6 +102,7 @@ chatRoomsRouter.post('/:id/messages', [isValidId, userExtractor, chatRoomExtract
     from,
     to,
     text,
+    file: fileName,
     timestamp: new Date().toISOString(),
     chatRoomId: selectedChatRoom.id
   })

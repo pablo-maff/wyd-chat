@@ -11,21 +11,21 @@ export function SettingsForm({ user, handleShowEditUserForm }) {
   const firstName = useField('text', user.firstName)
   const lastName = useField('text', user.lastName)
 
-  const { photoPreview, photoInputComponent } = useProfilePhotoInput(user.avatarPhoto)
+  const { photo, photoInputComponent } = useProfilePhotoInput(user.avatarPhoto)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     if (firstName.inputs.value !== user.firstName ||
       lastName.inputs.value !== user.lastName ||
-      photoPreview !== user.avatarPhoto
+      photo !== user.avatarPhoto
     ) {
       return setShowSubmitButton(true)
     }
 
     setShowSubmitButton(false)
 
-  }, [firstName.inputs.value, lastName.inputs.value, photoPreview, user.avatarPhoto, user.firstName, user.lastName])
+  }, [firstName.inputs.value, lastName.inputs.value, photo, user.avatarPhoto, user.firstName, user.lastName])
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -34,7 +34,7 @@ export function SettingsForm({ user, handleShowEditUserForm }) {
       id: user.id,
       firstName: firstName.inputs.value,
       lastName: lastName.inputs.value,
-      avatarPhoto: photoPreview
+      file: photo
     }
 
     dispatch(updateUserAction(updatedUser))

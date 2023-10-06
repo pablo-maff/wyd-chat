@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const { default: mongoose } = require('mongoose')
 const ChatRoom = require('../models/chatRoom')
+const fs = require('fs');
 
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: 'Unknown endpoint' })
@@ -117,6 +118,35 @@ function attachWebSocket(socketServer) {
   };
 }
 
+function writeFile(req, res, next) {
+  const { file } = req.body
+
+  if (file) {
+    console.log('size', file.data.length);
+    const parts = file.name.split('.');
+
+    const ext = parts[parts.length - 1];
+
+    const fileName = Date.now() + '.' + ext;
+
+    const path = './uploads/' + fileName;
+
+    const bufferData = Buffer.from(file.data.split(',')[1], 'base64');
+
+    fs.writeFile(path, bufferData, (err) => {
+      if (err) {
+        console.error('Error saving file:', err);
+      } else {
+        console.log('File saved:', path);
+      }
+    });
+
+    req.fileName = '/api/uploads/' + fileName
+  }
+
+  next()
+}
+
 module.exports = {
   unknownEndpoint,
   errorHandler,
@@ -124,5 +154,6 @@ module.exports = {
   userExtractor,
   chatRoomExtractor,
   isValidId,
-  attachWebSocket
+  attachWebSocket,
+  writeFile
 }

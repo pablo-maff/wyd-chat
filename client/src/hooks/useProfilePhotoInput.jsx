@@ -5,8 +5,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from '../redux/reducers/notificationsReducer';
 
 export function useProfilePhotoInput(avatarPhoto) {
-  console.log('avatarPhoto', avatarPhoto);
-  const [photoPreview, setPhotoPreview] = useState(avatarPhoto ? avatarPhoto : defaultAvatar);
+  const [photo, setPhoto] = useState(avatarPhoto ? { data: avatarPhoto } : defaultAvatar);
   const fileInputRef = useRef(null);
 
   const dispatch = useDispatch()
@@ -20,18 +19,21 @@ export function useProfilePhotoInput(avatarPhoto) {
     }
 
     const previewReader = new FileReader();
-    previewReader.onload = (e) => {
-      setPhotoPreview(e.target.result);
-    };
     previewReader.readAsDataURL(file);
+    previewReader.onload = (e) => {
+      setPhoto({
+        name: file.name,
+        data: e.target.result
+      })
+    };
 
   }
 
-  const clickHandler = () => {
+  function clickHandler() {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
-  };
+  }
 
   const photoInputComponent = (
     <div>
@@ -45,7 +47,7 @@ export function useProfilePhotoInput(avatarPhoto) {
       <div className="text-center relative">
         <div className='mt-2'>
           <img
-            src={photoPreview}
+            src={photo.data}
             className="min-w-40 min-h-40 w-40 h-40 m-auto rounded-full"
             alt="Current Profile"
           />
@@ -68,7 +70,7 @@ export function useProfilePhotoInput(avatarPhoto) {
   )
 
   return {
-    photoPreview,
+    photo,
     photoInputComponent
   }
 }

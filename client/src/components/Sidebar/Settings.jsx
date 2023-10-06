@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { GoMention } from 'react-icons/go';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { SettingsForm } from './SettingsForm';
+import UploadsService from '../../services/uploadsService';
 
 export function Settings({ user, handleShowSettings }) {
   const [showEditUserForm, setShowEditUserForm] = useState(false)

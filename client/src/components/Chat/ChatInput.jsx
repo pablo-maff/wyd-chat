@@ -7,8 +7,10 @@ import { sendThisUserIsTyping, sendThisUserStoppedTyping } from '../../redux/red
 import Picker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
 import { BsEmojiSmile } from 'react-icons/bs'
+import { ImAttachment } from 'react-icons/im'
+import { createChatRoomMessage } from '../../redux/reducers/userChatsReducer';
 
-export function ChatInput({ submitNewMessage }) {
+export function ChatInput() {
   const { id } = useParams()
   const { user } = useSelector(state => state.userAuthentication)
   const activeChat = useSelector((state) => state.userChats).data.activeChat
@@ -16,6 +18,7 @@ export function ChatInput({ submitNewMessage }) {
   const [newMessage, setNewMessage] = useState('')
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const textareaRef = useRef(null)
+  const fileInputRef = useRef(null)
 
   const dispatch = useDispatch()
 
@@ -33,6 +36,18 @@ export function ChatInput({ submitNewMessage }) {
     // * We want stale closure of activeChat here to send the stop typing signal to the correct user (the one of the previously selected chat\)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
+
+  function submitNewMessage(text, file) {
+    const newMessage = {
+      from: user.id,
+      to: activeChat.contact.id,
+      text,
+      file,
+      chatRoomId: id
+    }
+
+    dispatch(createChatRoomMessage(newMessage))
+  }
 
   // * Debounce the typing indication emit
   // * useMemo instead of useCallback because of EsLint error (see https://github.com/facebook/react/issues/19240)
@@ -78,6 +93,17 @@ export function ChatInput({ submitNewMessage }) {
     }
   }
 
+  function handleSendFile(event) {
+    const reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = () => {
+      submitNewMessage(null, {
+        name: event.target.files[0].name,
+        data: reader.result,
+      });
+    };
+  }
+
   function onEmojiSelection(emojiData, event) {
     setNewMessage(
       (prevMessage) =>
@@ -110,6 +136,12 @@ export function ChatInput({ submitNewMessage }) {
     }
   }
 
+  function fileInputClickHandler() {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }
+
   return (
     <form onSubmit={handleSubmitNewMessage} className="flex pt-1 pb-4 px-6">
       <div className='relative w-full'>
@@ -126,7 +158,9 @@ export function ChatInput({ submitNewMessage }) {
         }
         <div className='flex bg-white rounded-lg shadow-lg hover:shadow-xl'>
           <div className='flex items-center justify-center m-2 mt-auto'>
-            <button onClick={handleShowEmojiPicker} ><BsEmojiSmile size='1.3rem' color='grey' /></button>
+            <button onClick={handleShowEmojiPicker} >
+              <BsEmojiSmile size='1.3rem' color='grey' />
+            </button>
           </div>
           <TextareaAutosize
             value={newMessage}
@@ -139,6 +173,18 @@ export function ChatInput({ submitNewMessage }) {
             className='p-2 resize-none w-full focus:outline-none rounded-lg'
             placeholder="Message"
           />
+          <button
+            onClick={fileInputClickHandler}
+            className='flex items-center justify-center m-2 mt-auto'
+          >
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleSendFile}
+            />
+            <ImAttachment size='1.3rem' color='grey' />
+          </button>
         </div>
       </div>
       <button type='submit' className='hidden' />
