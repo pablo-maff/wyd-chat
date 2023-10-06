@@ -18,6 +18,7 @@ const usersSlice = createSlice({
       const { data, currentUserId } = action.payload
 
       const filterCurrentUser = data.filter(user => user.id !== currentUserId)
+        .map(user => ({ ...user, fullName: `${user.firstName} ${user.lastName}` }))
 
       return { ...state, data: filterCurrentUser, loading: false, error: null }
     },
