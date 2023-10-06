@@ -5,7 +5,7 @@ import { ChatHeader } from './ChatHeader';
 import { useSidebarContext } from '../../hooks/useSidebarContext';
 import clsx from 'clsx';
 
-function Chat() {
+export function Chat() {
   const { sidebarOpen } = useSidebarContext()
   const activeChat = useSelector((state) => state.userChats).data.activeChat
 
@@ -26,5 +26,3 @@ function Chat() {
     </div>
   );
 }
-
-export default Chat;
