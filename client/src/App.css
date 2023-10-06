@@ -1,6 +1,7 @@
 /* styles.css */
 :root {
   --glow-color: #73dde3; /* Set your desired glow color here */
+  font-family: Arial, Helvetica, sans-serif
 }
 
 /* background-blur.css */
@@ -20,7 +21,7 @@
 }
 
 .bd-filter {
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(50px);
 }
 
 /* styles.css */
@@ -32,3 +33,9 @@
 .glow:focus {
   box-shadow: 0 0 5px var(--glow-color), 0 0 10px var(--glow-color), 0 0 15px var(--glow-color);
 }
+
+.effect {
+  transition: .2s ease;
+  background-color: rgb(108, 175, 252);
+}
+
