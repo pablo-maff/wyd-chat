@@ -42,7 +42,8 @@ export function ChatsList() {
                 selectedChat={chat.id === activeChatId ? true : false}
                 isOnline={onlineUsersById.includes(chat?.contact?.id)}
               />
-            </li> <hr /> 
+            </li> 
+            <hr /> 
           </>
         );
       })}
