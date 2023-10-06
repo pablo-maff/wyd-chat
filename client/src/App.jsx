@@ -1,7 +1,7 @@
 import { Navigate, Outlet, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Main from './pages/Main';
 import { Auth } from './pages/Auth';
-import Chat from './components/Chat';
+import {Chat} from './components/Chat';
 import { useDispatch, useSelector } from 'react-redux';
 import { initializeUserChats } from './redux/reducers/userChatsReducer';
 import { useEffect } from 'react';

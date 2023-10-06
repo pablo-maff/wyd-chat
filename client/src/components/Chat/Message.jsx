@@ -70,7 +70,7 @@ export function Message({ message }) {
         {message.file && message.file.match(/\.(JPEG|JPG|GIF|PNG)$/) ? (
           // Display image if the message contains an image file
           <div
-            className="relative flex p-1 bg-blueChat-300 rounded-lg shadow-lg"
+            className="relative flex p-2 bg-blueChat-300 rounded-lg shadow-lg"
             onContextMenu={(e) => {
               // Show the "Download" button when right-clicking
               e.preventDefault();
@@ -84,7 +84,7 @@ export function Message({ message }) {
               className="max-w-full h-auto"
             />
             <button
-              className="download-button hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-2 py-1 transition-color bg-white text-blueChat-300 rounded-lg shadow-lg hover:bg-blueChat-300 hover:text-white"
+              className="download-button hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-2 py-1 bg-white text-blueChat-300 rounded-lg shadow-lg hover:bg-blueChat-400"
               onClick={() => {
                 // Trigger the download when the button is clicked
                 const link = document.createElement('a');
