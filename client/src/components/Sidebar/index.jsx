@@ -64,7 +64,7 @@ export function Sidebar() {
             {chatsData?.chatRooms && usersData &&
               <ul
                 id='chat-list'
-                className='absolute inset-0 overflow-y-scroll flex flex-col gap-y-1 m-2 mr-0 bg-white'
+                className='absolute inset-0 overflow-y-scroll flex flex-col gap-y-1 mt-1 mr-0'
               >
                 {!toggleNewChat ?
                   <ChatsList />

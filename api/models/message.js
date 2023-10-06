@@ -34,6 +34,10 @@ const messageSchema = new mongoose.Schema({
     ref: 'ChatRoom',
     required: true
   },
+  unread: {
+    type: Boolean,
+    default: false
+  }
 })
 
 messageSchema.set('toJSON', {
