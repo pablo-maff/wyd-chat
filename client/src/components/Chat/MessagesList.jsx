@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Message } from './Message';
+import { NoSearchResults } from '../NoSearchResults';
 
 export function MessagesList({ messages }) {
   const chatContainerRef = useRef(undefined);
@@ -21,11 +22,15 @@ export function MessagesList({ messages }) {
         ref={chatContainerRef}
         className='absolute bottom-2 inset-0 overflow-y-scroll overflow-x-hidden p-8'
       >
-        <ul className='flex flex-col'>
-          {messages?.map(message =>
-            <Message key={message.id} message={message} />
-          )}
-        </ul>
+        {messages.length > 0 ?
+          <ul className='flex flex-col'>
+            {messages?.map(message =>
+              <Message key={message.id} message={message} />
+            )}
+          </ul>
+          :
+          <NoSearchResults />
+        }
       </div>
     </div>
   )

@@ -20,8 +20,8 @@ export function Sidebar() {
   const { data: usersData } = useSelector(state => state.userContacts)
   const { user } = useSelector(state => state.userAuthentication)
 
-  const { filteredData: filteredUsersData, searchInput: usersSearchInput } = useSearch(usersData, 'fullName', 'full name')
-  const { filteredData: filteredChatsData, searchInput: chatsSearchInput } = useSearch(chatsData?.chatRooms, 'title', 'full name')
+  const { filteredData: filteredUsersData, searchInput: usersSearchInput } = useSearch({ data: usersData, searchKey: 'fullName', placeholderValue: 'full name' })
+  const { filteredData: filteredChatsData, searchInput: chatsSearchInput } = useSearch({ data: chatsData?.chatRooms, searchKey: 'title', placeholderValue: 'full name' })
 
   const dispatch = useDispatch()
 

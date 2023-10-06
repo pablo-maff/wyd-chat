@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
-export function useSearch(data, searchKey, placeholderValue) {
+export function useSearch({ data, searchKey, secondarySearchKey, placeholderValue }) {
   // * add a state variable for the filter
   const [searchValue, setSearchValue] = useState('');
-
+  const chatInputRef = useRef(null)
 
   if (!data || !searchKey) {
     return {
@@ -13,12 +13,20 @@ export function useSearch(data, searchKey, placeholderValue) {
   }
 
   const filteredData = data.filter(item => {
-    return item[searchKey].toLowerCase().includes(searchValue.toLowerCase());
+    if (!item[searchKey]) {
+      return item[secondarySearchKey]?.toLowerCase()?.includes(searchValue?.toLowerCase());
+    }
+    return item[searchKey]?.toLowerCase()?.includes(searchValue?.toLowerCase());
   });
+
+  function clearSearchValue() {
+    setSearchValue('')
+  }
 
   const searchInput = (
     <input
       type="text"
+      ref={chatInputRef}
       placeholder={`Search by ${placeholderValue || searchKey}...`}
       value={searchValue}
       onChange={(e) => setSearchValue(e.target.value)}
@@ -28,6 +36,8 @@ export function useSearch(data, searchKey, placeholderValue) {
 
   return {
     filteredData,
-    searchInput
+    searchInput,
+    chatInputRef,
+    clearSearchValue
   }
 }
