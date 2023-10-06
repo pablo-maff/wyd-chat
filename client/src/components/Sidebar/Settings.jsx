@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { GoMention } from 'react-icons/go';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { SettingsForm } from './SettingsForm';
+import UploadsService from '../../services/uploadsService';
 
 export function Settings({ user, handleShowSettings }) {
   const [showEditUserForm, setShowEditUserForm] = useState(false)
@@ -31,10 +32,12 @@ export function Settings({ user, handleShowSettings }) {
           {!showEditUserForm ?
             <>
               <div className='p-4 mt-4 w-full'>
-                <img
-                  src={user.avatarPhoto}
-                  className='rounded-full w-40 h-40 m-auto'
-                  alt="avatar image" />
+                <div className='w-40 h-40 m-auto'>
+                  <img
+                    src={user.avatarPhoto}
+                    className='rounded-full w-40 h-40'
+                    alt="avatar image" />
+                </div>
                 <h6 className='text-lg font-semibold text-center mt-4'>{user.firstName} {user.lastName}</h6>
               </div>
               <div className='flex items-center justify-center'>

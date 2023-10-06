@@ -12,7 +12,7 @@ const RegisterForm = ({ handleToggleForm }) => {
   const password = useField('password')
   const confirmPassword = useField('password')
 
-  const { photoPreview, photoInputComponent } = useProfilePhotoInput()
+  const { photo, photoInputComponent } = useProfilePhotoInput()
 
   const dispatch = useDispatch()
 
@@ -35,7 +35,7 @@ const RegisterForm = ({ handleToggleForm }) => {
       lastName: lastName.inputs.value,
       username: username.inputs.value,
       password: password.inputs.value,
-      avatarPhoto: photoPreview
+      file: photo
     }
 
     UsersService.register(newUser)
