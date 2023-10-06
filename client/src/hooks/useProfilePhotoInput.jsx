@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from '../redux/reducers/notificationsReducer';
 
 export function useProfilePhotoInput(avatarPhoto) {
-  const [photo, setPhoto] = useState(avatarPhoto ? { data: avatarPhoto } : defaultAvatar);
+  const [photo, setPhoto] = useState(avatarPhoto ? { data: avatarPhoto } : null);
   const fileInputRef = useRef(null);
 
   const dispatch = useDispatch()
@@ -26,7 +26,6 @@ export function useProfilePhotoInput(avatarPhoto) {
         data: e.target.result
       })
     };
-
   }
 
   function clickHandler() {
@@ -47,7 +46,7 @@ export function useProfilePhotoInput(avatarPhoto) {
       <div className="text-center relative">
         <div className='mt-2 w-40 h-40 m-auto'>
           <img
-            src={photo.data}
+            src={photo?.data || defaultAvatar}
             className="w-40 h-40 rounded-full"
             alt="Current Profile"
           />

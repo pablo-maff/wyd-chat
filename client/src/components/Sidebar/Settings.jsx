@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { GoMention } from 'react-icons/go';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { SettingsForm } from './SettingsForm';
-import UploadsService from '../../services/uploadsService';
+import defaultAvatar from '../../assets/default-avatar/default_avatar.png'
 
 export function Settings({ user, handleShowSettings }) {
   const [showEditUserForm, setShowEditUserForm] = useState(false)
@@ -34,7 +34,7 @@ export function Settings({ user, handleShowSettings }) {
               <div className='p-4 mt-4 w-full'>
                 <div className='w-40 h-40 m-auto'>
                   <img
-                    src={user.avatarPhoto}
+                    src={user.avatarPhoto || defaultAvatar}
                     className='rounded-full w-40 h-40'
                     alt="avatar image" />
                 </div>
