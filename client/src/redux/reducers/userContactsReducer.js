@@ -27,7 +27,11 @@ const usersSlice = createSlice({
       return { ...state, onlineUsersById: action.payload }
     },
     addUser: (state, action) => {
-      return { ...state, data: [...state.data, action.payload] }
+      const user = action.payload
+
+      const userWithFullName = { ...user, fullName: `${user.firstName} ${user.lastName}` }
+
+      return { ...state, data: [...state.data, userWithFullName] }
     },
     setTypingUser: (state, action) => {
       return { ...state, typingUsersById: [...state.typingUsersById, action.payload] }
