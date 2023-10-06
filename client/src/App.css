@@ -1,34 +1,34 @@
 /* styles.css */
 :root {
-    --glow-color: #69dae0; /* Set your desired glow color here */
-  }
-  
-  /* background-blur.css */
-  .bg-blur {
-    backdrop-filter: blur(60px);
-    background-image: url('./assets/bg_login.jpg'); /* Add your image URL here */
-    background-size: cover;
-    background-position: center;
-  }
-  
-  /* background-blur.css */
-  .blur-overlay {
-    /* Add styles for the blur overlay */
-    inset: 0;
-    background-color: rgba(255, 255, 255, 0.5); /* Adjust the background color and opacity */
-    backdrop-filter: blur(60px); /* Apply the blur effect */
-  }
-  
-  .bd-filter {
-    backdrop-filter: blur(20px);
-  }
-  
-  /* styles.css */
-  .glow {
-    box-shadow: none;
-    transition: box-shadow 0.3s ease-in-out;
-  }
-  
-  .glow:focus {
-    box-shadow: 0 0 5px var(--glow-color), 0 0 10px var(--glow-color), 0 0 15px var(--glow-color);
-  }
+  --glow-color: #73dde3; /* Set your desired glow color here */
+}
+
+/* background-blur.css */
+.bg-blur {
+  backdrop-filter: blur(60px);
+  background-image: url('./assets/bg_login.jpg'); /* Add your image URL here */
+  background-size: cover;
+  background-position: center;
+}
+
+/* background-blur.css */
+.blur-overlay {
+  /* Add styles for the blur overlay */
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.5); /* Adjust the background color and opacity */
+  backdrop-filter: blur(60px); /* Apply the blur effect */
+}
+
+.bd-filter {
+  backdrop-filter: blur(20px);
+}
+
+/* styles.css */
+.glow {
+  box-shadow: none;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.glow:focus {
+  box-shadow: 0 0 5px var(--glow-color), 0 0 10px var(--glow-color), 0 0 15px var(--glow-color);
+}
