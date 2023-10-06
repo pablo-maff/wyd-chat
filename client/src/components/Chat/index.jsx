@@ -5,7 +5,7 @@ import { ChatHeader } from './ChatHeader';
 import { useSidebarContext } from '../../hooks/useSidebarContext';
 import clsx from 'clsx';
 import { useSearch } from '../../hooks/useSearch';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export function Chat() {
   const [showSearchChat, setShowSearchChat] = useState(false)
@@ -21,15 +21,22 @@ export function Chat() {
   } = useSearch({ data: activeChat.messages, searchKey: 'text', secondarySearchKey: 'file' })
 
   function handleShowSearchChat() {
-    setShowSearchChat(!showSearchChat)
-  }
-
-  useEffect(() => {
-    if (showSearchChat) {
-      return chatInputRef.current.focus()
+    // * If the value is false when called it means that we are opening the search bar
+    if (!showSearchChat) {
+      // * We use a small delay to avoid the button stealing the focus away when clicked
+      setTimeout(() => {
+        chatInputRef.current.focus()
+      }, 50);
     }
-    clearSearchValue()
-  }, [chatInputRef, clearSearchValue, showSearchChat])
+
+    setShowSearchChat(showingChat => {
+      if (showingChat) {
+        clearSearchValue()
+        return !showingChat
+      }
+      return !showingChat
+    })
+  }
 
   return (
     <div className={clsx('flex flex-1 flex-col blur-overlay', sidebarOpen && 'hidden md:flex')}>

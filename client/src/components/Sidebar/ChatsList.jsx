@@ -8,9 +8,11 @@ export function ChatsList({ filteredChatsData }) {
   const dispatch = useDispatch()
   const { toggleSidebar } = useSidebarContext()
 
-  const activeChatId = useSelector(state => state.userChats).chatsData?.activeChat?.id
+  const activeChatId = useSelector(state => state.userChats).data?.activeChat?.id
   const { user } = useSelector(state => state.userAuthentication)
   const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
+
+  console.log('activeChatId', activeChatId);
 
   function handleSelectChat(chatId) {
     dispatch(activateChat(chatId))

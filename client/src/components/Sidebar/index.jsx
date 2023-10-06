@@ -9,6 +9,7 @@ import { useSidebarContext } from '../../hooks/useSidebarContext';
 import clsx from 'clsx';
 import { Settings } from './Settings';
 import { useSearch } from '../../hooks/useSearch';
+import { Loader } from '../Loader/Loader';
 
 export function Sidebar() {
   const [showSettings, setShowSettings] = useState(false)
@@ -20,13 +21,30 @@ export function Sidebar() {
   const { data: usersData } = useSelector(state => state.userContacts)
   const { user } = useSelector(state => state.userAuthentication)
 
-  const { filteredData: filteredUsersData, searchInput: usersSearchInput } = useSearch({ data: usersData, searchKey: 'fullName', placeholderValue: 'full name' })
-  const { filteredData: filteredChatsData, searchInput: chatsSearchInput } = useSearch({ data: chatsData?.chatRooms, searchKey: 'title', placeholderValue: 'full name' })
-
   const dispatch = useDispatch()
 
+  const {
+    filteredData: filteredUsersData,
+    searchInput: usersSearchInput,
+    clearSearchValue: usersClearSearchValue
+  } = useSearch({ data: usersData, searchKey: 'fullName', placeholderValue: 'full name' })
+
+  const {
+    filteredData: filteredChatsData,
+    searchInput: chatsSearchInput,
+    clearSearchValue: chatsClearSearchValue
+  } = useSearch({ data: chatsData?.chatRooms, searchKey: 'title', placeholderValue: 'full name' })
+
   function handleNewChatView() {
-    setToggleNewChat(!toggleNewChat)
+    setToggleNewChat(newChatView => {
+      if (newChatView) {
+        chatsClearSearchValue()
+        return !newChatView
+      }
+      usersClearSearchValue()
+      return !newChatView
+    }
+    )
   }
 
   function handleCreateChatRoom(contactId) {
