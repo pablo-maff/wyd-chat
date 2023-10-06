@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-const { faker } = require('@faker-js/faker');
 const { isValidId, userExtractor } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
 const nodemailer = require('nodemailer');
@@ -43,7 +42,7 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
 })
 
 usersRouter.post('/', async (req, res) => {
-  const { username, firstName, lastName, password } = req.body
+  const { username, firstName, lastName, password, avatarPhoto } = req.body
 
   // * For now username can only be an email address
   const isValidUsername = validateEmail(username)
@@ -68,15 +67,12 @@ usersRouter.post('/', async (req, res) => {
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  // ! Added here after request. Model now expects a string which is an url to the image. Probably need to change it to buffer to upload proper files
-  const tempAvatarPhoto = faker.image.avatar()
-
   const user = new User({
     username,
     firstName,
     lastName,
     passwordHash,
-    avatarPhoto: tempAvatarPhoto,
+    avatarPhoto,
     lastTimeOnline: null
   })
 
@@ -95,6 +91,29 @@ usersRouter.post('/', async (req, res) => {
 
   res.status(201).json({
     message: `Sent a verification email to ${username}`
+  })
+})
+
+usersRouter.put('/:id', [isValidId, userExtractor], async (req, res) => {
+  const { id } = req.user
+  const { firstName, lastName, avatarPhoto } = req.body
+
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    { firstName, lastName, avatarPhoto },
+    {
+      new: true,
+    }
+  ).select('firstName lastName avatarPhoto')
+
+  if (!updatedUser) {
+    return res
+      .status(404)
+      .json({ error: 'Unable to find user' })
+  }
+
+  res.status(200).json({
+    updatedUser
   })
 })
 

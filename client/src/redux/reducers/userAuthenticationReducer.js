@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import LoginService from '../../services/loginService';
+import UsersService from '../../services/usersService';
 import { LocalStorageManager } from '../../utils/LocalStorageManager';
 import { resetUserChatsState } from './userChatsReducer';
 import { toast } from './notificationsReducer';
@@ -17,7 +18,7 @@ const loggedUserSlice = createSlice({
   initialState: initialState,
   reducers: {
     login(state, action) {
-      setItem('user', JSON.stringify(action.payload));
+      setItem('user', action.payload)
 
       return {
         ...state,
@@ -30,11 +31,21 @@ const loggedUserSlice = createSlice({
       removeItem('user')
 
       return initialState
+    },
+    updateUserDetails(state, action) {
+      const { firstName, lastName, avatarPhoto } = action.payload
+
+      const updatedUser = { ...state.user, firstName, lastName, avatarPhoto }
+
+      removeItem('user')
+      setItem('user', updatedUser)
+
+      return { ...state, user: updatedUser }
     }
   },
 })
 
-export const { login, logout } = loggedUserSlice.actions
+export const { login, logout, updateUserDetails } = loggedUserSlice.actions
 
 export const loginUser = (credentials) => {
   return async (dispatch) => {
@@ -44,6 +55,20 @@ export const loginUser = (credentials) => {
       dispatch(login(loggedInUser.data))
     } catch (error) {
       console.error(error);
+      dispatch(toast(error?.response?.data.error, 'error'))
+    }
+  }
+}
+
+export const updateUserAction = (updatedUser) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await UsersService.updateUser(updatedUser)
+
+      dispatch(updateUserDetails(data.updatedUser))
+      dispatch(toast('User successfully updated', 'success'))
+    } catch (error) {
+      console.error(error)
       dispatch(toast(error?.response?.data.error, 'error'))
     }
   }
