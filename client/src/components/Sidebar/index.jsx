@@ -8,6 +8,8 @@ import { ToggleSidebarView } from './ToggleSidebarView';
 import { useSidebarContext } from '../../hooks/useSidebarContext';
 import clsx from 'clsx';
 import { Settings } from './Settings';
+import { useSearch } from '../../hooks/useSearch';
+import { Loader } from '../Loader/Loader';
 
 export function Sidebar() {
   const [showSettings, setShowSettings] = useState(false)
@@ -21,8 +23,28 @@ export function Sidebar() {
 
   const dispatch = useDispatch()
 
+  const {
+    filteredData: filteredUsersData,
+    searchInput: usersSearchInput,
+    clearSearchValue: usersClearSearchValue
+  } = useSearch({ data: usersData, searchKey: 'fullName', placeholderValue: 'full name' })
+
+  const {
+    filteredData: filteredChatsData,
+    searchInput: chatsSearchInput,
+    clearSearchValue: chatsClearSearchValue
+  } = useSearch({ data: chatsData?.chatRooms, searchKey: 'title', placeholderValue: 'full name' })
+
   function handleNewChatView() {
-    setToggleNewChat(!toggleNewChat)
+    setToggleNewChat(newChatView => {
+      if (newChatView) {
+        chatsClearSearchValue()
+        return !newChatView
+      }
+      usersClearSearchValue()
+      return !newChatView
+    }
+    )
   }
 
   function handleCreateChatRoom(contactId) {
@@ -53,29 +75,35 @@ export function Sidebar() {
       className={clsx('min-w-[22rem] relative flex-grow-0 flex-col items-center bg-white', chatsData?.activeChat && !sidebarOpen ? 'hidden md:flex' : 'flex min-w-full md:min-w-[22rem]')}
     >
       {!showSettings &&
-        <SidebarHeader handleShowSettings={handleShowSettings} />
+        <>
+          <SidebarHeader handleShowSettings={handleShowSettings} />
+          <div id='sidebar-search-container' className='w-full p-2'>
+            {!toggleNewChat ?
+              chatsSearchInput
+              :
+              usersSearchInput
+            }
+          </div>
+        </>
       }
       <div
-        id='list-container'
+        id='sidebar-body-container'
         className='relative w-full h-full bg-slate-100'
       >
         {!showSettings ?
-          <>
-            {chatsData?.chatRooms && usersData &&
-              <ul
-                id='chat-list'
-                className='absolute inset-0 overflow-y-scroll flex flex-col gap-y-1 m-2 mr-0 bg-white'
-              >
-                {!toggleNewChat ?
-                  <ChatsList />
-                  :
-                  <ContactsList
-                    handleCreateChatRoom={handleCreateChatRoom}
-                  />
-                }
-              </ul>
+          <ul
+            id='chat-list'
+            className='absolute inset-0 overflow-y-scroll flex flex-col gap-y-1 mt-1 mr-0'
+          >
+            {!toggleNewChat ?
+              <ChatsList filteredChatsData={filteredChatsData} />
+              :
+              <ContactsList
+                filteredUsersData={filteredUsersData}
+                handleCreateChatRoom={handleCreateChatRoom}
+              />
             }
-          </>
+          </ul>
           :
           <Settings
             user={user}

@@ -1,4 +1,4 @@
-import { BsCameraVideo, BsInfoCircle, BsTelephone } from 'react-icons/bs';
+import { BsCameraVideo, BsSearch, BsTelephone } from 'react-icons/bs';
 import { Button } from '../Button';
 import { Contact } from '../Contact';
 import { Icon } from '../Icon';
@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { BiArrowBack } from 'react-icons/bi'
 import { useSidebarContext } from '../../hooks/useSidebarContext';
 
-export function ChatHeader({ activeChat }) {
+export function ChatHeader({ activeChat, handleShowSearchChat }) {
   const { sidebarOpen, toggleSidebar } = useSidebarContext()
 
   const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
@@ -28,9 +28,9 @@ export function ChatHeader({ activeChat }) {
           isOnline={onlineUsersById.includes(activeChat?.contact?.id)}
         />
         <div className='w-32 mx-4 flex justify-between'>
+          <Button text={<Icon IconComponent={BsSearch} />} onClick={handleShowSearchChat} />
           <Button text={<Icon IconComponent={BsCameraVideo} />} />
           <Button text={<Icon IconComponent={BsTelephone} />} />
-          <Button text={<Icon IconComponent={BsInfoCircle} />} />
         </div>
       </div>
     </div>

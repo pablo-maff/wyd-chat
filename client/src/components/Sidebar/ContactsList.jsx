@@ -1,46 +1,35 @@
-import { useSelector } from 'react-redux';
 import { Contact } from '../Contact';
-import { useState } from 'react';
-export function ContactsList({ handleCreateChatRoom }) {
-  const { data: usersData } = useSelector(state => state.userContacts);
+import { NoSearchResults } from '../NoSearchResults';
 
-  // * add a state variable for the filter
-  const [filterText, setFilterText] = useState('');
+export function ContactsList({ filteredUsersData, handleCreateChatRoom }) {
 
-  // * filtering function
-  const filteredUsers = usersData.filter((user) => {
-    const fullName = `${user?.firstName} ${user?.lastName}`.toLowerCase();
-    return fullName.includes(filterText.toLowerCase());
-  });
+  if (!filteredUsersData) {
+    return null
+  }
 
   return (
     <>
-      <input
-        type="text"
-        placeholder="Search by name..."
-        value={filterText}
-        onChange={(e) => setFilterText(e.target.value)}
-        className='bg-gray-200 m-3 px-3 h-7 rounded-md'
-      />
-      
-      {filteredUsers.map((user) => (
+      {filteredUsersData.length > 0 ?
         <>
-          <li
-            key={user.id}
-            id='contact-list-item'
-            onClick={() => handleCreateChatRoom(user.id)}
-            className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg'
-          >
-            <Contact
+          {filteredUsersData.map((user) => (
+            <li
               key={user.id}
-              name={`${user?.firstName} ${user?.lastName}`}
-              avatar={user?.avatarPhoto}
-              showLastTimeOnline={user?.lastTimeOnline}
-            />
-          </li> 
-          <hr /> 
+              id='contact-list-item'
+              onClick={() => handleCreateChatRoom(user.id)}
+              className='hover:cursor-pointer hover:bg-blueChat-50 hover:rounded-lg bg-white'
+            >
+              <Contact
+                key={user.id}
+                name={`${user?.firstName} ${user?.lastName}`}
+                avatar={user?.avatarPhoto}
+                showLastTimeOnline={user?.lastTimeOnline}
+              />
+            </li>
+          ))}
         </>
-      ))}
+        :
+        <NoSearchResults />
+      }
     </>
   );
 }

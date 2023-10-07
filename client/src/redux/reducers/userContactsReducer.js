@@ -18,6 +18,7 @@ const usersSlice = createSlice({
       const { data, currentUserId } = action.payload
 
       const filterCurrentUser = data.filter(user => user.id !== currentUserId)
+        .map(user => ({ ...user, fullName: `${user.firstName} ${user.lastName}` }))
 
       return { ...state, data: filterCurrentUser, loading: false, error: null }
     },
@@ -26,7 +27,11 @@ const usersSlice = createSlice({
       return { ...state, onlineUsersById: action.payload }
     },
     addUser: (state, action) => {
-      return { ...state, data: [...state.data, action.payload] }
+      const user = action.payload
+
+      const userWithFullName = { ...user, fullName: `${user.firstName} ${user.lastName}` }
+
+      return { ...state, data: [...state.data, userWithFullName] }
     },
     setTypingUser: (state, action) => {
       return { ...state, typingUsersById: [...state.typingUsersById, action.payload] }
