@@ -71,17 +71,20 @@ export function Message({ message }) {
           // Display image if the message contains an image file
           <div
             className="relative flex p-2 bg-blueChat-300 rounded-lg shadow-lg"
-            onContextMenu={(e) => {
-              // Show the "Download" button when right-clicking
-              e.preventDefault();
-              e.stopPropagation();
+            onMouseEnter={(e) => {
+              // Show the "Download" button when hovering
               e.currentTarget.querySelector('.download-button').classList.remove('hidden');
+            }}
+            onMouseLeave={(e) => {
+              // Hide the "Download" button when no longer hovering
+              e.currentTarget.querySelector('.download-button').classList.add('hidden');
             }}
           >
             <img
               src={message.file}
               alt="Uploaded Image"
               className="max-w-full h-auto"
+              style={{ cursor: 'pointer' }}
             />
             <button
               className="download-button hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-2 py-1 bg-white text-blueChat-300 rounded-lg shadow-lg hover:bg-blueChat-400"
