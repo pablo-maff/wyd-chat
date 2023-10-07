@@ -87,7 +87,7 @@ export function Message({ message }) {
               style={{ cursor: 'pointer' }}
             />
             <button
-              className="download-button hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-2 py-1 bg-white text-blueChat-300 rounded-lg shadow-lg hover:bg-blueChat-400"
+              className="download-button hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-2 py-1 bg-white text-blueChat-300 rounded-lg shadow-lg transition-colors hover:text-white hover:bg-blueChat-300"
               onClick={() => {
                 // Trigger the download when the button is clicked
                 const link = document.createElement('a');
