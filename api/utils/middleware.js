@@ -160,5 +160,5 @@ module.exports = {
   chatRoomExtractor,
   isValidId,
   attachWebSocket,
-  writeFile
+  writeFile,
 }
