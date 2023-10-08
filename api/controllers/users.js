@@ -1,10 +1,9 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-const { isValidId, userExtractor, writeFile } = require('../utils/middleware');
+const { isValidId, userExtractor, writeFile, fileExtractor } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
 const nodemailer = require('nodemailer');
-const multer = require('multer');
 const S3ClientManager = require('../utils/S3ClientManager');
 
 
@@ -100,26 +99,25 @@ usersRouter.post('/', writeFile, async (req, res) => {
 
 
 
-const storage = multer.memoryStorage(); // Store files in memory
-const upload = multer({ storage: storage });
+// const storage = multer.memoryStorage(); // Store files in memory
+// const upload = multer({ storage: storage });
 
 
-usersRouter.put('/:id', [isValidId, userExtractor, upload.single('file')], async (req, res) => {
+usersRouter.put('/:id', [isValidId, userExtractor, fileExtractor], async (req, res) => {
+  const s3Client = S3ClientManager.getInstance()
+
   const { id } = req.user
   const { firstName, lastName } = req.body
 
   const file = req.file
 
   let fileName
-  let tempUrl
 
   if (file) {
-    const s3Client = S3ClientManager.getInstance()
-
+    // TODO: Remove previous photo from s3 after the new one is saved
     fileName = await s3Client.writeFile(file)
-
-    tempUrl = await s3Client.generateTempPublicURL(fileName)
   }
+
   const updatedUser = await User.findByIdAndUpdate(
     id,
     { firstName, lastName, avatarPhoto: fileName },
@@ -134,7 +132,9 @@ usersRouter.put('/:id', [isValidId, userExtractor, upload.single('file')], async
       .json({ error: 'Unable to find user' })
   }
 
-  updatedUser.avatarPhoto = tempUrl
+  updatedUser.avatarPhoto = await s3Client.generateTempPublicURL(
+    file ? fileName : updatedUser.avatarPhoto
+  )
 
   res.status(200).json({
     updatedUser

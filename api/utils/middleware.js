@@ -4,6 +4,7 @@ const User = require('../models/user')
 const { default: mongoose } = require('mongoose')
 const ChatRoom = require('../models/chatRoom')
 const fs = require('fs');
+const multer = require('multer')
 
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: 'Unknown endpoint' })
@@ -152,6 +153,28 @@ function writeFile(req, res, next) {
   next()
 }
 
+// * Configure Multer and return the upload middleware
+function fileExtractor(req, res, next) {
+  const storage = multer.memoryStorage();
+  const upload = multer({ storage: storage }); // TODO: Set file size limit
+
+  // * Create a middleware for handling file uploads
+  const uploadFile = upload.single('file');
+
+  // * Middleware to handle file uploads and convert to Buffers
+  return uploadFile(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      // * Handle Multer errors (e.g., file size exceeded)
+      return res.status(400).json({ error: 'File upload error' });
+    } else if (err) {
+      // * Handle other errors
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    next();
+  });
+}
+
 module.exports = {
   unknownEndpoint,
   errorHandler,
@@ -161,4 +184,5 @@ module.exports = {
   isValidId,
   attachWebSocket,
   writeFile,
+  fileExtractor
 }
