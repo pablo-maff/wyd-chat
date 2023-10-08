@@ -97,11 +97,9 @@ usersRouter.post('/', writeFile, async (req, res) => {
 })
 
 usersRouter.put('/:id', [isValidId, userExtractor, fileExtractor, s3Instance], async (req, res) => {
-  const { s3 } = req
+  const { s3, file } = req
   const { id } = req.user
   const { firstName, lastName } = req.body
-
-  const file = req.file
 
   let fileName
 
@@ -129,7 +127,9 @@ usersRouter.put('/:id', [isValidId, userExtractor, fileExtractor, s3Instance], a
       .json({ error: 'Unable to find user' })
   }
 
-  updatedUser.avatarPhoto = await s3.generateTempPublicURL(updatedUser.avatarPhoto)
+  if (updatedUser.avatarPhoto) {
+    updatedUser.avatarPhoto = await s3.generateTempPublicURL(updatedUser.avatarPhoto)
+  }
 
   res.status(200).json({
     updatedUser

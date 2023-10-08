@@ -39,6 +39,14 @@ export function ChatInput() {
   }, [id])
 
   function submitNewMessage(text, file) {
+    // const formData = new FormData();
+
+    // formData.append('from', user.id);
+    // formData.append('to', activeChat.contact.id);
+    // formData.append('text', text);
+    // formData.append('file', file);
+    // formData.append('chatRoomId', id);
+
     const newMessage = {
       from: user.id,
       to: activeChat.contact.id,
@@ -102,14 +110,11 @@ export function ChatInput() {
       return
     }
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e) => {
-      submitNewMessage(null, {
-        name: file.name,
-        data: reader.result,
-      });
-    };
+    // const reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // reader.onload = (e) => {
+    submitNewMessage(null, file)
+    // };
   }
 
   function onEmojiSelection(emojiData, event) {
