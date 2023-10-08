@@ -12,7 +12,7 @@ const RegisterForm = ({ handleToggleForm }) => {
   const password = useField('password')
   const confirmPassword = useField('password')
 
-  const { photo, photoInputComponent } = useProfilePhotoInput()
+  const { photoPreview, photoInputComponent } = useProfilePhotoInput()
 
   const dispatch = useDispatch()
 
@@ -30,23 +30,29 @@ const RegisterForm = ({ handleToggleForm }) => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const newUser = {
-      firstName: firstName.inputs.value,
-      lastName: lastName.inputs.value,
-      username: username.inputs.value,
-      password: password.inputs.value,
-      file: photo
-    }
+    const formData = new FormData();
+    formData.append('firstName', firstName.inputs.value);
+    formData.append('lastName', lastName.inputs.value);
+    formData.append('username', username.inputs.value);
+    formData.append('password', password.inputs.value);
+    formData.append('file', photoPreview);
 
-    UsersService.register(newUser)
-      .then(_ => {
-        dispatch(toast('We sent you an e-mail to verify that is you. Please click on the verification link and proceed to login', 'success', 10))
-        handleToggleForm(e)
+    UsersService.register(formData)
+      .then((response) => {
+        console.log('response', response)
+        dispatch(
+          toast(
+            'We sent you an e-mail to verify that it is you. Please click on the verification link and proceed to login',
+            'success',
+            10
+          )
+        );
+        handleToggleForm(e);
       })
-      .catch(error => {
-        console.error(error)
-        dispatch(toast(`${error.response?.data?.error}`, 'error', 10))
-      })
+      .catch((error) => {
+        console.error(error);
+        dispatch(toast(`${error.response?.data?.error}`, 'error', 10));
+      });
   }
 
   return (

@@ -1,12 +1,11 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-const { isValidId, userExtractor, writeFile, s3ClientMiddleware } = require('../utils/middleware');
+const { isValidId, userExtractor, writeFile } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
-const { PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
-const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const S3ClientManager = require('../utils/S3ClientManager');
 
 
 const transporter = nodemailer.createTransport({
@@ -105,12 +104,9 @@ const storage = multer.memoryStorage(); // Store files in memory
 const upload = multer({ storage: storage });
 
 
-usersRouter.put('/:id', [isValidId, userExtractor, s3ClientMiddleware, upload.single('file')], async (req, res) => {
+usersRouter.put('/:id', [isValidId, userExtractor, upload.single('file')], async (req, res) => {
   const { id } = req.user
   const { firstName, lastName } = req.body
-  const Bucket = process.env.S3_BUCKET;
-
-  const { s3Client } = req
 
   const file = req.file
 
@@ -118,25 +114,11 @@ usersRouter.put('/:id', [isValidId, userExtractor, s3ClientMiddleware, upload.si
   let tempUrl
 
   if (file) {
-    fileName = `${Date.now()}-${file.originalname}`
-    // * Define the S3 upload parameters
-    const params = {
-      Bucket,
-      Key: fileName,
-      Body: file.buffer,
-      ContentType: file.mimetype
-    };
+    const s3Client = S3ClientManager.getInstance()
 
-    const putCommand = new PutObjectCommand(params);
+    fileName = await s3Client.writeFile(file)
 
-    await s3Client.send(putCommand);
-
-    const getCommand = new GetObjectCommand({
-      Bucket: params.Bucket,
-      Key: params.Key
-    });
-
-    tempUrl = await getSignedUrl(s3Client, getCommand, { expiresIn: 7 * 24 * 60 }); // * profile avatar temp URL expires in 7 days (Same than the token)
+    tempUrl = await s3Client.generateTempPublicURL(fileName)
   }
   const updatedUser = await User.findByIdAndUpdate(
     id,

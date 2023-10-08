@@ -16,6 +16,14 @@ class SocketServer {
     this.setupSocketListeners();
   }
 
+  // * Create a static method to get the SocketServer instance
+  static getInstance(httpServer) {
+    if (!SocketServer.instance) {
+      SocketServer.instance = new SocketServer(httpServer);
+    }
+    return SocketServer.instance;
+  }
+
   setupSocketListeners() {
     this.io.on('connection', (socket) => {
       logger.info(`${socket.id} client wants to connect.`);
@@ -96,14 +104,6 @@ class SocketServer {
   // TODO: Remove method below when migration to webhooks is completed
   getUniqueArrayValues(arrayValues) {
     return [...new Set(arrayValues)]
-  }
-
-  // Create a static method to get the SocketServer instance
-  static getInstance(httpServer) {
-    if (!SocketServer.instance) {
-      SocketServer.instance = new SocketServer(httpServer);
-    }
-    return SocketServer.instance;
   }
 }
 

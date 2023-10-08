@@ -16,7 +16,14 @@ async function register(userData) {
 }
 
 async function updateUser(updatedUser) {
-  const updateUser = await ChatInstance.put(`${baseURL}/${updatedUser.id}`, updatedUser)
+  const updateUser = await ChatInstance.put(
+    `${baseURL}/${updatedUser.id}`,
+    updatedUser,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+    })
 
   return updateUser
 }
