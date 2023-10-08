@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-const { isValidId, userExtractor, writeFile } = require('../utils/middleware');
+const { isValidId, userExtractor, writeFile, s3ClientMiddleware } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
-const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 
 
@@ -99,18 +99,18 @@ usersRouter.post('/', writeFile, async (req, res) => {
   })
 })
 
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-const region = process.env.S3_REGION;
-const Bucket = process.env.S3_BUCKET;
+
 
 const storage = multer.memoryStorage(); // Store files in memory
 const upload = multer({ storage: storage });
 
 
-usersRouter.put('/:id', [isValidId, userExtractor, upload.single('file')], async (req, res) => {
+usersRouter.put('/:id', [isValidId, userExtractor, s3ClientMiddleware, upload.single('file')], async (req, res) => {
   const { id } = req.user
   const { firstName, lastName } = req.body
+  const Bucket = process.env.S3_BUCKET;
+
+  const { s3Client } = req
 
   const file = req.file
 
@@ -127,24 +127,16 @@ usersRouter.put('/:id', [isValidId, userExtractor, upload.single('file')], async
       ContentType: file.mimetype
     };
 
-    const client = new S3Client({
-      credentials: {
-        accessKeyId,
-        secretAccessKey
-      },
-      region
-    })
-
     const putCommand = new PutObjectCommand(params);
 
-    await client.send(putCommand);
+    await s3Client.send(putCommand);
 
     const getCommand = new GetObjectCommand({
       Bucket: params.Bucket,
       Key: params.Key
     });
 
-    tempUrl = await getSignedUrl(client, getCommand, { expiresIn: 7 * 24 * 60 }); // * profile avatar temp URL expires in 7 days (Same than the token)
+    tempUrl = await getSignedUrl(s3Client, getCommand, { expiresIn: 7 * 24 * 60 }); // * profile avatar temp URL expires in 7 days (Same than the token)
   }
   const updatedUser = await User.findByIdAndUpdate(
     id,

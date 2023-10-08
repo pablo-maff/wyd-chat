@@ -4,6 +4,7 @@ const User = require('../models/user')
 const { default: mongoose } = require('mongoose')
 const ChatRoom = require('../models/chatRoom')
 const fs = require('fs');
+const { S3Client } = require('@aws-sdk/client-s3')
 
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: 'Unknown endpoint' })
@@ -152,6 +153,24 @@ function writeFile(req, res, next) {
   next()
 }
 
+function s3ClientMiddleware(req, res, next) {
+  const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+  const region = process.env.S3_REGION;
+
+  const client = new S3Client({
+    credentials: {
+      accessKeyId,
+      secretAccessKey
+    },
+    region
+  })
+
+  req.s3Client = client
+
+  next()
+}
+
 module.exports = {
   unknownEndpoint,
   errorHandler,
@@ -161,4 +180,5 @@ module.exports = {
   isValidId,
   attachWebSocket,
   writeFile,
+  s3ClientMiddleware
 }
