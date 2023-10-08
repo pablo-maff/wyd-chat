@@ -1,9 +1,10 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-const { isValidId, userExtractor, writeFile } = require('../utils/middleware');
+const { isValidId, userExtractor, fileExtractor, s3Instance } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
 const nodemailer = require('nodemailer');
+
 
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
@@ -41,9 +42,9 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
   res.json(users)
 })
 
-usersRouter.post('/', writeFile, async (req, res) => {
+usersRouter.post('/', [fileExtractor, s3Instance], async (req, res) => {
+  const { s3, file } = req
   const { username, firstName, lastName, password } = req.body
-  const avatarPhoto = req.fileName
 
   // * For now username can only be an email address
   const isValidUsername = validateEmail(username)
@@ -68,12 +69,18 @@ usersRouter.post('/', writeFile, async (req, res) => {
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
+  let fileName
+
+  if (file) {
+    fileName = await s3.writeFile(file)
+  }
+
   const user = new User({
     username,
     firstName,
     lastName,
     passwordHash,
-    avatarPhoto,
+    avatarPhoto: fileName,
     lastTimeOnline: null
   })
 
@@ -95,14 +102,28 @@ usersRouter.post('/', writeFile, async (req, res) => {
   })
 })
 
-usersRouter.put('/:id', [isValidId, userExtractor, writeFile], async (req, res) => {
+usersRouter.put('/:id', [isValidId, userExtractor, fileExtractor, s3Instance], async (req, res) => {
+  const { s3, file } = req
   const { id } = req.user
   const { firstName, lastName } = req.body
-  const avatarPhoto = req.fileName
+
+  let fileName
+
+  if (file) {
+    fileName = await s3.writeFile(file)
+
+    const userInDB = await User.findById(id)
+
+    const prevAvatarPhoto = userInDB.avatarPhoto
+
+    if (prevAvatarPhoto) {
+      s3.deleteFile(prevAvatarPhoto)
+    }
+  }
 
   const updatedUser = await User.findByIdAndUpdate(
     id,
-    { firstName, lastName, avatarPhoto },
+    { firstName, lastName, avatarPhoto: fileName },
     {
       new: true,
     }

@@ -216,7 +216,7 @@ export const createChatRoomMessage = (newMessage) => {
       dispatch(appendChatRoomMessage({ message }))
     }
     catch (error) {
-      console.error('ERRORRRR', error)
+      console.error(error)
       dispatch(setUserChatsError(`Unable to send your message: ${error.message}: ${error.response?.data?.error}`))
       dispatch(toast(`Unable to send your message: ${error.message}: ${error.response?.data?.error}`, 'error'))
     }

@@ -12,6 +12,8 @@
     "start:test": "NODE_ENV=test node index.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.427.0",
+    "@aws-sdk/s3-request-presigner": "^3.427.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "eslint": "^8.49.0",
@@ -24,6 +26,7 @@
     "mongodb": "^6.1.0",
     "mongoose": "^7.5.2",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.5",
     "socket.io": "^4.7.2"
   },

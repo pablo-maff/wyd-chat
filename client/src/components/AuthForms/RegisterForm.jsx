@@ -12,7 +12,7 @@ const RegisterForm = ({ handleToggleForm }) => {
   const password = useField('password')
   const confirmPassword = useField('password')
 
-  const { photo, photoInputComponent } = useProfilePhotoInput()
+  const { rawPhoto, photoInputComponent } = useProfilePhotoInput()
 
   const dispatch = useDispatch()
 
@@ -35,18 +35,24 @@ const RegisterForm = ({ handleToggleForm }) => {
       lastName: lastName.inputs.value,
       username: username.inputs.value,
       password: password.inputs.value,
-      file: photo
+      file: rawPhoto
     }
 
     UsersService.register(newUser)
-      .then(_ => {
-        dispatch(toast('We sent you an e-mail to verify that is you. Please click on the verification link and proceed to login', 'success', 10))
-        handleToggleForm(e)
+      .then((_) => {
+        dispatch(
+          toast(
+            'We sent you an e-mail to verify that it is you. Please click on the verification link and proceed to login',
+            'success',
+            10
+          )
+        );
+        handleToggleForm(e);
       })
-      .catch(error => {
-        console.error(error)
-        dispatch(toast(`${error.response?.data?.error}`, 'error', 10))
-      })
+      .catch((error) => {
+        console.error(error);
+        dispatch(toast(`${error.response?.data?.error}`, 'error', 10));
+      });
   }
 
   return (
@@ -56,7 +62,6 @@ const RegisterForm = ({ handleToggleForm }) => {
           <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
             Profile picture
           </label>
-          {/* <ProfilePhotoInput /> */}
           {photoInputComponent}
         </div>
         <div className="mb-2">

@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const { default: mongoose } = require('mongoose')
 const ChatRoom = require('../models/chatRoom')
-const fs = require('fs');
+const multer = require('multer')
+const S3ClientManager = require('./S3ClientManager')
 
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: 'Unknown endpoint' })
@@ -118,36 +119,33 @@ function attachWebSocket(socketServer) {
   };
 }
 
-function writeFile(req, res, next) {
-  const { file } = req.body
+// * Configure Multer and return the upload middleware
+function fileExtractor(req, res, next) {
+  const storage = multer.memoryStorage();
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 } // * Max file size is 5MBs
+  }); // TODO: Set file size limit
 
-  if (file) {
-    if (file.data?.length > 100000) {
-      return res.status(400).json({
-        error: 'file is bigger than 100kb'
-      })
+  // * Create a middleware for handling file uploads
+  const uploadFile = upload.single('file');
+
+  // * Middleware to handle file uploads and convert to Buffers
+  return uploadFile(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      // * Handle Multer errors (e.g., file size exceeded)
+      return res.status(400).json({ error: 'File upload error' });
+    } else if (err) {
+      // * Handle other errors
+      return res.status(500).json({ error: 'Internal server error' });
     }
 
-    const parts = file.name.split('.');
+    next();
+  });
+}
 
-    const ext = parts[parts.length - 1];
-
-    const fileName = Date.now() + '.' + ext;
-
-    const path = './uploads/' + fileName;
-
-    const bufferData = Buffer.from(file.data.split(',')[1], 'base64');
-
-    fs.writeFile(path, bufferData, (err) => {
-      if (err) {
-        console.error('Error saving file:', err);
-      } else {
-        console.log('File saved:', path);
-      }
-    });
-
-    req.fileName = '/api/uploads/' + fileName
-  }
+function s3Instance(req, res, next) {
+  req.s3 = S3ClientManager.getInstance()
 
   next()
 }
@@ -160,5 +158,6 @@ module.exports = {
   chatRoomExtractor,
   isValidId,
   attachWebSocket,
-  writeFile
+  fileExtractor,
+  s3Instance
 }

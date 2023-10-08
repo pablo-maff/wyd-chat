@@ -2,7 +2,7 @@ const chatRoomsRouter = require('express').Router()
 const ChatRoom = require('../models/chatRoom')
 const Message = require('../models/message')
 const User = require('../models/user')
-const { userExtractor, isValidId, chatRoomExtractor, writeFile } = require('../utils/middleware')
+const { userExtractor, isValidId, chatRoomExtractor, fileExtractor, s3Instance } = require('../utils/middleware')
 
 chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   const { members } = req.body
@@ -85,17 +85,24 @@ chatRoomsRouter.get('/:id/messages', [isValidId, chatRoomExtractor], async (req,
   res.status(200).json(chatRoomMessages)
 })
 
-chatRoomsRouter.post('/:id/messages', [isValidId, userExtractor, chatRoomExtractor, writeFile], async (req, res) => {
+chatRoomsRouter.post('/:id/messages', [isValidId, userExtractor, chatRoomExtractor, fileExtractor, s3Instance], async (req, res) => {
   const { from, to, text } = req.body
-  const fileName = req.fileName
   const selectedChatRoom = req.chatRoom
   const user = req.user
   const io = req.socketServer
+
+  const { s3, file } = req
 
   if (user.id.toString() !== from) {
     return res.status(403).json({
       error: 'User must be the one sending the message'
     })
+  }
+
+  let fileName
+
+  if (file) {
+    fileName = await s3.writeFile(file)
   }
 
   const message = new Message({
