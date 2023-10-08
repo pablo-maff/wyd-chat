@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const { default: mongoose } = require('mongoose')
 const ChatRoom = require('../models/chatRoom')
-const fs = require('fs');
 const multer = require('multer')
 const S3ClientManager = require('./S3ClientManager')
 
@@ -120,40 +119,6 @@ function attachWebSocket(socketServer) {
   };
 }
 
-function writeFile(req, res, next) {
-  const { file } = req.body
-
-  if (file) {
-    if (file.data?.length > 100000) {
-      return res.status(400).json({
-        error: 'file is bigger than 100kb'
-      })
-    }
-
-    const parts = file.name.split('.');
-
-    const ext = parts[parts.length - 1];
-
-    const fileName = Date.now() + '.' + ext;
-
-    const path = './uploads/' + fileName;
-
-    const bufferData = Buffer.from(file.data.split(',')[1], 'base64');
-
-    fs.writeFile(path, bufferData, (err) => {
-      if (err) {
-        console.error('Error saving file:', err);
-      } else {
-        console.log('File saved:', path);
-      }
-    });
-
-    req.fileName = '/api/uploads/' + fileName
-  }
-
-  next()
-}
-
 // * Configure Multer and return the upload middleware
 function fileExtractor(req, res, next) {
   const storage = multer.memoryStorage();
@@ -190,7 +155,6 @@ module.exports = {
   chatRoomExtractor,
   isValidId,
   attachWebSocket,
-  writeFile,
   fileExtractor,
   s3Instance
 }

@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-const { isValidId, userExtractor, writeFile, fileExtractor, s3Instance } = require('../utils/middleware');
+const { isValidId, userExtractor, fileExtractor, s3Instance } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
 const nodemailer = require('nodemailer');
 
@@ -42,9 +42,9 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
   res.json(users)
 })
 
-usersRouter.post('/', writeFile, async (req, res) => {
+usersRouter.post('/', [fileExtractor, s3Instance], async (req, res) => {
+  const { s3, file } = req
   const { username, firstName, lastName, password } = req.body
-  const avatarPhoto = req.fileName
 
   // * For now username can only be an email address
   const isValidUsername = validateEmail(username)
@@ -69,12 +69,18 @@ usersRouter.post('/', writeFile, async (req, res) => {
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
+  let fileName
+
+  if (file) {
+    fileName = await s3.writeFile(file)
+  }
+
   const user = new User({
     username,
     firstName,
     lastName,
     passwordHash,
-    avatarPhoto,
+    avatarPhoto: fileName,
     lastTimeOnline: null
   })
 

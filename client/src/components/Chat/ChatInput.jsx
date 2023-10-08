@@ -39,14 +39,6 @@ export function ChatInput() {
   }, [id])
 
   function submitNewMessage(text, file) {
-    // const formData = new FormData();
-
-    // formData.append('from', user.id);
-    // formData.append('to', activeChat.contact.id);
-    // formData.append('text', text);
-    // formData.append('file', file);
-    // formData.append('chatRoomId', id);
-
     const newMessage = {
       from: user.id,
       to: activeChat.contact.id,

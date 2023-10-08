@@ -45,9 +45,6 @@ app.use(
 
 app.use(cors())
 app.use(express.static('build'))
-// TODO: Request authorization to access uploads
-app.use('/api/uploads', express.static(__dirname + '/uploads'));
-
 app.use(express.json())
 
 app.use(
