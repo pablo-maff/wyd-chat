@@ -120,10 +120,6 @@ chatRoomsRouter.post('/:id/messages', [isValidId, userExtractor, chatRoomExtract
 
   await selectedChatRoom.save()
 
-  if (savedMessage.file) {
-    savedMessage.file = await s3.generateTempPublicURL(savedMessage.file)
-  }
-
   res.status(200).json(savedMessage)
 
   const toUser = await User.findById(to);

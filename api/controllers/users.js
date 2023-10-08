@@ -133,10 +133,6 @@ usersRouter.put('/:id', [isValidId, userExtractor, fileExtractor, s3Instance], a
       .json({ error: 'Unable to find user' })
   }
 
-  if (updatedUser.avatarPhoto) {
-    updatedUser.avatarPhoto = await s3.generateTempPublicURL(updatedUser.avatarPhoto)
-  }
-
   res.status(200).json({
     updatedUser
   })

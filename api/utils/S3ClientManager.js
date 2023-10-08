@@ -1,5 +1,6 @@
 const { PutObjectCommand, S3Client, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const logger = require('./logger')
 
 class S3ClientManager {
   constructor() {
@@ -27,6 +28,10 @@ class S3ClientManager {
 
   // * Writes file in the bucket and returns the file name
   async writeFile(file) {
+    if (!file) {
+      logger.error('No file received in writeFile')
+    }
+
     const fileName = `${Date.now()}-${file.originalname}`
 
     // * Define the S3 upload parameters
@@ -46,6 +51,10 @@ class S3ClientManager {
 
   // * Gets a file and returns it
   async getFile(fileName) {
+    if (!fileName) {
+      logger.error('No fileName received in getFile')
+    }
+
     const getCommand = new GetObjectCommand({
       Bucket: this.Bucket,
       Key: fileName
@@ -57,6 +66,10 @@ class S3ClientManager {
   }
 
   async deleteFile(fileName) {
+    if (!fileName) {
+      logger.error('No fileName received in deleteFile')
+    }
+
     const deleteCommand = new DeleteObjectCommand({
       Bucket: this.Bucket,
       Key: fileName
@@ -66,6 +79,10 @@ class S3ClientManager {
   }
 
   async generateTempPublicURL(fileName) {
+    if (!fileName) {
+      logger.error('No fileName received in generateTempPublicURL')
+    }
+
     const getCommand = new GetObjectCommand({
       Bucket: this.Bucket,
       Key: fileName
