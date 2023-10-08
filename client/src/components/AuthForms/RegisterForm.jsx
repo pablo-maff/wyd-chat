@@ -39,8 +39,7 @@ const RegisterForm = ({ handleToggleForm }) => {
     }
 
     UsersService.register(newUser)
-      .then((response) => {
-        console.log('response', response)
+      .then((_) => {
         dispatch(
           toast(
             'We sent you an e-mail to verify that it is you. Please click on the verification link and proceed to login',

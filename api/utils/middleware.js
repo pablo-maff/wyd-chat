@@ -122,7 +122,10 @@ function attachWebSocket(socketServer) {
 // * Configure Multer and return the upload middleware
 function fileExtractor(req, res, next) {
   const storage = multer.memoryStorage();
-  const upload = multer({ storage: storage }); // TODO: Set file size limit
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 } // * Max file size is 5MBs
+  }); // TODO: Set file size limit
 
   // * Create a middleware for handling file uploads
   const uploadFile = upload.single('file');
