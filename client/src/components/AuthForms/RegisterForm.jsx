@@ -12,7 +12,7 @@ const RegisterForm = ({ handleToggleForm }) => {
   const password = useField('password')
   const confirmPassword = useField('password')
 
-  const { photoPreview, photoInputComponent } = useProfilePhotoInput()
+  const { rawPhoto, photoInputComponent } = useProfilePhotoInput()
 
   const dispatch = useDispatch()
 
@@ -30,14 +30,15 @@ const RegisterForm = ({ handleToggleForm }) => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('firstName', firstName.inputs.value);
-    formData.append('lastName', lastName.inputs.value);
-    formData.append('username', username.inputs.value);
-    formData.append('password', password.inputs.value);
-    formData.append('file', photoPreview);
+    const newUser = {
+      firstName: firstName.inputs.value,
+      lastName: lastName.inputs.value,
+      username: username.inputs.value,
+      password: password.inputs.value,
+      file: rawPhoto
+    }
 
-    UsersService.register(formData)
+    UsersService.register(newUser)
       .then((response) => {
         console.log('response', response)
         dispatch(
@@ -62,7 +63,6 @@ const RegisterForm = ({ handleToggleForm }) => {
           <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
             Profile picture
           </label>
-          {/* <ProfilePhotoInput /> */}
           {photoInputComponent}
         </div>
         <div className="mb-2">

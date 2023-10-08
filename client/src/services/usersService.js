@@ -10,7 +10,15 @@ async function getUser(userId) {
 
 
 async function register(userData) {
-  const register = await ChatInstance.post(`${baseURL}`, userData)
+  const register = await ChatInstance.post(
+    `${baseURL}`,
+    userData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+    }
+  )
 
   return register
 }

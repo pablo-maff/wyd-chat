@@ -11,21 +11,21 @@ export function SettingsForm({ user, handleShowEditUserForm }) {
   const firstName = useField('text', user.firstName)
   const lastName = useField('text', user.lastName)
 
-  const { photoPreview, rawPhoto, photoInputComponent } = useProfilePhotoInput(user.avatarPhoto)
+  const { rawPhoto, photoInputComponent } = useProfilePhotoInput(user.avatarPhoto)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     if (firstName.inputs.value !== user.firstName ||
       lastName.inputs.value !== user.lastName ||
-      photoPreview !== user.avatarPhoto // TODO: This will break
+      (rawPhoto?.name && !user.avatarPhoto.includes(rawPhoto.name))
     ) {
       return setShowSubmitButton(true)
     }
 
     setShowSubmitButton(false)
 
-  }, [firstName.inputs.value, lastName.inputs.value, photoPreview, user.avatarPhoto, user.firstName, user.lastName])
+  }, [firstName.inputs.value, lastName.inputs.value, rawPhoto?.name, user.avatarPhoto, user.firstName, user.lastName])
 
   function handleSubmit(event) {
     event.preventDefault()

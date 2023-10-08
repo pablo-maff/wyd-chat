@@ -53,9 +53,6 @@ loginRouter.post('/', async (req, res) => {
     firstName: user.firstName,
     lastName: user.lastName
   })
-
-  user.lastTimeOnline = new Date().toISOString()
-  await user.save()
 })
 
 module.exports = loginRouter

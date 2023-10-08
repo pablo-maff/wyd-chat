@@ -116,7 +116,9 @@ usersRouter.put('/:id', [isValidId, userExtractor, fileExtractor, s3Instance], a
 
     const prevAvatarPhoto = userInDB.avatarPhoto
 
-    s3.deleteFile(prevAvatarPhoto)
+    if (prevAvatarPhoto) {
+      s3.deleteFile(prevAvatarPhoto)
+    }
   }
 
   const updatedUser = await User.findByIdAndUpdate(

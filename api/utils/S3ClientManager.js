@@ -29,7 +29,7 @@ class S3ClientManager {
   // * Writes file in the bucket and returns the file name
   async writeFile(file) {
     if (!file) {
-      logger.error('No file received in writeFile')
+      return logger.error('No file received in writeFile')
     }
 
     const fileName = `${Date.now()}-${file.originalname}`
@@ -52,7 +52,7 @@ class S3ClientManager {
   // * Gets a file and returns it
   async getFile(fileName) {
     if (!fileName) {
-      logger.error('No fileName received in getFile')
+      return logger.error('No fileName received in getFile')
     }
 
     const getCommand = new GetObjectCommand({
@@ -67,7 +67,7 @@ class S3ClientManager {
 
   async deleteFile(fileName) {
     if (!fileName) {
-      logger.error('No fileName received in deleteFile')
+      return logger.error('No fileName received in deleteFile')
     }
 
     const deleteCommand = new DeleteObjectCommand({
@@ -80,7 +80,7 @@ class S3ClientManager {
 
   async generateTempPublicURL(fileName) {
     if (!fileName) {
-      logger.error('No fileName received in generateTempPublicURL')
+      return logger.error('No fileName received in generateTempPublicURL')
     }
 
     const getCommand = new GetObjectCommand({
