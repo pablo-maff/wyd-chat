@@ -5,6 +5,7 @@ const { default: mongoose } = require('mongoose')
 const ChatRoom = require('../models/chatRoom')
 const fs = require('fs');
 const multer = require('multer')
+const S3ClientManager = require('./S3ClientManager')
 
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: 'Unknown endpoint' })
@@ -175,6 +176,12 @@ function fileExtractor(req, res, next) {
   });
 }
 
+function s3Instance(req, res, next) {
+  req.s3 = S3ClientManager.getInstance()
+
+  next()
+}
+
 module.exports = {
   unknownEndpoint,
   errorHandler,
@@ -184,5 +191,6 @@ module.exports = {
   isValidId,
   attachWebSocket,
   writeFile,
-  fileExtractor
+  fileExtractor,
+  s3Instance
 }

@@ -1,4 +1,4 @@
-const { PutObjectCommand, S3Client, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, S3Client, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 
 class S3ClientManager {
@@ -56,14 +56,23 @@ class S3ClientManager {
     return file
   }
 
+  async deleteFile(fileName) {
+    const deleteCommand = new DeleteObjectCommand({
+      Bucket: this.Bucket,
+      Key: fileName
+    })
+
+    await this.client.send(deleteCommand)
+  }
+
   async generateTempPublicURL(fileName) {
     const getCommand = new GetObjectCommand({
       Bucket: this.Bucket,
       Key: fileName
     });
 
-    // * profile avatar temp URL expires in 7 days (Same than the token)
-    const tempURL = await getSignedUrl(this.client, getCommand, { expiresIn: 7 * 24 * 60 });
+    // * profile avatar temp URL expires in 7 days (Same than the auth token)
+    const tempURL = await getSignedUrl(this.client, getCommand, { expiresIn: 7 * 24 * 60 * 60 });
 
     return tempURL
   }
