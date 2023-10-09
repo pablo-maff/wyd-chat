@@ -24,7 +24,8 @@ export function OtherFilesMessage({ message }) {
             {message.file}
           </a>
         </div>
-        <div className='text-gray-300'>2MB</div>
+        {/* // TODO: Get metadata about files and show the file size and a cleaner file name */}
+        {/* <div className='text-gray-300'>2MB</div> */}
       </div>
     </div>
   )
