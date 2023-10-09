@@ -171,7 +171,7 @@ export function ChatInput() {
             maxLength={4000}
             ref={textareaRef}
             onKeyDown={handleKeyDown}
-            className='p-2 resize-none w-full focus:outline-none rounded-lg'
+            className='p-2 resize-none w-full focus:outline-none rounded-lg text-gray-600'
             placeholder="Message"
           />
           <button
