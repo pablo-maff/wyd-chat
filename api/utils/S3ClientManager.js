@@ -39,7 +39,8 @@ class S3ClientManager {
       Bucket: this.Bucket,
       Key: fileName,
       Body: file.buffer,
-      ContentType: file.mimetype
+      ContentType: file.mimetype,
+      ContentDisposition: `attachment; filename=${fileName}`
     };
 
     const putCommand = new PutObjectCommand(params);
