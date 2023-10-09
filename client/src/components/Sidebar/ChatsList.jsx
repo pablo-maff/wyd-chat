@@ -2,9 +2,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activateChat } from '../../redux/reducers/userChatsReducer';
 import { Contact } from '../Contact';
 import { useSidebarContext } from '../../hooks/useSidebarContext';
-import { NoSearchResults } from '../NoSearchResults';
+import { NoResults } from '../NoResults';
 
-export function ChatsList({ filteredChatsData }) {
+export function ChatsList({ filteredChatsData, existingData }) {
   const dispatch = useDispatch()
   const { toggleSidebar } = useSidebarContext()
 
@@ -49,7 +49,7 @@ export function ChatsList({ filteredChatsData }) {
           })}
         </>
         :
-        <NoSearchResults />
+        <NoResults existingData={existingData} noDataMessage={'Find your friends by clicking the button below and start chatting'} />
       }
     </>
   )

@@ -35,7 +35,8 @@ export function ImageMessage({ message }) {
         className={clsx(isUserMessage
           ? 'rounded-tl-lg'
           : 'rounded-tr-lg',
-          'rounded-bl-lg rounded-br-lg')}
+          'rounded-bl-lg rounded-br-lg'
+        )}
       />
       <a href={message.file} className='hidden' ref={downloadFileRef} download />
       <button

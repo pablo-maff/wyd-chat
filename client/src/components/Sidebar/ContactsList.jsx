@@ -1,7 +1,7 @@
 import { Contact } from '../Contact';
-import { NoSearchResults } from '../NoSearchResults';
+import { NoResults } from '../NoResults';
 
-export function ContactsList({ filteredUsersData, handleCreateChatRoom }) {
+export function ContactsList({ filteredUsersData, handleCreateChatRoom, existingData }) {
 
   if (!filteredUsersData) {
     return null
@@ -28,7 +28,7 @@ export function ContactsList({ filteredUsersData, handleCreateChatRoom }) {
           ))}
         </>
         :
-        <NoSearchResults />
+        <NoResults existingData={existingData} noDataMessage={'Looks like you have no contacts here, invite your friends and start your epic conversations!'} />
       }
     </>
   );
