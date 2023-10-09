@@ -31,5 +31,5 @@ export function ContactsList({ filteredUsersData, handleCreateChatRoom }) {
         <NoSearchResults />
       }
     </>
-  )
+  );
 }

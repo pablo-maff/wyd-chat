@@ -9,7 +9,10 @@ export function MessagesList({ messages }) {
     // TODO: If user is scrolling the conversation, display a notification and an arrow icon to go to the last message
     // * Scroll to the bottom of the chat container when messages change
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      // * Delay to let files load
+      setTimeout(() => {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }, 500);
     }
   }, [messages]);
 

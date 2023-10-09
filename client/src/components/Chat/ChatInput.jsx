@@ -97,7 +97,7 @@ export function ChatInput() {
   function handleSendFile(event) {
     const file = event.target.files[0];
 
-    if (file.size > 5 * 1024 * 1024) { // * 
+    if (file.size > 5 * 1024 * 1024) {
       dispatch(toast('File size can\'t be bigger than 5MB', 'error'))
       return
     }
@@ -171,7 +171,7 @@ export function ChatInput() {
             maxLength={4000}
             ref={textareaRef}
             onKeyDown={handleKeyDown}
-            className='p-2 resize-none w-full focus:outline-none rounded-lg'
+            className='p-2 resize-none w-full focus:outline-none rounded-lg text-gray-600'
             placeholder="Message"
           />
           <button
