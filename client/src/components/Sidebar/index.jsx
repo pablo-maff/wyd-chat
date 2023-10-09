@@ -96,11 +96,12 @@ export function Sidebar() {
             className='absolute inset-0 overflow-y-scroll flex flex-col gap-y-1 mt-1 mr-0'
           >
             {!toggleNewChat ?
-              <ChatsList filteredChatsData={filteredChatsData} />
+              <ChatsList filteredChatsData={filteredChatsData} existingData={chatsData?.chatRooms.length > 0} />
               :
               <ContactsList
                 filteredUsersData={filteredUsersData}
                 handleCreateChatRoom={handleCreateChatRoom}
+                existingData={usersData.length > 0}
               />
             }
           </ul>

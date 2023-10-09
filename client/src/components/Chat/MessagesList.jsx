@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { Message } from './Message';
-import { NoSearchResults } from '../NoSearchResults';
+import { NoResults } from '../NoResults';
 
-export function MessagesList({ messages }) {
+export function MessagesList({ messages, existingData }) {
   const chatContainerRef = useRef(undefined);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export function MessagesList({ messages }) {
             )}
           </ul>
           :
-          <NoSearchResults />
+          <NoResults existingData={existingData} noDataMessage={'This is the beginning of your epic conversation!'} />
         }
       </div>
     </div>

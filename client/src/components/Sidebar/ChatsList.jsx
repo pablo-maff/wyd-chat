@@ -2,14 +2,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activateChat } from '../../redux/reducers/userChatsReducer';
 import { Contact } from '../Contact';
 import { useSidebarContext } from '../../hooks/useSidebarContext';
-import { NoSearchResults } from '../NoSearchResults';
+import { NoResults } from '../NoResults';
 
-export function ChatsList({ filteredChatsData }) {
+export function ChatsList({ filteredChatsData, existingData }) {
   const dispatch = useDispatch()
   const { toggleSidebar } = useSidebarContext()
 
   const activeChatId = useSelector(state => state.userChats).data?.activeChat?.id
-  const { user } = useSelector(state => state.userAuthentication)
   const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
 
   function handleSelectChat(chatId) {
@@ -27,7 +26,6 @@ export function ChatsList({ filteredChatsData }) {
         <>
           {filteredChatsData.map((chat) => {
             const lastContactMessage = chat?.messages
-              ?.filter(message => message.from !== user.id)
               .at(-1)
 
             return (
@@ -51,7 +49,7 @@ export function ChatsList({ filteredChatsData }) {
           })}
         </>
         :
-        <NoSearchResults />
+        <NoResults existingData={existingData} noDataMessage={'Find your friends by clicking the button below and start chatting'} />
       }
     </>
   )

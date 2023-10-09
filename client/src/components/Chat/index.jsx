@@ -50,7 +50,7 @@ export function Chat() {
       >
         {activeChat?.messages &&
           <>
-            <MessagesList messages={filteredData} />
+            <MessagesList messages={filteredData} existingData={activeChat.messages.length > 0} />
             <ChatInput />
           </>
         }
