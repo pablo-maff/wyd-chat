@@ -114,8 +114,6 @@ chatRoomsRouter.post('/:id/messages', [isValidId, userExtractor, chatRoomExtract
     chatRoomId: selectedChatRoom.id
   })
 
-  console.log('message', message.file);
-
   const savedMessage = await message.save()
 
   selectedChatRoom.messages = selectedChatRoom.messages.concat(savedMessage)

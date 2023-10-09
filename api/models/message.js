@@ -39,7 +39,21 @@ const messageSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   }
-})
+},
+  {
+    methods: {
+      // * Generate temporary public s3 url every time a document has been initialized from the db
+      // TODO: Make file an object storing the original file name, the temp url and the expiration date of the url. Only generate new urls after the previous one expired
+      async generateFileTempPublicURL(doc) {
+        if (doc.file) {
+          const s3 = S3ClientManager.getInstance();
+          const tempURL = await s3.generateTempPublicURL(doc.file);
+          doc.file = tempURL;
+        }
+      }
+    }
+  }
+)
 
 messageSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -49,16 +63,12 @@ messageSchema.set('toJSON', {
   },
 })
 
-// * Generate temporary public s3 url every time a document has been initialized from the db
-// TODO: Make avatarPhoto an object storing the original file name, the temp url and the expiration date of the url. Only generate new urls after the previous one expired
 messageSchema.post('init', async function (doc) {
-  if (doc.file) {
-    const s3 = S3ClientManager.getInstance()
+  await this.generateFileTempPublicURL(doc)
+})
 
-    const tempURL = await s3.generateTempPublicURL(doc.file)
-
-    doc.file = tempURL
-  }
+messageSchema.post('save', async function (doc) {
+  await this.generateFileTempPublicURL(doc)
 })
 
 const Message = mongoose.model('Message', messageSchema)
