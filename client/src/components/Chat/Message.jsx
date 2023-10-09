@@ -67,7 +67,7 @@ export function Message({ message }) {
             {message?.text}
           </Linkify>
         )}
-        {message.file && message.file.match(/\.(JPEG|JPG|GIF|PNG)$/) ? (
+        {message.file && message.file.toLowerCase().match(/.(jpeg|jpg|gif|png)/) ? (
           // Display image if the message contains an image file
           <div
             className="relative flex p-2 bg-blueChat-300 rounded-lg shadow-lg"
