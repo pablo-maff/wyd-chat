@@ -9,7 +9,6 @@ export function ChatsList({ filteredChatsData }) {
   const { toggleSidebar } = useSidebarContext()
 
   const activeChatId = useSelector(state => state.userChats).data?.activeChat?.id
-  const { user } = useSelector(state => state.userAuthentication)
   const { typingUsersById, onlineUsersById } = useSelector(state => state.userContacts)
 
   function handleSelectChat(chatId) {
@@ -27,7 +26,6 @@ export function ChatsList({ filteredChatsData }) {
         <>
           {filteredChatsData.map((chat) => {
             const lastContactMessage = chat?.messages
-              ?.filter(message => message.from !== user.id)
               .at(-1)
 
             return (

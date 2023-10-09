@@ -34,7 +34,7 @@ export function Message({ message }) {
       <div
         className={clsx(
           isUserMessage
-            ? 'bg-blueChat-300 text-white transition-colors rounded-tl-lg shadow-lg hover:bg-blueChat-400'
+            ? 'bg-blueChat-300 text-white transition-colors rounded-tl-lg hover:bg-blueChat-400'
             : 'rounded-tr-lg bg-white text-gray-600 hover:bg-gray-100',
           'rounded-bl-lg rounded-br-lg shadow-lg'
         )}

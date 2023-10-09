@@ -1,11 +1,15 @@
+import clsx from 'clsx';
 import { useRef } from 'react'
 import { AiOutlineCloudDownload } from 'react-icons/ai'
+import { useSelector } from 'react-redux';
 
 export function ImageMessage({ message }) {
   const downloadButtonRef = useRef(null)
   const downloadFileRef = useRef(null)
 
+  const userId = useSelector((state) => state.userAuthentication)?.user?.id
 
+  const isUserMessage = message?.from === userId
 
   function handleDownloadFile() {
     downloadFileRef.current.click()
@@ -14,7 +18,7 @@ export function ImageMessage({ message }) {
   return (
     // * Display image if the message contains an image file
     <div
-      className="relative flex p-2 bg-blueChat-300 rounded-lg shadow-lg cursor-pointer"
+      className="relative flex cursor-pointer"
       onClick={handleDownloadFile}
       onMouseEnter={() => {
         // * Show the "Download" button when hovering
@@ -28,6 +32,10 @@ export function ImageMessage({ message }) {
       <img
         src={message.file}
         alt="Uploaded Image"
+        className={clsx(isUserMessage
+          ? 'rounded-tl-lg'
+          : 'rounded-tr-lg',
+          'rounded-bl-lg rounded-br-lg')}
       />
       <a href={message.file} className='hidden' ref={downloadFileRef} download />
       <button
