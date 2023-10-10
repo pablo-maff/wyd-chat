@@ -1,4 +1,4 @@
-const { PutObjectCommand, S3Client, GetObjectCommand, DeleteObjectCommand, HeadObjectCommand } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, S3Client, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const logger = require('./logger');
 const { addDays } = require('date-fns');
@@ -98,22 +98,6 @@ class S3ClientManager {
     return {
       url: tempURL,
       expirationDate: addDays(new Date(), 7).toISOString()
-    }
-  }
-
-  async getFileMetadata(fileName) {
-    const params = {
-      Bucket: this.Bucket,
-      Key: fileName
-    }
-
-    const command = new HeadObjectCommand(params);
-
-    const metadata = await this.client.send(command)
-
-    return {
-      contentType: metadata.ContentType,
-      contentLength: metadata.ContentLength
     }
   }
 }

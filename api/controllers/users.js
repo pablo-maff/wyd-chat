@@ -70,10 +70,18 @@ usersRouter.post('/', [fileExtractor, s3Instance], async (req, res) => {
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  let fileName
+  let savedNewFile
 
   if (file) {
-    fileName = await s3.writeFile(file)
+    const fileName = await s3.writeFile(file)
+
+    const newFile = new File({
+      name: fileName,
+      size: file.size,
+      type: file.mimetype
+    })
+
+    savedNewFile = await newFile.save()
   }
 
   const user = new User({
@@ -81,7 +89,7 @@ usersRouter.post('/', [fileExtractor, s3Instance], async (req, res) => {
     firstName,
     lastName,
     passwordHash,
-    avatarPhoto: fileName,
+    avatarPhoto: savedNewFile,
     lastTimeOnline: null
   })
 
