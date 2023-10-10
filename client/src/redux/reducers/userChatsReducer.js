@@ -6,21 +6,18 @@ import { toast } from './notificationsReducer';
 
 function parseChatRooms(chatRooms) {
   return chatRooms
-    .map(chatRoom => {
-      return {
-        id: chatRoom?.id,
-        title: `${chatRoom?.members[0]?.firstName} ${chatRoom?.members[0]?.lastName}`,
-        messages: chatRoom.messages,
-        contact: { ...chatRoom?.members[0] }
-      };
-    })
+    .map(chatRoom => ({
+      id: chatRoom?.id,
+      title: `${chatRoom?.members[0]?.firstName} ${chatRoom?.members[0]?.lastName}`,
+      messages: chatRoom.messages,
+      contact: { ...chatRoom?.members[0] }
+    }))
 }
 
 function sortChatRoomsByLatestMessage(chatRooms) {
   return [...chatRooms].sort((roomA, roomB) => {
     const latestMessageA = roomA.messages.at(-1);
     const latestMessageB = roomB.messages.at(-1);
-
 
     if (!latestMessageA) return 1; // Place rooms with no messages at the end.
     if (!latestMessageB) return -1;

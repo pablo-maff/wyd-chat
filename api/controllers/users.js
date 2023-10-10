@@ -4,6 +4,7 @@ const User = require('../models/user')
 const { isValidId, userExtractor, fileExtractor, s3Instance } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
 const nodemailer = require('nodemailer');
+const File = require('../models/file');
 
 
 const transporter = nodemailer.createTransport({
@@ -17,6 +18,7 @@ const transporter = nodemailer.createTransport({
 usersRouter.get('/', userExtractor, async (req, res) => {
   const users = await User.find({ isVerified: true })
     .select('firstName lastName avatarPhoto lastTimeOnline online')
+    .populate('avatarPhoto')
 
   res.json(users)
 })
@@ -29,12 +31,14 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
       path: 'chatRooms',
       populate: [
         {
-          path: 'messages'
+          path: 'messages',
+          populate: 'file'
         },
         {
           path: 'members',
           match: { _id: { $ne: id } }, // * Only retrieve the members that are not the user making the request
-          select: 'firstName lastName avatarPhoto lastTimeOnline online'
+          select: 'firstName lastName avatarPhoto lastTimeOnline online',
+          populate: 'avatarPhoto'
         },
       ],
     })
@@ -69,10 +73,18 @@ usersRouter.post('/', [fileExtractor, s3Instance], async (req, res) => {
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  let fileName
+  let savedNewFile
 
   if (file) {
-    fileName = await s3.writeFile(file)
+    const fileName = await s3.writeFile(file)
+
+    const newFile = new File({
+      name: fileName,
+      size: file.size,
+      type: file.mimetype
+    })
+
+    savedNewFile = await newFile.save()
   }
 
   const user = new User({
@@ -80,7 +92,7 @@ usersRouter.post('/', [fileExtractor, s3Instance], async (req, res) => {
     firstName,
     lastName,
     passwordHash,
-    avatarPhoto: fileName,
+    avatarPhoto: savedNewFile,
     lastTimeOnline: null
   })
 
@@ -107,14 +119,22 @@ usersRouter.put('/:id', [isValidId, userExtractor, fileExtractor, s3Instance], a
   const { id } = req.user
   const { firstName, lastName } = req.body
 
-  let fileName
+  let savedNewFile
 
   if (file) {
-    fileName = await s3.writeFile(file)
+    const fileName = await s3.writeFile(file)
+
+    const newFile = new File({
+      name: fileName,
+      size: file.size,
+      type: file.mimetype
+    })
+
+    savedNewFile = await newFile.save()
 
     const userInDB = await User.findById(id)
 
-    const prevAvatarPhoto = userInDB.avatarPhoto
+    const prevAvatarPhoto = userInDB.avatarPhoto?.name
 
     if (prevAvatarPhoto) {
       s3.deleteFile(prevAvatarPhoto)
@@ -123,11 +143,12 @@ usersRouter.put('/:id', [isValidId, userExtractor, fileExtractor, s3Instance], a
 
   const updatedUser = await User.findByIdAndUpdate(
     id,
-    { firstName, lastName, avatarPhoto: fileName },
+    { firstName, lastName, avatarPhoto: savedNewFile },
     {
       new: true,
     }
   ).select('firstName lastName avatarPhoto')
+    .populate('avatarPhoto')
 
   if (!updatedUser) {
     return res

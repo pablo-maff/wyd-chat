@@ -30,7 +30,7 @@ export function ImageMessage({ message }) {
       }}
     >
       <img
-        src={message.file}
+        src={message.file.tempURL}
         alt="Uploaded Image"
         className={clsx(isUserMessage
           ? 'rounded-tl-lg'
@@ -38,7 +38,7 @@ export function ImageMessage({ message }) {
           'rounded-bl-lg rounded-br-lg'
         )}
       />
-      <a href={message.file} className='hidden' ref={downloadFileRef} download />
+      <a href={message.file.tempURL} className='hidden' ref={downloadFileRef} download />
       <button
         className="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-2 py-1 transition-colors hover:text-blueChat-300"
         ref={downloadButtonRef}

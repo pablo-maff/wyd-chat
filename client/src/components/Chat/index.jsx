@@ -18,7 +18,7 @@ export function Chat() {
     searchInput,
     chatInputRef,
     clearSearchValue
-  } = useSearch({ data: activeChat.messages, searchKey: 'text', secondarySearchKey: 'file' })
+  } = useSearch({ data: activeChat.messages, searchKey: 'text' })
 
   function handleShowSearchChat() {
     // * If the value is false when called it means that we are opening the search bar
