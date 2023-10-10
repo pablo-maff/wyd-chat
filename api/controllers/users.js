@@ -30,12 +30,14 @@ usersRouter.get('/:id', [isValidId, userExtractor], async (req, res) => {
       path: 'chatRooms',
       populate: [
         {
-          path: 'messages'
+          path: 'messages',
+          populate: 'file'
         },
         {
           path: 'members',
           match: { _id: { $ne: id } }, // * Only retrieve the members that are not the user making the request
-          select: 'firstName lastName avatarPhoto lastTimeOnline online'
+          select: 'firstName lastName avatarPhoto lastTimeOnline online',
+          populate: 'avatarPhoto'
         },
       ],
     })

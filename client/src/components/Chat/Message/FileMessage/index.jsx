@@ -4,7 +4,7 @@ import { OtherFilesMessage } from './OtherFilesMessage'
 export function MessageFile({ message }) {
   if (!message?.file) return null
 
-  const messageContainsImage = message.file.toLowerCase().match(/.(jpeg|jpg|gif|png)/)
+  const messageContainsImage = message.file.type.toLowerCase().match(/.(jpeg|jpg|gif|png)/)
 
   return (
     <>

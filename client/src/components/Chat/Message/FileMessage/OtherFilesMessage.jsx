@@ -16,12 +16,12 @@ export function OtherFilesMessage({ message }) {
       <div className='overflow-hidden pt-[6px] pr-[.5rem] pb-[.376rem] pl-[.625rem]'>
         <div className='line-clamp-2'>
           <a
-            href={message.file}
+            href={message.tempURL}
             ref={downloadFileRef}
             className="font-bold"
             download
           >
-            {message.file}
+            {message.file.name}
           </a>
         </div>
         {/* // TODO: Get metadata about files and show the file size and a cleaner file name */}

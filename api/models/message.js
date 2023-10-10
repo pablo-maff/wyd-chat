@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const S3ClientManager = require('../utils/S3ClientManager');
 
 const messageSchema = new mongoose.Schema({
   from: {
@@ -21,7 +20,8 @@ const messageSchema = new mongoose.Schema({
     maxLength: [4000, 'Too many characters, max length is 4000']
   },
   file: {
-    type: String,
+    type: mongoose.Schema.ObjectId,
+    ref: 'File',
     required: function () {
       return !this.text
     },
@@ -39,21 +39,7 @@ const messageSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   }
-},
-  {
-    methods: {
-      // * Generate temporary public s3 url every time a document has been initialized from the db
-      // TODO: Make file an object storing the original file name, the temp url and the expiration date of the url. Only generate new urls after the previous one expired
-      async generateFileTempPublicURL(doc) {
-        if (doc.file) {
-          const s3 = S3ClientManager.getInstance();
-          const tempURL = await s3.generateTempPublicURL(doc.file);
-          doc.file = tempURL;
-        }
-      }
-    }
-  }
-)
+})
 
 messageSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -61,14 +47,6 @@ messageSchema.set('toJSON', {
     delete returnedObject._id
     delete returnedObject.__v
   },
-})
-
-messageSchema.post('init', async function (doc) {
-  await this.generateFileTempPublicURL(doc)
-})
-
-messageSchema.post('save', async function (doc) {
-  await this.generateFileTempPublicURL(doc)
 })
 
 const Message = mongoose.model('Message', messageSchema)

@@ -30,7 +30,7 @@ fileSchema.set('toJSON', {
 
 fileSchema.post('init', async function (doc) {
   // * if there is no tempURL or if the tempUrl is expired, generate a new temp url
-  if (!doc.tempURL || isAfter(parseISO(doc.tempUrlExpirationDate, new Date()))) {
+  if (doc && (!doc.tempURL || isAfter(parseISO(doc.tempUrlExpirationDate), new Date()))) {
     const s3 = S3ClientManager.getInstance()
 
     const tempURL = await s3.generateTempPublicURL(doc.name)
@@ -39,6 +39,9 @@ fileSchema.post('init', async function (doc) {
     doc.tempUrlExpirationDate = tempURL.expirationDate
 
     await doc.save()
+
+
+    return doc
   }
 })
 

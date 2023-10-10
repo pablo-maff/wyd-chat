@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-export function useSearch({ data, searchKey, secondarySearchKey, placeholderValue }) {
+export function useSearch({ data, searchKey, placeholderValue }) {
   // * add a state variable for the filter
   const [searchValue, setSearchValue] = useState('');
   const chatInputRef = useRef(null)
@@ -14,7 +14,9 @@ export function useSearch({ data, searchKey, secondarySearchKey, placeholderValu
 
   const filteredData = data.filter(item => {
     if (!item[searchKey]) {
-      return item[secondarySearchKey]?.toLowerCase()?.includes(searchValue?.toLowerCase());
+      // * if item.searchKey doesn't exists we are dealing with a file
+      // TODO: Make this generic
+      return item?.file?.name?.toLowerCase()?.includes(searchValue?.toLowerCase());
     }
     return item[searchKey]?.toLowerCase()?.includes(searchValue?.toLowerCase());
   });

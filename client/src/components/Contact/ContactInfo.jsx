@@ -34,7 +34,7 @@ export function ContactInfo({ typing, showLastMessage, showLastTimeOnline, selec
     return (
       <p className='text-md line-clamp-1 font-extralight'
       >
-        {showLastMessage.text || showLastMessage.file}
+        {showLastMessage.text || showLastMessage.file.name}
       </p>
     )
   }
