@@ -36,7 +36,6 @@ export function OtherFilesMessage({ message }) {
             {message.file.name}
           </a>
         </div>
-        {/* // TODO: Get metadata about files and show the file size and a cleaner file name */}
         <div className='text-gray-300'>{formatBytes(message.file.size)}</div>
       </div>
     </div>
