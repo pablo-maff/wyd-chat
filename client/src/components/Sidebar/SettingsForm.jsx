@@ -18,7 +18,7 @@ export function SettingsForm({ user, handleShowEditUserForm }) {
   useEffect(() => {
     if (firstName.inputs.value !== user.firstName ||
       lastName.inputs.value !== user.lastName ||
-      (rawPhoto?.name && !user.avatarPhoto.includes(rawPhoto.name))
+      (rawPhoto?.name && !user.avatarPhoto?.includes(rawPhoto.name))
     ) {
       return setShowSubmitButton(true)
     }

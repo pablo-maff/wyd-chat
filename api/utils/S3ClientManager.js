@@ -1,4 +1,4 @@
-const { PutObjectCommand, S3Client, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, S3Client, GetObjectCommand, DeleteObjectCommand, HeadObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const logger = require('./logger')
 
@@ -84,13 +84,22 @@ class S3ClientManager {
       return logger.error('No fileName received in generateTempPublicURL')
     }
 
-    const getCommand = new GetObjectCommand({
+    const params = {
       Bucket: this.Bucket,
       Key: fileName
-    });
+    }
+
+    const getCommand = new GetObjectCommand(params);
 
     // * profile avatar temp URL expires in 7 days (Same than the auth token)
     const tempURL = await getSignedUrl(this.client, getCommand, { expiresIn: 7 * 24 * 60 * 60 });
+
+    // const command = new HeadObjectCommand(params);
+
+    // const metadata = await this.client.send(command)
+
+    // console.log('metadata', metadata);
+
 
     return tempURL
   }
