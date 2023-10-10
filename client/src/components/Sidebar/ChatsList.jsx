@@ -38,7 +38,7 @@ export function ChatsList({ filteredChatsData, existingData }) {
                 <Contact
                   key={chat?.contact?.id}
                   name={chat?.title}
-                  avatar={chat?.contact?.avatarPhoto}
+                  avatar={chat?.contact?.avatarPhoto?.tempURL}
                   showLastMessage={lastContactMessage}
                   typing={typingUsersById.includes(chat?.contact?.id)}
                   selectedChat={chat.id === activeChatId ? true : false}

@@ -12,7 +12,7 @@ loginRouter.post('/', async (req, res) => {
     })
   }
 
-  const user = await User.findOne({ username })
+  const user = await User.findOne({ username }).populate('avatarPhoto')
 
   if (!user) {
     return res.status(404).json({

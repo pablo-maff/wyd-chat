@@ -11,7 +11,7 @@ export function SettingsForm({ user, handleShowEditUserForm }) {
   const firstName = useField('text', user.firstName)
   const lastName = useField('text', user.lastName)
 
-  const { rawPhoto, photoInputComponent } = useProfilePhotoInput(user.avatarPhoto.tempURL)
+  const { rawPhoto, photoInputComponent } = useProfilePhotoInput(user.avatarPhoto?.tempURL)
 
   const dispatch = useDispatch()
 

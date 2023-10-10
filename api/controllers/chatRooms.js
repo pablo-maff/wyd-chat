@@ -44,10 +44,11 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   await savedChatRoom.populate({
     path: 'members',
     match: { _id: { $ne: userId } }, // * Only retrieve the members that are not the user making the request
-    select: 'firstName lastName avatarPhoto lastTimeOnline online'
+    select: 'firstName lastName avatarPhoto lastTimeOnline online',
+    populate: 'avatarPhoto'
   })
 
-  // Add the chat room to both users
+  // * Add the chat room to both users
   const updatePromises = members.map(userId => {
     return User.findByIdAndUpdate(
       userId,
@@ -61,7 +62,7 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
 
   const savedChatRoomToJSON = savedChatRoom.toJSON()
 
-  const fromUser = await User.findById(userId).lean().select('firstName lastName avatarPhoto lastTimeOnline online')
+  const fromUser = await User.findById(userId).lean().select('firstName lastName avatarPhoto lastTimeOnline online').populate('avatarPhoto')
   const toUser = await User.findById(savedChatRoomToJSON?.members[0]?.id)
 
   fromUser.id = fromUser._id.toString()
@@ -70,9 +71,7 @@ chatRoomsRouter.post('/', userExtractor, async (req, res) => {
   const changedMemberToChatRoomCreator = [{ ...savedChatRoomToJSON, members: [fromUser] }]
 
   if (toUser.socketId) {
-
     io.emitEventToRoom(toUser.socketId, 'new_chatRoom', changedMemberToChatRoomCreator)
-
   }
 })
 

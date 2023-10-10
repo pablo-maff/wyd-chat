@@ -22,7 +22,7 @@ export function ChatHeader({ activeChat, handleShowSearchChat }) {
       <div className='w-full flex justify-between'>
         <Contact
           name={activeChat?.title}
-          avatar={activeChat?.contact?.avatarPhoto}
+          avatar={activeChat?.contact?.avatarPhoto?.tempURL}
           typing={typingUsersById.includes(activeChat?.contact?.id)}
           showLastTimeOnline={activeChat.contact?.lastTimeOnline}
           isOnline={onlineUsersById.includes(activeChat?.contact?.id)}

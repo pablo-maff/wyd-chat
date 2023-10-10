@@ -34,7 +34,7 @@ export function Settings({ user, handleShowSettings }) {
               <div className='p-4 mt-4 w-full'>
                 <div className='w-40 h-40 m-auto'>
                   <img
-                    src={user.avatarPhoto.tempURL || defaultAvatar}
+                    src={user.avatarPhoto?.tempURL || defaultAvatar}
                     className='rounded-full w-40 h-40'
                     alt="avatar image" />
                 </div>
