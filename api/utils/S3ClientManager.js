@@ -1,6 +1,7 @@
 const { PutObjectCommand, S3Client, GetObjectCommand, DeleteObjectCommand, HeadObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
-const logger = require('./logger')
+const logger = require('./logger');
+const { addDays } = require('date-fns');
 
 class S3ClientManager {
   constructor() {
@@ -94,14 +95,26 @@ class S3ClientManager {
     // * profile avatar temp URL expires in 7 days (Same than the auth token)
     const tempURL = await getSignedUrl(this.client, getCommand, { expiresIn: 7 * 24 * 60 * 60 });
 
-    // const command = new HeadObjectCommand(params);
+    return {
+      url: tempURL,
+      expirationDate: addDays(new Date(), 7).toISOString()
+    }
+  }
 
-    // const metadata = await this.client.send(command)
+  async getFileMetadata(fileName) {
+    const params = {
+      Bucket: this.Bucket,
+      Key: fileName
+    }
 
-    // console.log('metadata', metadata);
+    const command = new HeadObjectCommand(params);
 
+    const metadata = await this.client.send(command)
 
-    return tempURL
+    return {
+      contentType: metadata.ContentType,
+      contentLength: metadata.ContentLength
+    }
   }
 }
 

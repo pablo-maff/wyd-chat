@@ -4,6 +4,7 @@ const User = require('../models/user')
 const { isValidId, userExtractor, fileExtractor, s3Instance } = require('../utils/middleware');
 const { validateEmail } = require('../utils/helperFunctions');
 const nodemailer = require('nodemailer');
+const File = require('../models/file');
 
 
 const transporter = nodemailer.createTransport({
@@ -107,14 +108,22 @@ usersRouter.put('/:id', [isValidId, userExtractor, fileExtractor, s3Instance], a
   const { id } = req.user
   const { firstName, lastName } = req.body
 
-  let fileName
+  let savedNewFile
 
   if (file) {
-    fileName = await s3.writeFile(file)
+    const fileName = await s3.writeFile(file)
+
+    const newFile = new File({
+      name: fileName,
+      size: file.size,
+      type: file.mimetype
+    })
+
+    savedNewFile = await newFile.save()
 
     const userInDB = await User.findById(id)
 
-    const prevAvatarPhoto = userInDB.avatarPhoto
+    const prevAvatarPhoto = userInDB.avatarPhoto?.name
 
     if (prevAvatarPhoto) {
       s3.deleteFile(prevAvatarPhoto)
@@ -123,11 +132,12 @@ usersRouter.put('/:id', [isValidId, userExtractor, fileExtractor, s3Instance], a
 
   const updatedUser = await User.findByIdAndUpdate(
     id,
-    { firstName, lastName, avatarPhoto: fileName },
+    { firstName, lastName, avatarPhoto: savedNewFile },
     {
       new: true,
     }
   ).select('firstName lastName avatarPhoto')
+    .populate('avatarPhoto')
 
   if (!updatedUser) {
     return res
