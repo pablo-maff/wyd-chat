@@ -1,7 +1,7 @@
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import clsx from 'clsx';
 
-export function ContactInfo({ typing, showLastMessage, showLastTimeOnline, selectedChat, isOnline }) {
+export function ContactInfo({ typing, showLastMessage, showLastTimeOnline, selectedChat, isOnline, unreadMessages }) {
   const formattedLastTimeOnline = showLastTimeOnline && formatDistanceToNow(parseISO(showLastTimeOnline));
 
   if (typing) {
@@ -32,10 +32,15 @@ export function ContactInfo({ typing, showLastMessage, showLastTimeOnline, selec
 
   if (showLastMessage) {
     return (
-      <p className='text-md line-clamp-1 font-extralight'
-      >
-        {showLastMessage.text || showLastMessage.file.name}
-      </p>
+      <div className='flex w[100%]'>
+        <p className='text-md line-clamp-1 font-extralight'
+        >
+          {showLastMessage.text || showLastMessage.file.name}
+        </p>
+        <div className='bg-blue-400 rounded-full mr-2 text-white ml-auto'>
+          <p className='w-6 h-6 text-center'>{unreadMessages}</p>
+        </div>
+      </div>
     )
   }
 
