@@ -9,7 +9,6 @@ import { useSidebarContext } from '../../hooks/useSidebarContext';
 import clsx from 'clsx';
 import { Settings } from './Settings';
 import { useSearch } from '../../hooks/useSearch';
-import { Loader } from '../Loader/Loader';
 
 export function Sidebar() {
   const [showSettings, setShowSettings] = useState(false)

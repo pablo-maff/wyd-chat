@@ -1,9 +1,9 @@
-import { appendChatRoomMessage, createUserChatRoom } from '../reducers/userChatsReducer';
+import { appendChatRoomMessage, createUserChatRoom, setMessagesAsRead } from '../reducers/userChatsReducer';
 import { addUser, removeTypingUser, setOnlineUsersById, setTypingUser } from '../reducers/userContactsReducer';
 
 export default function socketMiddleware(socket) {
   return (params) => (next) => (action) => {
-    const { dispatch } = params
+    const { dispatch, getState } = params
     const { type, payload } = action
 
     switch (type) {
@@ -45,6 +45,10 @@ export default function socketMiddleware(socket) {
           dispatch(createUserChatRoom(chatRoom))
         })
 
+        socket.on('read_messages', ({ chatRoomId, to }) => {
+          dispatch(setMessagesAsRead({ chatRoomId, to }))
+        })
+
         break
       }
 
@@ -59,7 +63,14 @@ export default function socketMiddleware(socket) {
       case 'userContacts/sendThisUserStoppedTyping': {
         socket.emit('stopped_typing', payload)
 
-        return
+        break
+      }
+
+      case 'userChats/setActiveChat': {
+        const userId = getState().userAuthentication.user.id
+        socket.emit('active_chat', { chatRoomId: payload, userId })
+
+        break
       }
 
       // * Disconnect from the socket when a user logs out

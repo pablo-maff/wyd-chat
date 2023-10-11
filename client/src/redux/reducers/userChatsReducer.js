@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, current } from '@reduxjs/toolkit'
 import UserService from '../../services/usersService';
 import ChatRoomService from '../../services/chatRoomsService';
 import { compareDesc, parseISO } from 'date-fns';
@@ -133,6 +133,24 @@ const userChatsSlice = createSlice({
         }
       }
     },
+    setMessagesAsRead(state, action) {
+      const { chatRoomId, to } = action.payload
+
+      const findChatRoom = state.data.chatRooms.find(chatRoom => chatRoom.id === chatRoomId)
+
+      const markMessagesAsRead = {
+        ...findChatRoom, messages: findChatRoom?.messages
+          .map(message => message.to !== to ? message : { ...message, unread: false })
+      }
+
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          chatRooms: state.data.chatRooms.map(chatRoom => chatRoom.id !== markMessagesAsRead.id ? chatRoom : markMessagesAsRead)
+        }
+      }
+    },
     setUserChatsLoading(state) {
       state.loading = true
       state.error = null
@@ -152,6 +170,7 @@ export const {
   createUserChatRoom,
   setActiveChat,
   appendChatRoomMessage,
+  setMessagesAsRead,
   setUserChatsLoading,
   setUserChatsError,
   resetState
