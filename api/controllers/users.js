@@ -6,7 +6,6 @@ const { validateEmail } = require('../utils/helperFunctions');
 const nodemailer = require('nodemailer');
 const File = require('../models/file');
 
-
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
@@ -106,7 +105,11 @@ usersRouter.post('/', [fileExtractor, s3Instance], async (req, res) => {
   transporter.sendMail({
     to: username,
     subject: 'Verify Account',
-    html: `Click <a href = '${url}'>here</a> to confirm your email.`
+    html: `<div>
+    <h1>Welcome to wyd chat!</h1>
+    <p>Please, click <a href = '${url}'>here</a> to confirm your email and start chatting.</p>
+    </div>
+    `
   })
 
   res.status(201).json({
