@@ -81,7 +81,7 @@ class SocketServer {
       })
 
       socket.on('active_chat', async ({ chatRoomId, userId }) => {
-        if (!chatRoomId) return
+        if (!chatRoomId || !userId) return
 
         const user = await User.findById(userId);
 
@@ -90,6 +90,12 @@ class SocketServer {
         if (updatedMessages.modifiedCount > 0) {
           this.emitEventToRoom(user.socketId, 'read_messages', { chatRoomId, to: userId })
         }
+      })
+
+      socket.on('message_sent_to_active_chat', async ({ chatRoomId, to }) => {
+        if (!chatRoomId || !to) return
+
+        await Message.findOneAndUpdate({ chatRoomId, to, unread: true }, { unread: false })
       })
 
     })

@@ -23,7 +23,14 @@ export default function socketMiddleware(socket) {
 
         // * Append a message every time a new one comes in
         socket.on('receive_message', (message) => {
-          dispatch(appendChatRoomMessage({ message }))
+          dispatch(appendChatRoomMessage({ message, received: true }))
+
+          const activeChatId = getState().userChats.data.activeChat?.id
+
+          // * For when a chat receiving a message is already active update those messages to be on read status
+          if (activeChatId && activeChatId === message.chatRoomId) {
+            socket.emit('message_sent_to_active_chat', { chatRoomId: message.chatRoomId, to: message.to })
+          }
         })
 
         // * Remove if some user stops typing

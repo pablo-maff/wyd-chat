@@ -6,11 +6,18 @@ export function ContactInfo({ typing, showLastMessage, showLastTimeOnline, selec
 
   if (typing) {
     return (
-      <h6
-        className={clsx(selectedChat && !showLastTimeOnline ? 'text-white animate-pulse' : 'text-blueChat-300 animate-pulse')}
-      >
-        Typing...
-      </h6>
+      <div className='flex'>
+        <h6
+          className={clsx(selectedChat && !showLastTimeOnline ? 'text-white animate-pulse' : 'text-blueChat-300 animate-pulse')}
+        >
+          Typing...
+        </h6>
+        {unreadMessages > 0 &&
+          <div className='bg-blue-400 rounded-full mr-2 text-white ml-auto'>
+            <p className='w-6 h-6 text-center'>{unreadMessages}</p>
+          </div>
+        }
+      </div>
     )
   }
 
@@ -32,14 +39,16 @@ export function ContactInfo({ typing, showLastMessage, showLastTimeOnline, selec
 
   if (showLastMessage) {
     return (
-      <div className='flex w[100%]'>
+      <div className='flex'>
         <p className='text-md line-clamp-1 font-extralight'
         >
           {showLastMessage.text || showLastMessage.file.name}
         </p>
-        <div className='bg-blue-400 rounded-full mr-2 text-white ml-auto'>
-          <p className='w-6 h-6 text-center'>{unreadMessages}</p>
-        </div>
+        {unreadMessages > 0 &&
+          <div className='bg-blue-400 rounded-full mr-2 text-white ml-auto'>
+            <p className='w-6 h-6 text-center'>{unreadMessages}</p>
+          </div>
+        }
       </div>
     )
   }
