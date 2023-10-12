@@ -26,9 +26,9 @@ verifyRouter.get('/:id', async (req, res) => {
 
   await user.save();
 
-  res.status(200).json({
-    error: 'Account Verified'
-  })
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://wyd-chat.onrender.com' : 'http://localhost:5173'
+
+  res.status(200).send(`<html><body><div style='text-align: center;'><h1>Welcome to wyd chat</h1><div><p>Your verification was successful</p><p>Click <a href=${baseURL}>here</a> to go to the application.</p></div></div></body></html>`)
 
   io.emitEvent('new_user_added', user)
 })
