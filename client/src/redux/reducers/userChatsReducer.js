@@ -4,12 +4,13 @@ import ChatRoomService from '../../services/chatRoomsService';
 import { compareDesc, parseISO } from 'date-fns';
 import { toast } from './notificationsReducer';
 
-function parseChatRooms(chatRooms) {
+function parseChatRooms(chatRooms, userId) {
   return chatRooms
     .map(chatRoom => ({
       id: chatRoom?.id,
       title: `${chatRoom?.members[0]?.firstName} ${chatRoom?.members[0]?.lastName}`,
       messages: chatRoom.messages,
+      unreadMessages: chatRoom.messages.filter(message => message.unread && message.to === userId).length,
       contact: { ...chatRoom?.members[0] }
     }))
 }
@@ -37,12 +38,12 @@ const userChatsSlice = createSlice({
   initialState: initialState,
   reducers: {
     setUserChats(state, action) {
-      const { data } = action.payload
+      const { data, userId } = action.payload
 
       const parsedData = {
         ...data,
         activeChat: null,
-        chatRooms: sortChatRoomsByLatestMessage(parseChatRooms(data.chatRooms))
+        chatRooms: sortChatRoomsByLatestMessage(parseChatRooms(data.chatRooms, userId))
       }
 
       return { ...state, data: parsedData, loading: false, error: null }
@@ -91,7 +92,7 @@ const userChatsSlice = createSlice({
     },
     appendChatRoomMessage(state, action) {
       const { activeChat } = state.data
-      const { message } = action.payload
+      const { message, received } = action.payload
 
       if (!message?.id) {
         const error = {
@@ -115,10 +116,10 @@ const userChatsSlice = createSlice({
       }
         : null
 
-
       const appendedMessageToDestinationChatRoom = {
         ...destinationChatRoom,
-        messages: [...destinationChatRoom.messages, message]
+        messages: [...destinationChatRoom.messages, message],
+        unreadMessages: received && (!activeChat || activeChat.id !== message.chatRoomId) && destinationChatRoom.unreadMessages + 1
       }
 
       return {
@@ -130,6 +131,28 @@ const userChatsSlice = createSlice({
             .map(chatRoom =>
               chatRoom.id !== destinationChatRoom.id ? chatRoom : appendedMessageToDestinationChatRoom
             ))
+        }
+      }
+    },
+    setMessagesAsRead(state, action) {
+      const { chatRoomId, to } = action.payload
+
+      const findChatRoom = state.data.chatRooms.find(chatRoom => chatRoom.id === chatRoomId)
+
+      const markMessagesAsRead = {
+        ...findChatRoom,
+        messages: findChatRoom?.messages
+          .map(message => message.to !== to ? message : { ...message, unread: false }),
+        unreadMessages: 0
+      }
+
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          chatRooms: state.data.chatRooms.map(
+            chatRoom => chatRoom.id !== markMessagesAsRead.id ? chatRoom : markMessagesAsRead
+          )
         }
       }
     },
@@ -152,6 +175,7 @@ export const {
   createUserChatRoom,
   setActiveChat,
   appendChatRoomMessage,
+  setMessagesAsRead,
   setUserChatsLoading,
   setUserChatsError,
   resetState
@@ -164,7 +188,7 @@ export const initializeUserChats = (userId) => {
 
       const { data: userChatData } = await UserService.getUser(userId)
 
-      dispatch(setUserChats({ data: userChatData }))
+      dispatch(setUserChats({ data: userChatData, userId }))
     }
     catch (error) {
       console.error(error)

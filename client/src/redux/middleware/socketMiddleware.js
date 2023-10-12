@@ -1,9 +1,9 @@
-import { appendChatRoomMessage, createUserChatRoom } from '../reducers/userChatsReducer';
+import { appendChatRoomMessage, createUserChatRoom, setMessagesAsRead } from '../reducers/userChatsReducer';
 import { addUser, removeTypingUser, setOnlineUsersById, setTypingUser } from '../reducers/userContactsReducer';
 
 export default function socketMiddleware(socket) {
   return (params) => (next) => (action) => {
-    const { dispatch } = params
+    const { dispatch, getState } = params
     const { type, payload } = action
 
     switch (type) {
@@ -23,7 +23,14 @@ export default function socketMiddleware(socket) {
 
         // * Append a message every time a new one comes in
         socket.on('receive_message', (message) => {
-          dispatch(appendChatRoomMessage({ message }))
+          dispatch(appendChatRoomMessage({ message, received: true }))
+
+          const activeChatId = getState().userChats.data.activeChat?.id
+
+          // * For when a chat receiving a message is already active update those messages to be on read status
+          if (activeChatId && activeChatId === message.chatRoomId) {
+            socket.emit('message_sent_to_active_chat', { chatRoomId: message.chatRoomId, to: message.to })
+          }
         })
 
         // * Remove if some user stops typing
@@ -45,6 +52,10 @@ export default function socketMiddleware(socket) {
           dispatch(createUserChatRoom(chatRoom))
         })
 
+        socket.on('read_messages', ({ chatRoomId, to }) => {
+          dispatch(setMessagesAsRead({ chatRoomId, to }))
+        })
+
         break
       }
 
@@ -59,7 +70,14 @@ export default function socketMiddleware(socket) {
       case 'userContacts/sendThisUserStoppedTyping': {
         socket.emit('stopped_typing', payload)
 
-        return
+        break
+      }
+
+      case 'userChats/setActiveChat': {
+        const userId = getState().userAuthentication.user.id
+        socket.emit('active_chat', { chatRoomId: payload, userId })
+
+        break
       }
 
       // * Disconnect from the socket when a user logs out

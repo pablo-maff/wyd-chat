@@ -43,6 +43,7 @@ export function ChatsList({ filteredChatsData, existingData }) {
                   typing={typingUsersById.includes(chat?.contact?.id)}
                   selectedChat={chat.id === activeChatId ? true : false}
                   isOnline={onlineUsersById.includes(chat?.contact?.id)}
+                  unreadMessages={chat.unreadMessages}
                 />
               </li>
             );

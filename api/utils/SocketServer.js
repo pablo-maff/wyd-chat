@@ -1,6 +1,7 @@
 const { Server } = require('socket.io');
 const User = require('../models/user');
-const logger = require('./logger')
+const logger = require('./logger');
+const Message = require('../models/message');
 
 // TODO: Apply api middlewares logic like isValidId and errors handling here
 class SocketServer {
@@ -77,6 +78,24 @@ class SocketServer {
         const toUser = await User.findById(to);
 
         this.emitEventToRoom(toUser.socketId, 'user_stopped_typing', from)
+      })
+
+      socket.on('active_chat', async ({ chatRoomId, userId }) => {
+        if (!chatRoomId || !userId) return
+
+        const user = await User.findById(userId);
+
+        const updatedMessages = await Message.updateMany({ chatRoomId, to: userId, unread: true }, { unread: false })
+
+        if (updatedMessages.modifiedCount > 0) {
+          this.emitEventToRoom(user.socketId, 'read_messages', { chatRoomId, to: userId })
+        }
+      })
+
+      socket.on('message_sent_to_active_chat', async ({ chatRoomId, to }) => {
+        if (!chatRoomId || !to) return
+
+        await Message.findOneAndUpdate({ chatRoomId, to, unread: true }, { unread: false })
       })
 
     })
