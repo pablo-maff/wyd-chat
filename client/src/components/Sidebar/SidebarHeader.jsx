@@ -15,11 +15,11 @@ export function SidebarHeader({ handleShowSettings }) {
     <div className='p-4 shadow-md w-full'>
       <div className='flex justify-between items-center'>
         <div className='mx-4 w-16 h-16'>
-          <img src={logo} className='w-16 h-16' />
+          <img src={logo} className='w-16 h-16' alt='wyd-chat logo' />
         </div>
         <div className='mx-4'>
           <Menu>
-            <Menu.Button>
+            <Menu.Button id='settings-button' name='settings-button' >
               <Icon IconComponent={GiHamburgerMenu} />
             </Menu.Button>
             <Transition
@@ -40,6 +40,8 @@ export function SidebarHeader({ handleShowSettings }) {
                   <button
                     onClick={handleShowSettings}
                     className='flex items-center'
+                    id='account-settings-button'
+                    name='account-settings-button'
                   >
                     <CiSettings size='1.5rem' />
                     <div className='w-full ml-5'>
@@ -53,6 +55,8 @@ export function SidebarHeader({ handleShowSettings }) {
                   <button
                     className='flex items-center'
                     onClick={() => dispatch(logoutUser(user))}
+                    id='logout-button'
+                    name='logout-button'
                   >
                     <CiLogout size='1.5rem' />
                     <div className='w-full ml-5'>

@@ -17,10 +17,12 @@
   /* Add styles for the blur overlay */
   inset: 0;
   background-color: rgba(255, 255, 255, 0.5); /* Adjust the background color and opacity */
+  -webkit-backdrop-filter: blur(60px); /* Apply the blur effect */
   backdrop-filter: blur(60px); /* Apply the blur effect */
 }
 
 .bd-filter {
+  -webkit-backdrop-filter: blur(50px); /* Apply the blur effect */
   backdrop-filter: blur(50px);
 }
 
