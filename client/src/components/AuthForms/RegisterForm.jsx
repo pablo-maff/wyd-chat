@@ -59,14 +59,19 @@ const RegisterForm = ({ handleToggleForm }) => {
     <>
       <form onSubmit={handleSubmit} className='w-full'>
         <div className="mb-2 mt-4">
-          <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
-            Profile picture
+          <label htmlFor="fileInput" className="block mb-2 text-sm font-medium">
+            <span>Profile picture</span>
           </label>
           {photoInputComponent}
         </div>
         <div className="mb-2">
           <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
-            First Name
+            <span>First Name</span>
+            <span aria-label='required'>
+              <strong>
+                *
+              </strong>
+            </span>
           </label>
           <input
             id="firstName"
@@ -80,7 +85,10 @@ const RegisterForm = ({ handleToggleForm }) => {
         </div>
         <div className="mb-2">
           <label htmlFor="lastName" className="block mb-2 text-sm font-medium">
-            Last Name
+            <span>Last Name</span>
+            <strong>
+              <span aria-label='required'>*</span>
+            </strong>
           </label>
           <input
             id="lastName"
@@ -94,7 +102,10 @@ const RegisterForm = ({ handleToggleForm }) => {
         </div>
         <div className="mb-2">
           <label htmlFor="email" className="block mb-2 text-sm font-medium">
-            Email
+            <span>Email</span>
+            <strong>
+              <span aria-label='required'>*</span>
+            </strong>
           </label>
           <input
             id="email"
@@ -106,7 +117,10 @@ const RegisterForm = ({ handleToggleForm }) => {
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="block mb-2 text-sm font-medium">
-            Password
+            <span>Password</span>
+            <strong>
+              <span aria-label='required'>*</span>
+            </strong>
           </label>
           <input
             id="password"
@@ -120,7 +134,10 @@ const RegisterForm = ({ handleToggleForm }) => {
         </div>
         <div className="mb-4">
           <label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium">
-            Confirm Password
+            <span>Confirm Password</span>
+            <strong>
+              <span aria-label='required'>*</span>
+            </strong>
           </label>
           <input
             id="confirmPassword"

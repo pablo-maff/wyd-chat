@@ -19,9 +19,14 @@ export function LoginForm({ handleToggleForm }) {
 
   return (
     <>
-      <form onSubmit={handleLogin} className='w-full' >
+      <form onSubmit={handleLogin} className='w-full mt-2' >
         <div className="mb-2">
-          <label htmlFor="login-email" className="block mb-2 text-sm  font-medium">E-mail</label>
+          <label htmlFor="login-email" className="block mb-2 text-sm  font-medium">
+            <span>E-mail</span>
+            <strong>
+              <span aria-label='required'>*</span>
+            </strong>
+          </label>
           <input
             id='login-email'
             name="username"
@@ -31,7 +36,12 @@ export function LoginForm({ handleToggleForm }) {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="login-password" className="block mb-2 text-sm font-medium">Password</label>
+          <label htmlFor="login-password" className="block mb-2 text-sm font-medium">
+            <span>Password</span>
+            <strong>
+              <span aria-label='required'>*</span>
+            </strong>
+          </label>
           <input
             name="password"
             id='login-password'
