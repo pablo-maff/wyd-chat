@@ -159,7 +159,11 @@ export function ChatInput() {
         }
         <div className='flex bg-white rounded-lg shadow-lg hover:shadow-xl'>
           <div className='flex items-center justify-center m-2 mt-auto'>
-            <button onClick={handleShowEmojiPicker} >
+            <button
+              id='emoji-picker'
+              aria-label='emoji picker'
+              onClick={handleShowEmojiPicker}
+            >
               <BsEmojiSmile size='1.3rem' color='grey' />
             </button>
           </div>
@@ -176,6 +180,8 @@ export function ChatInput() {
           />
           <button
             onClick={fileInputClickHandler}
+            id='file-input'
+            aria-label='file input'
             className='flex items-center justify-center m-2 mt-auto'
           >
             <input

@@ -12,7 +12,8 @@ export function ToggleSidebarView({ handleNewChatView, toggleNewChat }) {
         className='bg-blueChat-400 w-14 h-14 rounded-full flex justify-center items-center'
       >
         <button
-          id='toggle-sidebar-view-button'
+          id='toggle-sidebar-view'
+          aria-label='toggle-sidebar-view'
           onClick={handleNewChatView}
         >
           {!toggleNewChat ?

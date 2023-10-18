@@ -36,7 +36,7 @@ export function OtherFilesMessage({ message }) {
             {message.file.name}
           </a>
         </div>
-        <div className='text-gray-300'>{formatBytes(message.file.size)}</div>
+        <div className='text-gray-200'>{formatBytes(message.file.size)}</div>
       </div>
     </div>
   )

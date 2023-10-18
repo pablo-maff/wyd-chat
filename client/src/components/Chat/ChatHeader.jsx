@@ -16,8 +16,8 @@ export function ChatHeader({ activeChat, handleShowSearchChat }) {
       <Button
         className='mr-2 block md:hidden'
         onClick={() => toggleSidebar(!sidebarOpen)}
-        name='toggle-sidebar-view-button'
-        id='toggle-sidebar-view-button'
+        aria-label='view-sidebar'
+        id='view-sidebar'
         text={<BiArrowBack size='1.5rem' color='#70757' />}
       >
       </Button>
@@ -30,7 +30,7 @@ export function ChatHeader({ activeChat, handleShowSearchChat }) {
           isOnline={onlineUsersById.includes(activeChat?.contact?.id)}
         />
         <div className='w-32 mx-4 flex justify-between'>
-          <Button name='search-messages-button' id='search-messages-button' text={<Icon IconComponent={BsSearch} />} onClick={handleShowSearchChat} />
+          <Button aria-label='search-messages' id='search-messages' text={<Icon IconComponent={BsSearch} />} onClick={handleShowSearchChat} />
           {/* <Button text={<Icon IconComponent={BsCameraVideo} />} /> */}
           {/* <Button text={<Icon IconComponent={BsTelephone} />} /> */}
         </div>

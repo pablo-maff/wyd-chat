@@ -18,7 +18,7 @@ export function SettingsForm({ user, handleShowEditUserForm }) {
   useEffect(() => {
     if (firstName.inputs.value !== user.firstName ||
       lastName.inputs.value !== user.lastName ||
-      (rawPhoto?.name && !user.avatarPhoto?.name?.includes(rawPhoto.name))
+      (rawPhoto?.name && user.avatarPhoto?.name !== rawPhoto.name)
     ) {
       return setShowSubmitButton(true)
     }
@@ -87,8 +87,9 @@ export function SettingsForm({ user, handleShowEditUserForm }) {
             className='bg-blueChat-400 w-14 h-14 rounded-full flex justify-center items-center'
           >
             <button
-              id='settings-submit-button'
               type='submit'
+              id='settings-submit-button'
+              aria-label='save updated settings'
             >
               <AiOutlineCheck size='1.5rem' color='white' />
             </button>

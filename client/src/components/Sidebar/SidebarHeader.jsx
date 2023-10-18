@@ -19,7 +19,7 @@ export function SidebarHeader({ handleShowSettings }) {
         </div>
         <div className='mx-4'>
           <Menu>
-            <Menu.Button id='settings-button' name='settings-button' >
+            <Menu.Button id='settings-button' aria-label='settings button' >
               <Icon IconComponent={GiHamburgerMenu} />
             </Menu.Button>
             <Transition
@@ -41,7 +41,7 @@ export function SidebarHeader({ handleShowSettings }) {
                     onClick={handleShowSettings}
                     className='flex items-center'
                     id='account-settings-button'
-                    name='account-settings-button'
+                    aria-label='account settings'
                   >
                     <CiSettings size='1.5rem' />
                     <div className='w-full ml-5'>
@@ -56,7 +56,7 @@ export function SidebarHeader({ handleShowSettings }) {
                     className='flex items-center'
                     onClick={() => dispatch(logoutUser(user))}
                     id='logout-button'
-                    name='logout-button'
+                    aria-label='logout'
                   >
                     <CiLogout size='1.5rem' />
                     <div className='w-full ml-5'>
