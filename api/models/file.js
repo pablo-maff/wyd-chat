@@ -16,7 +16,7 @@ const fileSchema = new mongoose.Schema({
     required: true
   },
   tempURL: String,
-  tempUrlExpirationDate: Date
+  tempUrlExpirationDate: String
 })
 
 fileSchema.set('toJSON', {
@@ -30,7 +30,9 @@ fileSchema.set('toJSON', {
 
 fileSchema.post('init', async function (doc) {
   // * if there is no tempURL or if the tempUrl is expired, generate a new temp url
-  if (doc && (!doc.tempURL || isAfter(parseISO(doc.tempUrlExpirationDate), new Date()))) {
+  const publicURLExpired = isAfter(new Date(), parseISO(doc.tempUrlExpirationDate))
+
+  if (doc && (!doc.tempURL || publicURLExpired)) {
     const s3 = S3ClientManager.getInstance()
 
     const tempURL = await s3.generateTempPublicURL(doc.name)

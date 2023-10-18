@@ -59,14 +59,21 @@ const RegisterForm = ({ handleToggleForm }) => {
     <>
       <form onSubmit={handleSubmit} className='w-full'>
         <div className="mb-2 mt-4">
-          <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
-            Profile picture
+          <label htmlFor="fileInput" className="block mb-2 text-sm font-medium">
+            <strong>
+              <span>Profile picture</span>
+            </strong>
           </label>
           {photoInputComponent}
         </div>
         <div className="mb-2">
           <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
-            First Name
+            <strong>
+              <span>Name</span>
+              <span aria-label='required'>
+                *
+              </span>
+            </strong>
           </label>
           <input
             id="firstName"
@@ -80,7 +87,10 @@ const RegisterForm = ({ handleToggleForm }) => {
         </div>
         <div className="mb-2">
           <label htmlFor="lastName" className="block mb-2 text-sm font-medium">
-            Last Name
+            <strong>
+              <span>Surname</span>
+              <span aria-label='required'>*</span>
+            </strong>
           </label>
           <input
             id="lastName"
@@ -94,7 +104,10 @@ const RegisterForm = ({ handleToggleForm }) => {
         </div>
         <div className="mb-2">
           <label htmlFor="email" className="block mb-2 text-sm font-medium">
-            Email
+            <strong>
+              <span>Email</span>
+              <span aria-label='required'>*</span>
+            </strong>
           </label>
           <input
             id="email"
@@ -106,39 +119,46 @@ const RegisterForm = ({ handleToggleForm }) => {
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="block mb-2 text-sm font-medium">
-            Password
+            <strong>
+              <span>Password</span>
+              <span aria-label='required'>*</span>
+            </strong>
           </label>
           <input
             id="password"
             name="password"
             required
             minLength={8}
-            maxLength={30}
+            maxLength={12}
+            placeholder='Between 8 and 12 characters'
             autoComplete="password"
             {...password.inputs}
           />
         </div>
         <div className="mb-4">
           <label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium">
-            Confirm Password
+            <strong>
+              <span>Confirm Password</span>
+              <span aria-label='required'>*</span>
+            </strong>
           </label>
           <input
             id="confirmPassword"
             name="confirmPassword"
             required
             minLength={8}
-            maxLength={30}
+            maxLength={12}
             autoComplete="new-password"
             {...confirmPassword.inputs}
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
         >
           Register
         </button>
-      </form>
+      </form >
       <button
         onClick={handleToggleForm}
         className="w-full mt-2 border border-gray-500 bg-white py-2 rounded hover:bg-blue-600 hover:text-white focus:outline-none focus:ring focus:ring-blue-200"

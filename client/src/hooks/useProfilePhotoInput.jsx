@@ -38,6 +38,7 @@ export function useProfilePhotoInput(avatarPhoto) {
     <div>
       <input
         type="file"
+        id="fileInput"
         ref={fileInputRef}
         className="hidden"
         onChange={handleFileChange}

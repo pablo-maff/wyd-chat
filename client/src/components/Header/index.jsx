@@ -7,7 +7,7 @@ export function Header() {
         <img
           src={logo}
           alt="wyd-chat logo"
-          className="max-w-24 max-h-24"
+          className="w-24 h-24"
         />
         <h1 className="text-2xl ml-4">wyd chat</h1>
       </div>

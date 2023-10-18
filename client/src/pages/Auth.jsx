@@ -25,19 +25,19 @@ export function Auth() {
   }
 
   return (
-    <div className="min-h-screen bg-blueChat-100 bg-blur">
+    <div className="bg-blur min-h-screen">
       <div className='blur-overlay min-h-screen'>
         <Header />
         <div className="mt-8 flex flex-col items-center justify-center">
-          <div className="min-w-[350px] shadow-xl p-8 rounded-lg mb-4 bd-filter">
-            <h3 className="text-2xl mb-4 font-semibold text-center">
+          <fieldset className="min-w-[350px] shadow-xl p-8 rounded-lg mb-4 bg-blueChat-50 relative">
+            <legend className="font-semibold absolute -top-4 bg-blueChat-200 p-1 px-2 rounded-md">
               {!toggleForm ? 'Login' : 'Register'}
-            </h3>
+            </legend>
             {!toggleForm ?
               <LoginForm handleToggleForm={handleToggleForm} />
               : <RegisterForm handleToggleForm={handleToggleForm} />
             }
-          </div>
+          </fieldset>
         </div>
       </div>
     </div>

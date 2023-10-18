@@ -8,7 +8,7 @@ export function ContactInfo({ typing, showLastMessage, showLastTimeOnline, selec
     return (
       <div className='flex'>
         <h6
-          className={clsx(selectedChat && !showLastTimeOnline ? 'text-white animate-pulse' : 'text-blueChat-300 animate-pulse')}
+          className={clsx(selectedChat && !showLastTimeOnline ? 'text-white animate-pulse' : 'text-blueChat-400 animate-pulse')}
         >
           Typing...
         </h6>
@@ -23,7 +23,7 @@ export function ContactInfo({ typing, showLastMessage, showLastTimeOnline, selec
 
   if (isOnline && !showLastMessage) {
     return (
-      <h6 className='text-blueChat-300 font-medium' >
+      <h6 className='text-blueChat-400 font-medium' >
         Online
       </h6>
     )
@@ -54,7 +54,7 @@ export function ContactInfo({ typing, showLastMessage, showLastTimeOnline, selec
   }
 
   return (
-    <p className={clsx(!selectedChat && 'text-blueChat-300', 'text-md', 'font-medium')}>
+    <p className={clsx(!selectedChat && 'text-blueChat-400', 'text-md', 'font-medium')}>
       New User
     </p>
   )

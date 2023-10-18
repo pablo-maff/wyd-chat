@@ -15,14 +15,24 @@ export function Settings({ user, handleShowSettings }) {
   return (
     <div className='bg-white pb-4 flex flex-col'>
       <div className='flex items-center pt-2'>
-        <button className='ml-8 md:ml-4 z-10' onClick={!showEditUserForm ? handleShowSettings : handleShowEditUserForm}>
+        <button
+          className='ml-8 md:ml-4 z-10'
+          onClick={!showEditUserForm ? handleShowSettings : handleShowEditUserForm}
+          id='back-to-chatlist'
+          aria-label='go back to chats list'
+        >
           <AiOutlineArrowLeft size='1.5rem' />
         </button>
         <h3 className='text-xl font-bold ml-8'>
           Settings
         </h3>
         {!showEditUserForm &&
-          <button className='ml-auto mr-8 md:mr-4 z-10' onClick={handleShowEditUserForm}>
+          <button
+            className='ml-auto mr-8 md:mr-4 z-10'
+            onClick={handleShowEditUserForm}
+            id='edit-profile-button'
+            aria-label='edit profile'
+          >
             <BsFillPencilFill size='1.2rem' color='gray' />
           </button>
         }
@@ -38,7 +48,7 @@ export function Settings({ user, handleShowSettings }) {
                     className='rounded-full w-40 h-40'
                     alt="avatar image" />
                 </div>
-                <h6 className='text-lg font-semibold text-center mt-4'>{user.firstName} {user.lastName}</h6>
+                <p className='text-lg font-semibold text-center mt-4'>{user.firstName} {user.lastName}</p>
               </div>
               <div className='flex items-center justify-center'>
                 <GoMention size='1.5rem' color='gray' />

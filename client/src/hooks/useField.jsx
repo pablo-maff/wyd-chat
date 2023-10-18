@@ -19,7 +19,7 @@ export const useField = (type, defaultValue) => {
 
   function onBlur() {
     // * Check the validity of the input using the validity property
-    const isValid = inputRef.current.validity.valid
+    const isValid = inputRef.current.checkValidity()
 
     // * Set the border color based on validity
     const borderColorClass = isValid ? 'border-green-600' : 'border-red-600'
