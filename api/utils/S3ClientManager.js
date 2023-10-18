@@ -1,7 +1,7 @@
 const { PutObjectCommand, S3Client, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const logger = require('./logger');
-const { addDays } = require('date-fns');
+const { addDays, formatISO } = require('date-fns');
 
 class S3ClientManager {
   constructor() {
@@ -97,7 +97,7 @@ class S3ClientManager {
 
     return {
       url: tempURL,
-      expirationDate: addDays(new Date(), 7).toISOString()
+      expirationDate: formatISO(addDays(new Date(), 7))
     }
   }
 }
