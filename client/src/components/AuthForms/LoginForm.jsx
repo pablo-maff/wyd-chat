@@ -30,7 +30,6 @@ export function LoginForm({ handleToggleForm }) {
           <input
             id='login-email'
             name="username"
-            placeholder="E-mail"
             aria-required="true"
             required
             {...username.inputs}
@@ -46,16 +45,16 @@ export function LoginForm({ handleToggleForm }) {
           <input
             name="password"
             id='login-password'
-            placeholder="Password"
             aria-required="true"
             required
             minLength={8}
+            maxLength={12}
             {...password.inputs}
           />
         </div>
         <button
           type="submit"
-          className='w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200'
+          className='w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200'
         >
           Login
         </button>

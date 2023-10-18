@@ -60,18 +60,20 @@ const RegisterForm = ({ handleToggleForm }) => {
       <form onSubmit={handleSubmit} className='w-full'>
         <div className="mb-2 mt-4">
           <label htmlFor="fileInput" className="block mb-2 text-sm font-medium">
-            <span>Profile picture</span>
+            <strong>
+              <span>Profile picture</span>
+            </strong>
           </label>
           {photoInputComponent}
         </div>
         <div className="mb-2">
           <label htmlFor="firstName" className="block mb-2 text-sm font-medium">
-            <span>First Name</span>
-            <span aria-label='required'>
-              <strong>
+            <strong>
+              <span>Name</span>
+              <span aria-label='required'>
                 *
-              </strong>
-            </span>
+              </span>
+            </strong>
           </label>
           <input
             id="firstName"
@@ -85,8 +87,8 @@ const RegisterForm = ({ handleToggleForm }) => {
         </div>
         <div className="mb-2">
           <label htmlFor="lastName" className="block mb-2 text-sm font-medium">
-            <span>Last Name</span>
             <strong>
+              <span>Surname</span>
               <span aria-label='required'>*</span>
             </strong>
           </label>
@@ -102,8 +104,8 @@ const RegisterForm = ({ handleToggleForm }) => {
         </div>
         <div className="mb-2">
           <label htmlFor="email" className="block mb-2 text-sm font-medium">
-            <span>Email</span>
             <strong>
+              <span>Email</span>
               <span aria-label='required'>*</span>
             </strong>
           </label>
@@ -117,8 +119,8 @@ const RegisterForm = ({ handleToggleForm }) => {
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="block mb-2 text-sm font-medium">
-            <span>Password</span>
             <strong>
+              <span>Password</span>
               <span aria-label='required'>*</span>
             </strong>
           </label>
@@ -127,15 +129,16 @@ const RegisterForm = ({ handleToggleForm }) => {
             name="password"
             required
             minLength={8}
-            maxLength={30}
+            maxLength={12}
+            placeholder='Between 8 and 12 characters'
             autoComplete="password"
             {...password.inputs}
           />
         </div>
         <div className="mb-4">
           <label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium">
-            <span>Confirm Password</span>
             <strong>
+              <span>Confirm Password</span>
               <span aria-label='required'>*</span>
             </strong>
           </label>
@@ -144,18 +147,18 @@ const RegisterForm = ({ handleToggleForm }) => {
             name="confirmPassword"
             required
             minLength={8}
-            maxLength={30}
+            maxLength={12}
             autoComplete="new-password"
             {...confirmPassword.inputs}
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
         >
           Register
         </button>
-      </form>
+      </form >
       <button
         onClick={handleToggleForm}
         className="w-full mt-2 border border-gray-500 bg-white py-2 rounded hover:bg-blue-600 hover:text-white focus:outline-none focus:ring focus:ring-blue-200"

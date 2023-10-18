@@ -48,7 +48,6 @@ export default function App() {
     <>
       <Router>
         <Routes>
-          <Route path='/dev' element={<Toast />} />
           <Route path='*' element={<Navigate to={'/auth'} />} />
           <Route path='/auth' element={<Auth />} />
           <Route element={<PrivateRoute />} >
